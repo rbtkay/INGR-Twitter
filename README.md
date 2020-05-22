@@ -1,4 +1,4 @@
-﻿﻿*IPSSI EISI-IT 21.1AW - Ines Jebli, Nolwenn Poilleux, Geoffrey Dazelle & Robert Khayat*
+﻿*IPSSI EISI-IT 21.1AW - Ines Jebli, Nolwenn Poilleux, Geoffrey Dazelle & Robert Khayat*
 
 # INGR-Twitter
 
@@ -26,3 +26,6 @@ docker-compose up
 
 ## Modify environment variables
 Rename the **.env.sample** file to **.env**, and insert your values (JWT_KEY, DB_NAME, TWITTER_KEY).
+
+## Contributing
+INGR-Twitter is an Open Source project. Please review [source: [the guidelines for contributing](https://github.com/rbtkay/INGR-Twitter/blob/master/CONTRIBUTING.md)] to this repository. Become a maintainer ! 
