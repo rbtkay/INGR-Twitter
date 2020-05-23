@@ -25,4 +25,11 @@ docker-compose up
 ```
 
 ## Modify environment variables
-Rename the **.env.sample** file to **.env**, and insert your values (JWT_KEY, DB_NAME, TWITTER_KEY).
+Rename the **.env.sample** from docker/ to **.env**, and insert your values :
+ - DATABASE_NAME
+ - DATABASE_USER
+ - DATABASE_PASSWORD
+ - DATABASE_ROOT_PASSWORD
+ - APP_SECRET
+ - JWT_KEY
+ - TWITTER_KEY
