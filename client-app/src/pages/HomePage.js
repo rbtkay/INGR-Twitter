@@ -9,7 +9,7 @@ import Auth from '../components/Auth'
 const HomePage = () => {
     return (
         <div>
-            <Auth token="" />
+            <Auth />
             <Header as='h1'>Here we will show the user's keywords</Header>
         </div>
     );

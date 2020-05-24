@@ -4,6 +4,7 @@ import './App.css';
 
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
+import LandingPage from "./pages/LandingPage";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
@@ -12,7 +13,7 @@ const App = () => {
     <Router>
       <div className="App">
         <Switch>
-          <Route path="/" exact/>
+          <Route path="/" exact component={LandingPage}/>
           <Route path="/login" component={LoginPage}/>
           <Route path="/home" exact component={HomePage}/>
           <Route path="/home/:id" component={HomePage}/>
