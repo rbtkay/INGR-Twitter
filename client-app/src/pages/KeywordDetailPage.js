@@ -4,10 +4,13 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import { Header } from "semantic-ui-react";
 
+import Auth from "../components/Auth";
+
 const LoginPage = () => {
   return (
     <div>
-      <Header as='h1'>This is the login page</Header>
+      <Auth />
+      <Header as='h1'>We will have here the keywords details</Header>
     </div>
   );
 }

@@ -10,7 +10,7 @@ const HomePage = () => {
     return (
         <div>
             <Auth />
-            <Header as='h1'>Here we will show the user's keywords</Header>
+            <Header as='h1'>Here we will have an input to add new keywords and the list of all the user's keywords</Header>
         </div>
     );
 }
