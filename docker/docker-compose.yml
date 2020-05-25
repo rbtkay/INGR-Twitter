@@ -47,15 +47,23 @@ services:
       - "443:443"
 
   node:
-    container_name: nodejs
-    image: 'node:latest'
-    working_dir: /usr/src/app
-    command:
-      - /bin/sh
-      - '-c'
-      - 'npm install && npm start'
+    container_name: node
+    build: './node'
     ports:
       - "3000:3000"
     volumes:
       - ../client-app:/usr/src/app
+
+  # node:
+  #   container_name: nodejs
+  #   image: 'node'
+  #   working_dir: /usr/src/app
+  #   command:
+  #     - /bin/sh
+  #     - '-c'
+  #     - 'npm install && npm start'
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - ../client-app:/usr/src/app
 
