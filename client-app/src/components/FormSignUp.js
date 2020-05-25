@@ -56,15 +56,15 @@ const FormSignUp = ({ submission }) => {
                 <label>Confirm Password</label>
                 <input placeholder='Confirm password' type="password" onChange={e => setConfirmPassword(e.target.value)} />
             </Form.Field>
-            <div style={{ textAlign: "center" }}>
-                <Button color='green' type='submit' onClick={handleClick}>Register</Button>
-                <Link to={"/"}>already a member ?</Link>
-            </div>
             <Message
                 error
                 header='Input Error'
                 content={errorMsg}
             />
+            <div style={{ textAlign: "center" }}>
+                <Button color='green' type='submit' onClick={handleClick}>Register</Button>
+                <Link to={"/"}>already a member ?</Link>
+            </div>
         </Form>
     );
 }

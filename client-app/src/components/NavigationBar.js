@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Menu, Input } from "semantic-ui-react";
+import { Menu, Input, Image } from "semantic-ui-react";
 import { Link } from 'react-router-dom';
 
 const NavigationBar = () => {
@@ -10,7 +10,7 @@ const NavigationBar = () => {
         <div>
             <Menu>
                 <Menu.Item>
-                    <Link to={"/"}>Home</Link>
+                    <Link to={"/"} style={{ color: "black" }}>Home</Link>
                 </Menu.Item>
             </Menu>
         </div>

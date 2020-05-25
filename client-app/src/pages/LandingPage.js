@@ -7,14 +7,16 @@ import NavigationBar from '../components/NavigationBar';
 import FormLogin from '../components/FormLogin';
 import FormSignUp from '../components/FormSignUp';
 
+import useFetchActions from "../hooks/fetchActions";
+
 const HomePage = () => {
     let history = useHistory();
     
     const loginSubmit = (username, password) => {
         //fetch login --> if successfull redirect to homepage, if failed return false to activate form error
         // return false;
+        // const loginHook = useFetchActions();
         history.push('/home');
-
     }
 
     const signUpSubmit = (formResult) => {

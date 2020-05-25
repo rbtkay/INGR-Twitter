@@ -53,7 +53,7 @@ const FormLogin = (props) => {
             />
             <div style={{ textAlign: "center" }}>
                 <Button color='green' type="submit" onClick={handleClick}>Login</Button>
-                <Link to={"/register"}>New ?</Link>
+                <Link to={"/register"}>new member ?</Link>
             </div>
         </Form>
     );
