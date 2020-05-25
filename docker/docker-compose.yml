@@ -47,11 +47,14 @@ services:
 
   node:
     container_name: nodejs
-    build: 
-      context: ./node
-    ports: 
+    image: 'node:latest'
+    working_dir: /usr/src/app
+    command:
+      - /bin/sh
+      - '-c'
+      - 'npm install && npm start'
+    ports:
       - "3000:3000"
-    volumes: 
+    volumes:
       - ../client-app:/usr/src/app
-
 

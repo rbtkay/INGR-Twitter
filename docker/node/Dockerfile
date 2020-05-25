@@ -4,4 +4,4 @@ WORKDIR /usr/src/app
 
 RUN yarn
 
-CMD ["yarn", "start"]
+CMD yarn install ; yarn start
