@@ -1,6 +1,6 @@
 FROM node
 
-WORKDIR /usr/src/app
+RUN mkdir /usr/src/app
 
 RUN yarn
 
