@@ -25,6 +25,7 @@ services:
     environment:
       - APP_ENV=${APP_ENV}
       - APP_SECRET=${APP_SECRET}
+      - JWT_PASSPHRASE=${JWT_PASSPHRASE}
       - DATABASE_URL=mysql://${DATABASE_USER}:${DATABASE_PASSWORD}@database:3306/${DATABASE_NAME}?serverVersion=5.7
     volumes:
       - ../src:/var/www
@@ -47,11 +48,11 @@ services:
 
   node:
     container_name: nodejs
-    build: 
-      context: ./node
-    ports: 
-      - "3000:3000"
-    volumes: 
+    build:
+      context: './node'
+    volumes:
       - ../client-app:/usr/src/app
+    ports:
+      - "3000:3000"
 
 

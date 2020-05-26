@@ -1,13 +1,7 @@
-FROM node
-
-# RUN mkdir /usr/src/app
-
-# COPY ../../ingr_front/ /usr/src/app
+FROM node:10
 
 WORKDIR /usr/src/app
 
-# ENV PATH /usr/src/app/node_modules/.bin:$PATH
+RUN npm install --silent
 
-RUN yarn
-
-CMD ["yarn", "start"]
+CMD npm start
