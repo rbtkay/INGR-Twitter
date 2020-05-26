@@ -37,4 +37,10 @@ class KeywordRepository extends ServiceEntityRepository
 		$this->_em->persist($keyword);
 		$this->_em->flush();
 	}
+
+	public function delete(Keyword $keyword)
+	{
+		$this->_em->remove($keyword);
+		$this->_em->flush();
+	}
 }
