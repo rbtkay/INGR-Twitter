@@ -47,12 +47,13 @@ services:
       - "443:443"
 
   node:
-    container_name: node
-    build: './node'
-    ports:
-      - "3000:3000"
+    container_name: nodejs
+    build: 
+      context: './node'
     volumes:
       - ../client-app:/usr/src/app
+    ports:
+      - "3000:3000"
 
   # node:
   #   container_name: nodejs

@@ -1,7 +1,9 @@
-FROM node
+FROM node:10
 
-RUN mkdir /usr/src/app
+WORKDIR /usr/src/app
+# RUN chmod 775 /usr/src/app
+# COPY package*.json ./
 
-RUN yarn
+RUN npm install
 
-CMD yarn install ; yarn start
+CMD npm start
