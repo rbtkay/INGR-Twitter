@@ -1,3 +1,27 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+api_login_check:
+  path: /api/login_check
+
+users:
+  path:     /api/users/
+  controller: App\Controller\UserController::getUsers
+  methods:  [GET]
+
+register:
+  path:     /api/users/
+  controller: App\Controller\UserController::register
+  methods:  [POST]
+
+user:
+  path:     /api/users/{id}
+  controller: App\Controller\UserController::getUserById
+  methods:  [GET]
+
+user_delete:
+  path:     /api/users/{id}
+  controller: App\Controller\UserController::deleteUser
+  methods:  [DELETE]
+
+user_update:
+  path:     /api/users/{id}
+  controller: App\Controller\UserController::updateUser
+  methods:  [PUT]
