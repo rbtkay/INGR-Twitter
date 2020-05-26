@@ -1,7 +1,7 @@
-FROM node
+FROM node:10
 
 WORKDIR /usr/src/app
 
-RUN yarn
+RUN npm install --silent
 
-CMD yarn install ; yarn start
+CMD npm start

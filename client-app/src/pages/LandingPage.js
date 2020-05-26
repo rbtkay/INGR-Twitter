@@ -29,6 +29,8 @@ const HomePage = () => {
         <div>
             <NavigationBar />
             <br />
+            <br />
+            <br />
             <Container>
                 <Grid columns={2}>
                     <GridColumn>
