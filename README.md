@@ -28,10 +28,9 @@ docker-compose up
 
 Generate private key will ask you a passphrase. Set it to `JWT_PASSPHRASE`  env variable.
 ```
-docker exec -ti php /bin/sh
-openssl genrsa -out config/jwt/private.pem -aes256 4096
-openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
-exit
+openssl genrsa -out ../src/config/jwt/private.pem -aes256 4096
+openssl rsa -pubout -in ../src/config/jwt/private.pem -out ../src/config/jwt/public.pem
+sudo chmod 644 ../src/config/jwt/private.pem
 ```
 
 ## Modify environment variables
@@ -47,5 +46,5 @@ Rename the **.env.sample** from docker/ to **.env**, and insert your values :
 
 ## Contributing
 INGR-Twitter is an Open Source project. Please review [source: [the guidelines for contributing]
-(https://github.com/rbtkay/INGR-Twitter/blob/master/CONTRIBUTING.md)] to this repository. 
+(https://github.com/rbtkay/INGR-Twitter/blob/master/CONTRIBUTING.md)] and read [source: [the code of conduct] (https://github.com/rbtkay/INGR-Twitter/blob/master/CODE_OF_CONDUCT.md)]  to this repository. 
 Become a maintainer ! 

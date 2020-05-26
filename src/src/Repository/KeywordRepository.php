@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Keyword;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,49 +20,21 @@ class KeywordRepository extends ServiceEntityRepository
 	 * @param ManagerRegistry $registry
 	 */
 	public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, Keyword::class);
-    }
+	{
+		parent::__construct($registry, Keyword::class);
+	}
 
 	/**
 	 * @param string $name
 	 * @throws \Doctrine\ORM\ORMException
 	 * @throws \Doctrine\ORM\OptimisticLockException
 	 */
-	public function insert(string $name)
+	public function insert(string $name, User $user)
 	{
 		$keyword = new Keyword();
-		$keyword->setName();
+		$keyword->setName($name);
+		$keyword->setUser($user);
 		$this->_em->persist($keyword);
 		$this->_em->flush();
 	}
-
-    // /**
-    //  * @return Keyword[] Returns an array of Keyword objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('k')
-            ->andWhere('k.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('k.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Keyword
-    {
-        return $this->createQueryBuilder('k')
-            ->andWhere('k.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

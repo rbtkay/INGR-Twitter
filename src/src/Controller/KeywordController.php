@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class KeywordController extends AbstractController
 {
     /**
-     * @Route("/keyword", name="keyword")
+     * @Route("/api/keywords", name="keyword", methods={"GET"})
      */
     public function index()
     {
@@ -23,12 +23,14 @@ class KeywordController extends AbstractController
     }
 
 	/**
-	 * @Route("/keywords", name="register", methods={"POST"})
+	 * @Route("/api/keywords", name="addKeyword", methods={"POST"})
 	 * @param Request $request
 	 * @param KeywordRepository $k_repo
 	 * @return JsonResponse
+	 * @throws \Doctrine\ORM\ORMException
+	 * @throws \Doctrine\ORM\OptimisticLockException
 	 */
-	public function register(Request $request, KeywordRepository $k_repo)
+	public function addKeyword(Request $request, KeywordRepository $k_repo)
 	{
 		try {
 			$keyword = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
@@ -47,7 +49,7 @@ class KeywordController extends AbstractController
 					Response::HTTP_INTERNAL_SERVER_ERROR
 				);
 			}
-			$k_repo->insert($keyword['name']);
+			$k_repo->insert($keyword['name'], $this->getUser());
 
 			return new JsonResponse(['message' => 'Keyword registered'], Response::HTTP_CREATED);
 		}
