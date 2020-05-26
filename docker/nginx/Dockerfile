@@ -1,6 +1,6 @@
 FROM nginx:alpine
 
-WORKDIR /var/www
+RUN mkdir /var/www
 
 CMD ["nginx"]
 
