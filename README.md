@@ -28,11 +28,9 @@ docker-compose up
 
 Generate private key will ask you a passphrase. Set it to `JWT_PASSPHRASE`  env variable.
 ```
-docker exec -ti php /bin/sh
-mkdir config/jwt
 openssl genrsa -out config/jwt/private.pem -aes256 4096
 openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
-exit
+sudo chmod 644 onfig/jwt/private.pem
 ```
 
 ## Modify environment variables
