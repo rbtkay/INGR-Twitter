@@ -28,29 +28,46 @@ class Keyword
      */
     private $user;
 
-    public function getId(): ?int
+	/**
+	 * @return int|null
+	 */
+	public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+	/**
+	 * @return string|null
+	 */
+	public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function setName(string $name): self
+	/**
+	 * @param string $name
+	 * @return Keyword
+	 */
+	public function setName(string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function getUser(): ?User
+	/**
+	 * @return User|null
+	 */
+	public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+	/**
+	 * @param User|null $user
+	 * @return Keyword
+	 */
+	public function setUser(?User $user): self
     {
         $this->user = $user;
 

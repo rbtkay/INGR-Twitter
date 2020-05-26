@@ -26,6 +26,19 @@ security:
         success_handler: lexik_jwt_authentication.handler.authentication_success
         failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
+    register:
+      pattern:  ^/api/users
+      stateless: true
+      anonymous: true
+      methods: [POST]
+
+    api:
+      pattern:   ^/api
+      stateless: true
+      guard:
+        authenticators:
+          - lexik_jwt_authentication.jwt_token_authenticator
+
       # activate different ways to authenticate
       # https://symfony.com/doc/current/security.html#firewalls-authentication
 

@@ -14,6 +14,11 @@ class UserController extends AbstractController
 {
 	/**
 	 * @Route("/api/users", name="register", methods={"POST"})
+	 * @param Request $request
+	 * @param UserRepository $u_repo
+	 * @return JsonResponse
+	 * @throws \Doctrine\ORM\ORMException
+	 * @throws \Doctrine\ORM\OptimisticLockException
 	 */
 	public function register(Request $request, UserRepository $u_repo)
 	{
@@ -50,6 +55,9 @@ class UserController extends AbstractController
 
 	/**
 	 * @Route("/api/users", name="users", methods={"GET"})
+	 * @param Request $request
+	 * @param UserRepository $u_repo
+	 * @return JsonResponse
 	 */
 	public function getUsers(Request $request, UserRepository $u_repo)
 	{
@@ -68,6 +76,10 @@ class UserController extends AbstractController
 
 	/**
 	 * @Route("/api/users/{id}", name="user", methods={"GET"})
+	 * @param $id
+	 * @param Request $request
+	 * @param UserRepository $u_repo
+	 * @return JsonResponse
 	 */
 	public function getUserById($id, Request $request, UserRepository $u_repo)
 	{
@@ -88,6 +100,12 @@ class UserController extends AbstractController
 
 	/**
 	 * @Route("/users/{id}", name="delete_user", methods={"DELETE"})
+	 * @param $id
+	 * @param Request $request
+	 * @param UserRepository $u_repo
+	 * @return JsonResponse
+	 * @throws \Doctrine\ORM\ORMException
+	 * @throws \Doctrine\ORM\OptimisticLockException
 	 */
 	public function deleteUser($id, Request $request, UserRepository $u_repo)
 	{
@@ -107,6 +125,12 @@ class UserController extends AbstractController
 
 	/**
 	 * @Route("/users/{id}", name="update_user", methods={"PUT"})
+	 * @param $id
+	 * @param Request $request
+	 * @param UserRepository $u_repo
+	 * @return JsonResponse
+	 * @throws \Doctrine\ORM\ORMException
+	 * @throws \Doctrine\ORM\OptimisticLockException
 	 */
 	public function updateUser($id, Request $request, UserRepository $u_repo)
 	{

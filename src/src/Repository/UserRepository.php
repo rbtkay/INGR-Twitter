@@ -20,6 +20,11 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 {
 	private $passwordEncoder;
 
+	/**
+	 * UserRepository constructor.
+	 * @param ManagerRegistry $registry
+	 * @param UserPasswordEncoderInterface $passwordEncoder
+	 */
 	public function __construct(ManagerRegistry $registry, UserPasswordEncoderInterface $passwordEncoder)
 	{
 		$this->passwordEncoder = $passwordEncoder;
@@ -29,6 +34,10 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 	/**
 	 * Used to upgrade (rehash) the user's password automatically over time.
 	 * Used by symfony
+	 * @param UserInterface $user
+	 * @param string $newEncodedPassword
+	 * @throws \Doctrine\ORM\ORMException
+	 * @throws \Doctrine\ORM\OptimisticLockException
 	 */
 	public function upgradePassword(UserInterface $user, string $newEncodedPassword) : void
 	{
@@ -41,6 +50,13 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 		$this->_em->flush();
 	}
 
+	/**
+	 * @param string $username
+	 * @param string $password
+	 * @param string $email
+	 * @throws \Doctrine\ORM\ORMException
+	 * @throws \Doctrine\ORM\OptimisticLockException
+	 */
 	public function insert(string $username, string $password, string $email)
 	{
 		$user = new User();
@@ -54,6 +70,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
 	/**
 	 * @param User $user
+	 * @throws \Doctrine\ORM\ORMException
+	 * @throws \Doctrine\ORM\OptimisticLockException
 	 */
 	public function delete(User $user)
 	{
@@ -65,6 +83,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 	 * @param User $user
 	 * @param array $data
 	 * @return array
+	 * @throws \Doctrine\ORM\ORMException
+	 * @throws \Doctrine\ORM\OptimisticLockException
 	 */
 	public function update(User $user, array $data)
 	{

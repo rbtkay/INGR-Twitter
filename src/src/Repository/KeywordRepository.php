@@ -14,10 +14,27 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class KeywordRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+	/**
+	 * KeywordRepository constructor.
+	 * @param ManagerRegistry $registry
+	 */
+	public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Keyword::class);
     }
+
+	/**
+	 * @param string $name
+	 * @throws \Doctrine\ORM\ORMException
+	 * @throws \Doctrine\ORM\OptimisticLockException
+	 */
+	public function insert(string $name)
+	{
+		$keyword = new Keyword();
+		$keyword->setName();
+		$this->_em->persist($keyword);
+		$this->_em->flush();
+	}
 
     // /**
     //  * @return Keyword[] Returns an array of Keyword objects
