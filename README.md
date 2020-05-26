@@ -47,5 +47,5 @@ Rename the **.env.sample** from docker/ to **.env**, and insert your values :
 
 ## Contributing
 INGR-Twitter is an Open Source project. Please review [source: [the guidelines for contributing]
-(https://github.com/rbtkay/INGR-Twitter/blob/master/CONTRIBUTING.md)] to this repository. 
+(https://github.com/rbtkay/INGR-Twitter/blob/master/CONTRIBUTING.md)] and read [source: [the code of conduct] (https://github.com/rbtkay/INGR-Twitter/blob/master/CODE_OF_CONDUCT.md)]  to this repository. 
 Become a maintainer ! 
