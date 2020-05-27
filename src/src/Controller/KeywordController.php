@@ -12,18 +12,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class KeywordController extends AbstractController
 {
-    /**
-     * @Route("/keywords", name="keyword")
-     */
-    public function index()
-    {
-        return $this->render('keyword/index.html.twig', [
-            'controller_name' => 'KeywordController',
-        ]);
-    }
 
 	/**
-	 * @Route("/api/keywords", name="addKeyword", methods={"POST"})
+	 * @Route("/api/keywords", name="keyword_create", methods={"POST"})
 	 * @param Request $request
 	 * @param KeywordRepository $k_repo
 	 * @return JsonResponse
@@ -41,7 +32,7 @@ class KeywordController extends AbstractController
 			);
 		}
 
-		if(!empty($keyword['name'])) {
+		if (!empty($keyword['name'])) {
 			$exists = $k_repo->findOneBy(['name' => $keyword['name']]);
 			if (!empty($exists)) {
 				return new JsonResponse(
@@ -65,7 +56,7 @@ class KeywordController extends AbstractController
 	public function getKeywords(Request $request, KeywordRepository $k_repo)
 	{
 		$keywords = $k_repo->findAll();
-		$return = [];
+		$return   = [];
 		foreach ($keywords as $keyword) {
 			$return[] = [
 				'id'      => $keyword->getId(),
@@ -102,7 +93,7 @@ class KeywordController extends AbstractController
 	}
 
 	/**
-	 * @Route("/api/keywords/{id}", name="keyword", methods={"DELETE"})
+	 * @Route("/api/keywords/{id}", name="keyword_delete", methods={"DELETE"})
 	 * @param $id
 	 * @param Request $request
 	 * @param KeywordRepository $k_repo
