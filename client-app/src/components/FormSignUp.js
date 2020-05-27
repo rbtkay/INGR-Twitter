@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { Form, Button, Message } from "semantic-ui-react";
 import useFetch from "../hooks/fetch";
+import Input from "./Input";
 
 //import NavigationBar from "../components/NavigationBar";
 
@@ -86,37 +87,36 @@ const FormSignUp = () => {
             success={message.type === "success" && message.display}
             onSubmit={onSubmit}
         >
-            <Form.Field>
-                <label>Username</label>
-                <input
-                    placeholder="Enter username"
-                    onChange={(e) => setUsername(e.target.value)}
-                />
-            </Form.Field>
-            <Form.Field>
-                <label>Email</label>
-                <input
-                    placeholder="Enter email"
-                    type="email"
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-            </Form.Field>
-            <Form.Field>
-                <label>Password</label>
-                <input
-                    placeholder="Enter password"
-                    type="password"
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-            </Form.Field>
-            <Form.Field>
-                <label>Confirm Password</label>
-                <input
-                    placeholder="Confirm password"
-                    type="password"
-                    onChange={(e) => setConfirmation(e.target.value)}
-                />
-            </Form.Field>
+            <Input
+                name={"username"}
+                label="Username"
+                placeholder="Enter username"
+                setValue={(value) => setUsername(value)}
+                required={true}
+            />
+            <Input
+                name={"email"}
+                label="Email"
+                placeholder="Enter your email"
+                setValue={(value) => setEmail(value)}
+                required={true}
+            />
+            <Input
+                name={"password"}
+                type={"password"}
+                label="Password"
+                placeholder="Enter password"
+                setValue={(value) => setPassword(value)}
+                required={true}
+            />
+            <Input
+                name={"confirmation"}
+                type={"password"}
+                label="Confirm password"
+                placeholder="Confirm password"
+                setValue={(value) => setConfirmation(value)}
+                required={true}
+            />
             <Message error content={message.value} />
             <Message success content={message.value} />
             <div style={{ textAlign: "center" }}>
