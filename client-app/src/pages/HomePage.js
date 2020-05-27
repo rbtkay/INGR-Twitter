@@ -8,7 +8,6 @@ import Auth from '../components/Auth'
 import NavigationBar from '../components/NavigationBar';
 import Tweets from "../components/Tweets";
 import Keywords from '../components/Keywords';
-import KeywordsAnalytics from '../components/KeywordsAnalytics';
 
 const HomePage = () => {
 
