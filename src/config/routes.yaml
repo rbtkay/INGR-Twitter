@@ -30,3 +30,23 @@ keyword_create:
   path: /api/keywords/
   controller: App\Controller\KeywordController::addKeyword
   methods: [POST]
+
+keywords_get:
+  path: /api/keywords/
+  controller: App\Controller\KeywordController::getKeyword
+  methods: [GET]
+
+keyword_get:
+  path: /api/keywords/{id}
+  controller: App\Controller\KeywordController::getKeywordById
+  methods: [GET]
+
+keyword_update:
+  path: /api/keywords/{id}
+  controller: App\Controller\KeywordController::updateKeyword
+  methods: [PUT]
+
+keyword_delete:
+  path: /api/keywords/{id}
+  controller: App\Controller\KeywordController::deleKeyword
+  methods: [DELETE]
