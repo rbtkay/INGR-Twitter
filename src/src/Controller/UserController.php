@@ -87,7 +87,7 @@ class UserController extends AbstractController
 	}
 
 	/**
-	 * @Route("/users/{id}", name="delete_user", methods={"DELETE"})
+	 * @Route("/api/users/{id}", name="delete_user", methods={"DELETE"})
 	 */
 	public function deleteUser($id, Request $request, UserRepository $u_repo)
 	{
@@ -106,7 +106,7 @@ class UserController extends AbstractController
 	}
 
 	/**
-	 * @Route("/users/{id}", name="update_user", methods={"PUT"})
+	 * @Route("/api/users/{id}", name="update_user", methods={"PUT"})
 	 */
 	public function updateUser($id, Request $request, UserRepository $u_repo)
 	{

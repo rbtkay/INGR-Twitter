@@ -48,7 +48,7 @@ services:
 
   node:
     container_name: nodejs
-    build: 
+    build:
       context: './node'
     volumes:
       - ../client-app:/usr/src/app

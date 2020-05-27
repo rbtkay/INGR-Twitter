@@ -1,27 +1,27 @@
 api_login_check:
   path: /api/login_check
 
-users:
-  path:     /api/users/
+users_get:
+  path: /api/users/
   controller: App\Controller\UserController::getUsers
-  methods:  [GET]
+  methods: [GET]
 
 user_create:
-  path:     /api/users/
+  path: /api/users/
   controller: App\Controller\UserController::register
-  methods:  [POST]
+  methods: [POST]
 
-user:
-  path:     /api/users/{id}
+user_get:
+  path: /api/users/{id}
   controller: App\Controller\UserController::getUserById
-  methods:  [GET]
+  methods: [GET]
 
 user_delete:
-  path:     /api/users/{id}
+  path: /api/users/{id}
   controller: App\Controller\UserController::deleteUser
-  methods:  [DELETE]
+  methods: [DELETE]
 
 user_update:
-  path:     /api/users/{id}
+  path: /api/users/{id}
   controller: App\Controller\UserController::updateUser
-  methods:  [PUT]
+  methods: [PUT]
