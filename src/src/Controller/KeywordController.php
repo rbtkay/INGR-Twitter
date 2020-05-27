@@ -97,6 +97,8 @@ class KeywordController extends AbstractController
 	 * @param Request $request
 	 * @param KeywordRepository $k_repo
 	 * @return JsonResponse
+	 * @throws \Doctrine\ORM\ORMException
+	 * @throws \Doctrine\ORM\OptimisticLockException
 	 */
 	public function updateKeyword($id, Request $request, KeywordRepository $k_repo)
 	{
@@ -134,6 +136,8 @@ class KeywordController extends AbstractController
 	 * @param Request $request
 	 * @param KeywordRepository $k_repo
 	 * @return JsonResponse
+	 * @throws \Doctrine\ORM\ORMException
+	 * @throws \Doctrine\ORM\OptimisticLockException
 	 */
 	public function deleteKeyword($id, Request $request, KeywordRepository $k_repo)
 	{

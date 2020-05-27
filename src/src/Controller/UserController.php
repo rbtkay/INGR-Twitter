@@ -99,32 +99,7 @@ class UserController extends AbstractController
 	}
 
 	/**
-	 * @Route("/users/{id}", name="delete_user", methods={"DELETE"})
-	 * @param $id
-	 * @param Request $request
-	 * @param UserRepository $u_repo
-	 * @return JsonResponse
-	 * @throws \Doctrine\ORM\ORMException
-	 * @throws \Doctrine\ORM\OptimisticLockException
-	 */
-	public function deleteUser($id, Request $request, UserRepository $u_repo)
-	{
-		$user = $u_repo->find($id);
-
-		if (empty($user)) {
-			return new JsonResponse(['message' => 'Wrong id'], Response::HTTP_NOT_FOUND);
-		}
-
-		$u_repo->delete($user);
-
-		return new JsonResponse(
-			['message' => "User $id deleted"],
-			Response::HTTP_OK
-		);
-	}
-
-	/**
-	 * @Route("/users/{id}", name="update_user", methods={"PUT"})
+	 * @Route("/api/users/{id}", name="update_user", methods={"PUT"})
 	 * @param $id
 	 * @param Request $request
 	 * @param UserRepository $u_repo
@@ -159,6 +134,31 @@ class UserController extends AbstractController
 		$updated_rows_string = implode(', ', $updated_rows);
 		return new JsonResponse(
 			['message' => "Item $updated_rows_string update"],
+			Response::HTTP_OK
+		);
+	}
+
+	/**
+	 * @Route("/api/users/{id}", name="delete_user", methods={"DELETE"})
+	 * @param $id
+	 * @param Request $request
+	 * @param UserRepository $u_repo
+	 * @return JsonResponse
+	 * @throws \Doctrine\ORM\ORMException
+	 * @throws \Doctrine\ORM\OptimisticLockException
+	 */
+	public function deleteUser($id, Request $request, UserRepository $u_repo)
+	{
+		$user = $u_repo->find($id);
+
+		if (empty($user)) {
+			return new JsonResponse(['message' => 'Wrong id'], Response::HTTP_NOT_FOUND);
+		}
+
+		$u_repo->delete($user);
+
+		return new JsonResponse(
+			['message' => "User $id deleted"],
 			Response::HTTP_OK
 		);
 	}
