@@ -9,6 +9,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
+use Symfony\Bundle\FrameworkBundle\Kernel\CronCronBundle;
+
 class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
@@ -23,6 +25,12 @@ class Kernel extends BaseKernel
                 yield new $class();
             }
         }
+
+        // $bundle = array(
+        //     new Cron\CronBundle\CronCronBundle(),
+        // );
+
+        // return $bundle;
     }
 
     public function getProjectDir(): string

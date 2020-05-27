@@ -5,7 +5,7 @@ import { Link, Switch, Route } from 'react-router-dom';
 
 import Logout from '../components/Logout';
 
-const NavigationBar = () => {
+const NavigationBar = ({username}) => {
     const [activeItem, setActiveUser] = useState("editorials")
 
     const auth_btn_style = {
@@ -23,7 +23,7 @@ const NavigationBar = () => {
                         <Switch>
                             <Route path="/" exact component={() => <Link to={"/register"} style={auth_btn_style}>Sign Up</Link>} />
                             <Route path="/register" exact component={() => <Link to={"/"} style={auth_btn_style}>Login</Link>} />
-                            <Route path="/home" exact component={Logout} />
+                            <Route path="/home" exact component={() => <Logout username={username}/>} />
                         </Switch>
                     </Menu.Item>
                 </Menu.Menu>
