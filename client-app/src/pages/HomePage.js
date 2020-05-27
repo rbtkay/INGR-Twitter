@@ -23,10 +23,6 @@ const HomePage = () => {
         console.log(keyword);
     }
 
-    const deleteKeyword = (keyword) => {
-        console.log(keyword);
-    }
-
     return (
         <div>
             <NavigationBar username={"rbtkay"} /> {/*the user name should be passed here dynamically*/}
