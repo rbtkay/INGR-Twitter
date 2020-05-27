@@ -1,10 +1,10 @@
-import React, { useState, useCallback, useEffect } from "react";
-import { FormField } from "semantic-ui-react";
+import React, {useState, useCallback, useEffect} from "react";
+import {FormField} from "semantic-ui-react";
 
 const Input = (props) => {
     return (
         <FormField>
-            <label for={props.name}>{props.label}</label>
+            <label htmlFor={props.name}>{props.label}</label>
             <input
                 id={props.name}
                 name={props.name}
