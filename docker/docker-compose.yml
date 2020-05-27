@@ -55,6 +55,39 @@ services:
     ports:
       - "3000:3000"
 
+  # tasker:
+  #   image: strm/tasker
+  #   volumes:
+  #     - "/var/run/docker.sock:/var/run/docker.sock"
+  #   environment:
+  #     configuration: |
+  #       schedule:
+  #         - every: minute
+  #           task: hello
+  #       tasks:
+  #         docker:
+  #           - name: hello
+  #             image: debian:jessie
+  #             script:
+  #               - ./testScript.sh
+
+  # tasker:
+  #   image: strm/tasker
+  #   volumes:
+  #     - "../src:/var/www"
+  #   environment:
+  #     configuration: |
+  #       schedule:
+  #         - every: minute
+  #           task: hello
+  #       tasks:
+  #         docker:
+  #           - name: hello
+  #             image: debian:jessie
+  #             script:
+  #               - ./testScript.sh
+
+
   # node:
   #   container_name: nodejs
   #   image: 'node'
