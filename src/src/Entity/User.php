@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -17,24 +19,45 @@ class User implements UserInterface
 	 * @ORM\Column(type="integer")
 	 */
 	private $id;
+
 	/**
 	 * @ORM\Column(type="string", length=180, unique=true)
 	 */
 	private $username;
+
 	/**
 	 * @ORM\Column(type="json")
 	 */
 	private $roles = [];
+
 	/**
 	 * @var string The hashed password
 	 * @ORM\Column(type="string")
 	 */
 	private $password;
+
 	/**
 	 * @ORM\Column(type="string", length=180, unique=true)
 	 */
 	private $email;
 
+	/**
+	 * @ORM\OneToMany(targetEntity=Keyword::class, mappedBy="user")
+	 */
+	private $keywords;
+
+
+	/**
+	 * User constructor.
+	 */
+	public function __construct()
+	{
+		$this->keywords = new ArrayCollection();
+	}
+
+	/**
+	 * @return int|null
+	 */
 	public function getId() : ?int
 	{
 		return $this->id;
@@ -50,6 +73,10 @@ class User implements UserInterface
 		return (string) $this->username;
 	}
 
+	/**
+	 * @param string $username
+	 * @return User
+	 */
 	public function setUsername(string $username) : self
 	{
 		$this->username = $username;
@@ -69,6 +96,10 @@ class User implements UserInterface
 		return array_unique($roles);
 	}
 
+	/**
+	 * @param array $roles
+	 * @return User
+	 */
 	public function setRoles(array $roles) : self
 	{
 		$this->roles = $roles;
@@ -84,6 +115,10 @@ class User implements UserInterface
 		return (string) $this->password;
 	}
 
+	/**
+	 * @param string $password
+	 * @return User
+	 */
 	public function setPassword(string $password) : self
 	{
 		$this->password = $password;
@@ -108,14 +143,60 @@ class User implements UserInterface
 		// $this->plainPassword = null;
 	}
 
+	/**
+	 * @return string|null
+	 */
 	public function getEmail() : ?string
 	{
 		return $this->email;
 	}
 
+	/**
+	 * @param string $email
+	 * @return User
+	 */
 	public function setEmail(string $email) : self
 	{
 		$this->email = $email;
+
+		return $this;
+	}
+
+	/**
+	 * @return Collection|Keyword[]
+	 */
+	public function getKeywords() : Collection
+	{
+		return $this->keywords;
+	}
+
+	/**
+	 * @param Keyword $keyword
+	 * @return User
+	 */
+	public function addKeyword(Keyword $keyword) : self
+	{
+		if (!$this->keywords->contains($keyword)) {
+			$this->keywords[] = $keyword;
+			$keyword->setUser($this);
+		}
+
+		return $this;
+	}
+
+	/**
+	 * @param Keyword $keyword
+	 * @return User
+	 */
+	public function removeKeyword(Keyword $keyword) : self
+	{
+		if ($this->keywords->contains($keyword)) {
+			$this->keywords->removeElement($keyword);
+			// set the owning side to null (unless already changed)
+			if ($keyword->getUser() === $this) {
+				$keyword->setUser(null);
+			}
+		}
 
 		return $this;
 	}

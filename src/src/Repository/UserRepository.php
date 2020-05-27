@@ -18,72 +18,73 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
-	private $passwordEncoder;
-
-	public function __construct(ManagerRegistry $registry, UserPasswordEncoderInterface $passwordEncoder)
-	{
-		$this->passwordEncoder = $passwordEncoder;
-		parent::__construct($registry, User::class);
-	}
-
-	/**
-	 * Used to upgrade (rehash) the user's password automatically over time.
-	 * Used by symfony
-	 */
-	public function upgradePassword(UserInterface $user, string $newEncodedPassword) : void
-	{
-		if (!$user instanceof User) {
-			throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
-		}
-
-		$user->setPassword($newEncodedPassword);
-		$this->_em->persist($user);
-		$this->_em->flush();
-	}
-
-	public function insert(string $username, string $password, string $email)
-	{
-		$user = new User();
-		$user->setUsername($username);
-		$user->setEmail($email);
-		$user->setPassword($this->passwordEncoder->encodePassword($user, $password));
-		$user->setRoles($user->getRoles());
-		$this->_em->persist($user);
-		$this->_em->flush();
-	}
-
-	/**
-	 * @param User $user
-	 */
-	public function delete(User $user)
-	{
-		$this->_em->remove($user);
-		$this->_em->flush();
-	}
-
-	/**
-	 * @param User $user
-	 * @param array $data
-	 * @return array
-	 */
-	public function update(User $user, array $data)
-	{
-		$updated_rows = [];
-		if (!empty($data['username'])) {
-			$user->setUsername($data['username']);
-			$updated_rows[] = 'username';
-		}
-		if (!empty($data['email'])) {
-			$user->setEmail($data['email']);
-			$updated_rows[] = 'email';
-		}
-		if (!empty($data['password'])) {
-			$user->setPassword($this->passwordEncoder->encodePassword($user, $data['password']));
-			$updated_rows[] = 'password';
-		}
-
-		$this->_em->persist($user);
-		$this->_em->flush();
-		return $updated_rows;
-	}
+   private $passwordEncoder;
+  
+   public function __construct(ManagerRegistry $registry, UserPasswordEncoderInterface $passwordEncoder)
+   {
+      $this->passwordEncoder = $passwordEncoder;
+      parent::__construct($registry, User::class);
+   }
+  
+   /**
+    * Used to upgrade (rehash) the user's password automatically over time.
+    * Used by symfony
+    */
+   public function upgradePassword(UserInterface $user, string $newEncodedPassword) : void
+   {
+      if (!$user instanceof User) {
+         throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
+      }
+      $user->setPassword($newEncodedPassword);
+      $this->_em->persist($user);
+      $this->_em->flush();
+   }
+  
+   public function insert(string $username, string $password, string $email)
+   {
+      $user = new User();
+      $user->setUsername($username);
+      $user->setEmail($email);
+      $user->setPassword($this->passwordEncoder->encodePassword($user, $password));
+      $user->setRoles($user->getRoles());
+      $this->_em->persist($user);
+      $this->_em->flush();
+   }
+  
+   /**
+    * @param User $user
+    */
+   public function delete(User $user)
+   {
+      $this->_em->remove($user);
+      $this->_em->flush();
+   }
+  
+   /**
+    * @param User $user
+    * @param array $data
+    */
+   public function update(User $user, array $data)
+   {
+      if (!empty($data['username'])) {
+         $user->setUsername($data['username']);
+      }
+      if (!empty($data['email'])) {
+         $user->setEmail($data['email']);
+      }
+      if (!empty($data['password'])) {
+         $user->setPassword($this->passwordEncoder->encodePassword($user, $data['password']));
+      }
+      $this->_em->persist($user);
+      $this->_em->flush();
+   }
+  
+   /**
+    * @param User $user
+    * @param array $data
+    */
+   public function checkPassword(User $user, string $password)
+   {
+      return $this->passwordEncoder->isPasswordValid($user, $password);
+   }
 }
