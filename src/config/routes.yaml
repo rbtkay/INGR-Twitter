@@ -6,7 +6,7 @@ users:
   controller: App\Controller\UserController::getUsers
   methods:  [GET]
 
-register:
+user_create:
   path:     /api/users/
   controller: App\Controller\UserController::register
   methods:  [POST]
