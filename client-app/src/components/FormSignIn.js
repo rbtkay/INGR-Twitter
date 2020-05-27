@@ -6,14 +6,12 @@ import Input from "./Input";
 
 //import NavigationBar from "../components/NavigationBar";
 
-const FormSignUp = () => {
+const FormSignIn = () => {
     const history = useHistory();
-    const { result, load, loading } = useFetch("users", "POST");
+    const { result, load, loading } = useFetch("login_check", "POST");
 
     const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [confirmation, setConfirmation] = useState("");
     const [message, setMessage] = useState({
         display: false,
         type: "",
@@ -23,12 +21,7 @@ const FormSignUp = () => {
     useEffect(() => {
         if (result) {
             if (result.success) {
-                setMessage({
-                    display: result.success,
-                    type: "success",
-                    value: result.message,
-                });
-                // history.push("/home");
+                history.push("/home");
             } else {
                 setMessage({
                     display: !result.success,
@@ -40,31 +33,11 @@ const FormSignUp = () => {
     }, [result]);
 
     const checkValues = () => {
-        const emailRegex = new RegExp(
-            /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/
-        );
-
-        if (!username || !email || !password || !confirmation) {
+        if (!username || !password) {
             setMessage({
                 display: true,
                 type: "error",
                 value: "All fields are required",
-            });
-            return false;
-        }
-        if (!emailRegex.test(email)) {
-            setMessage({
-                display: true,
-                type: "error",
-                value: "Invalid Email",
-            });
-            return false;
-        }
-        if (password !== confirmation) {
-            setMessage({
-                display: true,
-                type: "error",
-                value: "Passwords don't match",
             });
             return false;
         }
@@ -75,10 +48,10 @@ const FormSignUp = () => {
         (e) => {
             e.preventDefault();
             if (checkValues()) {
-                load({ username, email, password, confirmation });
+                load({ username, password });
             }
         },
-        [load, username, email, password, confirmation]
+        [load, username, password]
     );
 
     return (
@@ -95,13 +68,6 @@ const FormSignUp = () => {
                 required={true}
             />
             <Input
-                name={"email"}
-                label="Email"
-                placeholder="Enter your email"
-                setValue={(value) => setEmail(value)}
-                required={true}
-            />
-            <Input
                 name={"password"}
                 type={"password"}
                 label="Password"
@@ -109,23 +75,15 @@ const FormSignUp = () => {
                 setValue={(value) => setPassword(value)}
                 required={true}
             />
-            <Input
-                name={"confirmation"}
-                type={"password"}
-                label="Confirm password"
-                placeholder="Confirm password"
-                setValue={(value) => setConfirmation(value)}
-                required={true}
-            />
             <Message error content={message.value} />
             <Message success content={message.value} />
             <div style={{ textAlign: "center" }}>
                 <Button color="green" type="submit">
-                    Register
+                    Login
                 </Button>
             </div>
         </Form>
     );
 };
 
-export default FormSignUp;
+export default FormSignIn;
