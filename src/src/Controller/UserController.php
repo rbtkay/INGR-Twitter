@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Controller;
+
 use App\Repository\UserRepository;
 use JsonException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -7,8 +9,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
 class UserController extends AbstractController
 {
+  
    /**
     * @Route("/api/users", name="register", methods={"POST"})
     */
@@ -22,6 +26,7 @@ class UserController extends AbstractController
             Response::HTTP_BAD_REQUEST
          );
       }
+     
       if (
          empty($user['username'])
          && empty($user['password'])
@@ -30,24 +35,29 @@ class UserController extends AbstractController
       ) {
          return new JsonResponse(['error' => 'User incomplete'], Response::HTTP_BAD_REQUEST);
       }
+     
       if (!empty($u_repo->findOneBy(['username' => $user['username']]))) {
          return new JsonResponse(
             ['message' => 'This username is already used'],
             Response::HTTP_INTERNAL_SERVER_ERROR
          );
       }
+     
       if (!empty($u_repo->findOneBy(['email' => $user['email']]))) {
          return new JsonResponse(
             ['message' => 'This email is already used'],
             Response::HTTP_INTERNAL_SERVER_ERROR
          );
       }
+     
       if ($user['confirmation'] !== $user['password']) {
          return new JsonResponse(['message' => 'Wrong confirmation password'], Response::HTTP_BAD_REQUEST);
       }
+     
       $u_repo->insert($user['username'], $user['password'], $user['email']);
       return new JsonResponse(['message' => 'User registered'], Response::HTTP_CREATED);
    }
+  
    /**
     * @Route("/api/users", name="users", methods={"GET"})
     */
@@ -64,15 +74,18 @@ class UserController extends AbstractController
       }
       return new JsonResponse($return, Response::HTTP_OK);
    }
+  
    /**
     * @Route("/api/users/{id}", name="user", methods={"GET"})
     */
    public function getUserById($id, Request $request, UserRepository $u_repo)
    {
       $user = $u_repo->find($id);
+     
       if (empty($user)) {
          return new JsonResponse(['message' => 'Wrong id'], Response::HTTP_NOT_FOUND);
       }
+     
       $return = [
          'id'       => $user->getId(),
          'username' => $user->getUsername(),
@@ -80,6 +93,7 @@ class UserController extends AbstractController
       ];
       return new JsonResponse($return, Response::HTTP_OK);
    }
+  
    /**
     * @Route("/api/user", name="delete_own_user", methods={"DELETE"})
     */
@@ -91,6 +105,7 @@ class UserController extends AbstractController
          Response::HTTP_OK
       );
    }
+  
    // This is the code for deleting a user from id but we don't have an admin connection.
    // So we can only, our own user
    // /**
@@ -111,6 +126,7 @@ class UserController extends AbstractController
    //       Response::HTTP_OK
    //    );
    // }
+  
    /**
     * @Route("/api/username", name="update_username", methods={"PUT"})
     */
@@ -124,15 +140,18 @@ class UserController extends AbstractController
             Response::HTTP_BAD_REQUEST
          );
       }
+     
       if (empty($data['username'])) {
          return new JsonResponse(['message' => 'Username is required'], Response::HTTP_BAD_REQUEST);
       }
+     
       if (!empty($u_repo->findOneBy(['username' => $data['username']]))) {
          return new JsonResponse(
             ['message' => 'This username is already used'],
             Response::HTTP_INTERNAL_SERVER_ERROR
          );
       }
+     
       $user = $this->getUser();
       $u_repo->update($user, $data);
       // TODO : return a new token
@@ -141,6 +160,7 @@ class UserController extends AbstractController
          Response::HTTP_OK
       );
    }
+  
    /**
     * @Route("/api/email", name="update_email", methods={"PUT"})
     */
@@ -154,15 +174,18 @@ class UserController extends AbstractController
             Response::HTTP_BAD_REQUEST
          );
       }
+     
       if (empty($data['email'])) {
          return new JsonResponse(['message' => 'Email is required'], Response::HTTP_BAD_REQUEST);
       }
+     
       if (!empty($u_repo->findOneBy(['email' => $data['email']]))) {
          return new JsonResponse(
             ['message' => 'This email is already used'],
             Response::HTTP_INTERNAL_SERVER_ERROR
          );
       }
+     
       $user = $this->getUser();
       $u_repo->update($user, $data);
       return new JsonResponse(
@@ -170,6 +193,7 @@ class UserController extends AbstractController
          Response::HTTP_OK
       );
    }
+  
    /**
     * @Route("/api/password", name="update_password", methods={"PUT"})
     */
@@ -183,16 +207,21 @@ class UserController extends AbstractController
             Response::HTTP_BAD_REQUEST
          );
       }
+     
       $user = $this->getUser();
+     
       if (empty($data['old_password']) || !$u_repo->checkPassword($user, $data['old_password'])) {
          return new JsonResponse(['message' => 'Wrong password'], Response::HTTP_BAD_REQUEST);
       }
+     
       if (empty($data['confirmation']) || $data['confirmation'] !== $data['new_password']) {
          return new JsonResponse(['message' => 'Wrong confirmation password'], Response::HTTP_BAD_REQUEST);
       }
+     
       if (empty($data['new_password'])) {
          return new JsonResponse(['message' => 'A new password is required'], Response::HTTP_BAD_REQUEST);
       }
+     
       $u_repo->update($user, ['password' => $data['new_password']]);
       // TODO : return a new token
       return new JsonResponse(

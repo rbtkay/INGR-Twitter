@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Repository;
+
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -7,6 +9,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
  * @method User|null findOneBy(array $criteria, array $orderBy = null)
@@ -16,11 +19,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
    private $passwordEncoder;
+  
    public function __construct(ManagerRegistry $registry, UserPasswordEncoderInterface $passwordEncoder)
    {
       $this->passwordEncoder = $passwordEncoder;
       parent::__construct($registry, User::class);
    }
+  
    /**
     * Used to upgrade (rehash) the user's password automatically over time.
     * Used by symfony
@@ -34,6 +39,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
       $this->_em->persist($user);
       $this->_em->flush();
    }
+  
    public function insert(string $username, string $password, string $email)
    {
       $user = new User();
@@ -44,6 +50,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
       $this->_em->persist($user);
       $this->_em->flush();
    }
+  
    /**
     * @param User $user
     */
@@ -52,6 +59,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
       $this->_em->remove($user);
       $this->_em->flush();
    }
+  
    /**
     * @param User $user
     * @param array $data
@@ -70,6 +78,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
       $this->_em->persist($user);
       $this->_em->flush();
    }
+  
    /**
     * @param User $user
     * @param array $data
