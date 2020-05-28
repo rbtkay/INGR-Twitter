@@ -1,13 +1,14 @@
-import React, { useState, useCallback, useEffect, Fragment } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Form, Button, Message } from "semantic-ui-react";
-import { setToken } from "../actions";
+import { setUser } from "../actions";
 import useFetch from "../hooks/fetch";
 import Input from "./Input";
 
 const FormSignIn = () => {
     const dispatch = useDispatch();
-    const { result, load } = useFetch("login_check", "POST");
+    const { result: resultToken, load: getToken } = useFetch("login_check", "POST");
+    const { result: resultUser, load: getUser } = useFetch("user");
     const [loading, setLoading] = useState(false);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -18,19 +19,35 @@ const FormSignIn = () => {
     });
 
     useEffect(() => {
-        if (result) {
-            if (result.success) {
-                dispatch(setToken(result.token));
+        if (resultToken) {
+            if (resultToken.success) {
+                getUser(resultToken.token);
             } else {
                 setLoading(false);
                 setMessage({
-                    display: !result.success,
+                    display: !resultToken.success,
                     type: "error",
-                    value: result.message,
+                    value: resultToken.message,
                 });
             }
         }
-    }, [result]);
+    }, [resultToken]);
+
+    useEffect(() => {
+        if (resultUser) {
+            if (resultUser.success) {
+                resultUser.user.token = resultToken.token;
+                dispatch(setUser(resultUser.user));
+            } else {
+                setLoading(false);
+                setMessage({
+                    display: !resultUser.success,
+                    type: "error",
+                    value: resultUser.message,
+                });
+            }
+        }
+    }, [resultUser]);
 
     const checkValues = () => {
         if (!username || !password) {
@@ -49,10 +66,10 @@ const FormSignIn = () => {
             e.preventDefault();
             if (checkValues() && !loading) {
                 setLoading(true);
-                load(null, { username, password });
+                getToken(null, { username, password });
             }
         },
-        [load, username, password]
+        [getToken, username, password]
     );
 
     return (

@@ -1,17 +1,17 @@
-import React, { useState, useCallback, useEffect, useRef } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Form, Button, Message } from "semantic-ui-react";
-import { setToken } from "../actions";
+import { setUser } from "../actions";
 import useFetch from "../hooks/fetch";
 import Input from "./Input";
 
 const FormSignUp = () => {
-    const mounted = useRef(true);
     const dispatch = useDispatch();
     const { result, load } = useFetch("users", "POST");
     const [loading, setLoading] = useState(false);
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
+    const [twitter_name, setTwitterName] = useState("");
     const [password, setPassword] = useState("");
     const [confirmation, setConfirmation] = useState("");
     const [message, setMessage] = useState({
@@ -21,25 +21,16 @@ const FormSignUp = () => {
     });
 
     useEffect(() => {
-        if (!mounted.current) {
-            mounted.current = true;
-        }
-        return () => {
-            mounted.current = false;
-        };
-    });
-
-    useEffect(() => {
-        if (result && mounted.current) {
+        if (result) {
             if (result.success) {
                 setMessage({
                     display: result.success,
                     type: "success",
                     value: result.message,
                 });
-                console.log(result);
-                dispatch(setToken(result.token));
+                dispatch(setUser(result.user));
             } else {
+                setLoading(false);
                 setMessage({
                     display: !result.success,
                     type: "error",
@@ -85,10 +76,16 @@ const FormSignUp = () => {
         (e) => {
             e.preventDefault();
             if (checkValues() && !loading) {
-                load(null, { username, email, password, confirmation });
+                load(null, {
+                    username,
+                    email,
+                    password,
+                    confirmation,
+                    twitter_name,
+                });
             }
         },
-        [load, username, email, password, confirmation]
+        [load, username, email, password, confirmation, twitter_name]
     );
 
     return (
@@ -103,6 +100,12 @@ const FormSignUp = () => {
                 placeholder="Enter username"
                 setValue={(value) => setUsername(value)}
                 required={true}
+            />
+            <Input
+                name={"twitterName"}
+                label="Login Twitter"
+                placeholder="Enter your login Twitter"
+                setValue={(value) => setTwitterName(value)}
             />
             <Input
                 name={"email"}

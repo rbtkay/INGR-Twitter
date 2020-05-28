@@ -1,11 +1,6 @@
 import React, { Fragment, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Redirect,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import useFetch from "./hooks/fetch";
 import { setUser, removeUser, setToken } from "./actions";
 import { STORAGE_KEY } from "./constants";
@@ -16,7 +11,7 @@ const App = () => {
     const mounted = useRef();
     const dispatch = useDispatch();
     const token = useSelector((state) => state.token);
-    const { result, load, loading } = useFetch("user");
+    const { result, load } = useFetch("user");
     // Get Token from local storage
     useEffect(() => {
         if (!mounted.current) {
@@ -34,7 +29,6 @@ const App = () => {
     // Get User
     useEffect(() => {
         if (result) {
-            console.log(result);
             if (result.success) {
                 dispatch(setUser(result.user));
             } else {
