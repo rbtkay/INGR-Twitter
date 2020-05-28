@@ -11,8 +11,8 @@ import {
 import { Link, Switch, Route, useHistory } from "react-router-dom";
 
 import NavigationBar from "../components/NavigationBar";
-import FormSignIn from "../components/FormSignIn";
-import FormSignUp from "../components/FormSignUp";
+import FormSignIn from "../components/forms/FormSignIn";
+import FormSignUp from "../components/forms/FormSignUp";
 
 const HomePage = () => {
     const history = useHistory();
