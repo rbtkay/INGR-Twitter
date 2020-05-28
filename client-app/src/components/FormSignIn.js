@@ -12,6 +12,8 @@ const FormSignIn = () => {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+
     const [message, setMessage] = useState({
         display: false,
         type: "",
@@ -47,7 +49,8 @@ const FormSignIn = () => {
     const onSubmit = useCallback(
         (e) => {
             e.preventDefault();
-            if (checkValues()) {
+            if (!isLoading && checkValues()) {
+                setIsLoading(true);
                 load({ username, password });
             }
         },
@@ -78,7 +81,7 @@ const FormSignIn = () => {
             <Message error content={message.value} />
             <Message success content={message.value} />
             <div style={{ textAlign: "center" }}>
-                <Button color="green" type="submit">
+                <Button color="green" type="submit" loading={isLoading}>
                     Login
                 </Button>
             </div>

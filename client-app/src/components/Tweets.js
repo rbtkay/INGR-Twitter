@@ -6,12 +6,15 @@ import {
   ListHeader,
   ListIcon,
   ListDescription,
+  Loader
 } from "semantic-ui-react";
 
 const Tweets = ({ tweets }) => {
-  const result = tweets.map((tweet) => {
+  if (!tweets) return <Loader active inline="centered" />;
+
+  const result = tweets.map((tweet, i) => {
     return (
-      <ListItem>
+      <ListItem key={i}>
         <ListIcon name="twitter" size="large" verticalAlign="middle" />
         <ListContent>
           <ListHeader as="a">Semantic-Org/Semantic-UI</ListHeader>

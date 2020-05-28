@@ -27,7 +27,7 @@ const HomePage = () => {
             ),
         },
         {
-            menuItem: "Sin Up",
+            menuItem: "Sign Up",
             render: () => (
                 <Tab.Pane>
                     <FormSignUp />

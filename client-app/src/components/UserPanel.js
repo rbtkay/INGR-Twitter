@@ -14,26 +14,18 @@ const UserPanel = ({ username }) => {
   return (
     <Menu.Menu position={"right"}>
       <Menu.Item>
-        <Switch>
-          <Dropdown text={`Signed in as ${username}`}>
-            <Dropdown.Menu>
-              <Dropdown.Item>
-                <Link
-                  to={"/"}
-                  style={{ color: "red" }}
-                  onClick={destroySession}
-                >
-                  Sign out
-                </Link>
-              </Dropdown.Item>
-              <Dropdown.Item>
-                <Link to={"/"}>
-                  Settings
-                </Link>
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </Switch>
+        <Dropdown text={`Signed in as`}>
+          <Dropdown.Menu>
+            <Dropdown.Item>
+              <Link to={"/settings"}>Settings</Link>
+            </Dropdown.Item>
+            <Dropdown.Item>
+              <Link to={"/"} style={{ color: "red" }} onClick={destroySession}>
+                Sign out
+              </Link>
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
       </Menu.Item>
     </Menu.Menu>
   );
