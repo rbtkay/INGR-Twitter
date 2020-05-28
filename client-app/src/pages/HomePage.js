@@ -17,8 +17,7 @@ import {
 import Auth from "../components/Auth";
 import NavigationBar from "../components/NavigationBar";
 import Tweets from "../components/Tweets";
-import Keywords from "../components/Keywords";
-// import KeywordsAnalytics from '../components/KeywordsAnalytics';
+import Keywords from '../components/Keywords';
 
 const HomePage = () => {
     //The component Tweets take in an array and render a list of tweets.
@@ -30,10 +29,6 @@ const HomePage = () => {
     ];
 
     const selectKeyword = (keyword) => {
-        console.log(keyword);
-    };
-
-    const deleteKeyword = (keyword) => {
         console.log(keyword);
     };
 
