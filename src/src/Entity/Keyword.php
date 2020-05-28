@@ -18,7 +18,7 @@ class Keyword
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=140, unique=true)
+     * @ORM\Column(type="string", length=140)
      */
     private $name;
 

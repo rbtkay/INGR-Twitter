@@ -32,7 +32,12 @@ class KeywordController extends AbstractController
 		}
 
 		if (!empty($keyword['name'])) {
-			$exists = $k_repo->findOneBy(['name' => $keyword['name']]);
+			$exists = $k_repo->findOneBy(
+				[
+					'name' => $keyword['name'],
+					'user' => $this->getUser()
+				]
+			);
 			if (!empty($exists)) {
 				return new JsonResponse(
 					['message' => 'Keyword for this name is already used'],
@@ -54,13 +59,13 @@ class KeywordController extends AbstractController
 	 */
 	public function getKeywords(Request $request, KeywordRepository $k_repo)
 	{
-		$keywords = $k_repo->findAll();
+		$user     = $this->getUser();
+		$keywords = $k_repo->findBy(["user" => $user]);
 		$return   = [];
 		foreach ($keywords as $keyword) {
 			$return[] = [
 				'id'      => $keyword->getId(),
 				'name'    => $keyword->getName(),
-				'user_id' => $keyword->getUser()->getId(),
 			];
 		}
 
@@ -76,7 +81,13 @@ class KeywordController extends AbstractController
 	 */
 	public function getKeywordById($id, Request $request, KeywordRepository $k_repo)
 	{
-		$keyword = $k_repo->find($id);
+		$user    = $this->getUser();
+		$keyword = $k_repo->findOneBy(
+			[
+				"user" => $user,
+				"id"   => $id
+			]
+		);
 
 		if (empty($keyword)) {
 			return new JsonResponse(['message' => 'Wrong id'], Response::HTTP_NOT_FOUND);
@@ -85,7 +96,6 @@ class KeywordController extends AbstractController
 		$return = [
 			'id'      => $keyword->getId(),
 			'name'    => $keyword->getName(),
-			'user_id' => $keyword->getUser()->getId(),
 		];
 
 		return new JsonResponse($return, Response::HTTP_OK);
