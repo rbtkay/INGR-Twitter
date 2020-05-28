@@ -1,16 +1,15 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { Form, Button, Message } from "semantic-ui-react";
+import { setToken } from "../actions";
 import useFetch from "../hooks/fetch";
 import Input from "./Input";
 
-//import NavigationBar from "../components/NavigationBar";
-
 const FormSignUp = () => {
     const mounted = useRef(true);
-    const history = useHistory();
-    const { result, load, loading } = useFetch("users", "POST");
-
+    const dispatch = useDispatch();
+    const { result, load } = useFetch("users", "POST");
+    const [loading, setLoading] = useState(false);
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -38,7 +37,8 @@ const FormSignUp = () => {
                     type: "success",
                     value: result.message,
                 });
-                // history.push("/home");
+                console.log(result);
+                dispatch(setToken(result.token));
             } else {
                 setMessage({
                     display: !result.success,
@@ -84,7 +84,7 @@ const FormSignUp = () => {
     const onSubmit = useCallback(
         (e) => {
             e.preventDefault();
-            if (checkValues()) {
+            if (checkValues() && !loading) {
                 load(null, { username, email, password, confirmation });
             }
         },
@@ -130,7 +130,7 @@ const FormSignUp = () => {
             <Message error content={message.value} />
             <Message success content={message.value} />
             <div style={{ textAlign: "center" }}>
-                <Button color="green" type="submit">
+                <Button color="green" type="submit" disabled={loading}>
                     Register
                 </Button>
             </div>

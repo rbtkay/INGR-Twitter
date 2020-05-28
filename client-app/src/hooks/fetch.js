@@ -2,13 +2,10 @@ import { useState, useCallback } from "react";
 import { API_URL } from "../constants";
 
 const useFetch = (url, method = "GET") => {
-    const [loading, setLoading] = useState(false);
     const [result, setResult] = useState(null);
     const load = useCallback(
         async (token, data) => {
-            setLoading(true);
-            console.log(data);
-
+            // console.log(data);
             const params = {
                 method,
                 headers: {
@@ -27,7 +24,7 @@ const useFetch = (url, method = "GET") => {
                 const response = await fetch(API_URL + url, params);
                 // console.log(response);
                 const responseJson = await response.json();
-                console.log(responseJson);
+                // console.log(responseJson);
                 if (
                     response.ok &&
                     (response.status === 200 || response.status === 201)
@@ -42,13 +39,11 @@ const useFetch = (url, method = "GET") => {
                 setResult(error);
                 console.error(error);
             }
-
-            setLoading(false);
         },
         [url, method]
     );
 
-    return { result, load, loading };
+    return { result, load };
 };
 
 export default useFetch;

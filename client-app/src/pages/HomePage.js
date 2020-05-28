@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import {
     Header,
@@ -14,11 +14,10 @@ import {
 
 import NavigationBar from "../components/NavigationBar";
 import Tweets from "../components/Tweets";
-import Keywords from '../components/Keywords';
+import Keywords from "../components/Keywords";
 
 const HomePage = () => {
     const user = useSelector((state) => state);
-    console.log(user);
     //The component Tweets take in an array and render a list of tweets.
     const keywords = [
         { value: "#dev", isSelected: false },

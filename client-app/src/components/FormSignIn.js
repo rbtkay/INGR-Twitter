@@ -1,19 +1,14 @@
-import React, { useState, useCallback, useEffect, useRef } from "react";
-import { Link, useHistory } from "react-router-dom";
+import React, { useState, useCallback, useEffect, Fragment } from "react";
 import { useDispatch } from "react-redux";
 import { Form, Button, Message } from "semantic-ui-react";
 import { setToken } from "../actions";
 import useFetch from "../hooks/fetch";
 import Input from "./Input";
 
-//import NavigationBar from "../components/NavigationBar";
-
 const FormSignIn = () => {
-    const mounted = useRef();
     const dispatch = useDispatch();
-    const history = useHistory();
-    const { result, load, loading } = useFetch("login_check", "POST");
-
+    const { result, load } = useFetch("login_check", "POST");
+    const [loading, setLoading] = useState(false);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState({
@@ -23,20 +18,11 @@ const FormSignIn = () => {
     });
 
     useEffect(() => {
-        if (!mounted.current) {
-            mounted.current = true;
-        }
-        return () => {
-            mounted.current = false;
-        };
-    });
-
-    useEffect(() => {
-        if (result && mounted.current) {
+        if (result) {
             if (result.success) {
                 dispatch(setToken(result.token));
-                history.push("/home");
             } else {
+                setLoading(false);
                 setMessage({
                     display: !result.success,
                     type: "error",
@@ -61,7 +47,8 @@ const FormSignIn = () => {
     const onSubmit = useCallback(
         (e) => {
             e.preventDefault();
-            if (checkValues()) {
+            if (checkValues() && !loading) {
+                setLoading(true);
                 load(null, { username, password });
             }
         },
@@ -92,7 +79,7 @@ const FormSignIn = () => {
             <Message error content={message.value} />
             <Message success content={message.value} />
             <div style={{ textAlign: "center" }}>
-                <Button color="green" type="submit">
+                <Button color="green" type="submit" disabled={loading}>
                     Login
                 </Button>
             </div>
