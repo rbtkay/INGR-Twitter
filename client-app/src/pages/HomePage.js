@@ -14,8 +14,7 @@ import {
 
 import NavigationBar from "../components/NavigationBar";
 import Tweets from "../components/Tweets";
-import Keywords from "../components/Keywords";
-// import KeywordsAnalytics from '../components/KeywordsAnalytics';
+import Keywords from '../components/Keywords';
 
 const HomePage = () => {
     const user = useSelector((state) => state);
@@ -29,10 +28,6 @@ const HomePage = () => {
     ];
 
     const selectKeyword = (keyword) => {
-        console.log(keyword);
-    };
-
-    const deleteKeyword = (keyword) => {
         console.log(keyword);
     };
 
