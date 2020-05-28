@@ -15,8 +15,6 @@ import FormSignIn from "../components/FormSignIn";
 import FormSignUp from "../components/FormSignUp";
 
 const HomePage = () => {
-    const history = useHistory();
-
     const panes = [
         {
             menuItem: "Sign In",

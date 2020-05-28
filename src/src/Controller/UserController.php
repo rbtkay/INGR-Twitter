@@ -53,16 +53,22 @@ class UserController extends AbstractController
 		if ($user['confirmation'] !== $user['password']) {
 			return new JsonResponse(['message' => 'Wrong confirmation password'], Response::HTTP_BAD_REQUEST);
 		}
-		$user_result = $u_repo->insert($user['username'], $user['password'], $user['email'], $user['twitter_name']);
- 		$return = [
-			'id' => $user_result->getId(),
-			'username' => $user_result->getUsername(),
-			'email' => $user_result->getEmail(),
+
+		$user_result = $u_repo->insert(
+			$user['username'],
+			$user['password'],
+			$user['email'],
+			$user['twitter_name']
+		);
+		$return      = [
+			'id'           => $user_result->getId(),
+			'username'     => $user_result->getUsername(),
+			'email'        => $user_result->getEmail(),
 			'twitter_name' => $user_result->getTwitterName(),
-			'token' => $JWTManager->create($user_result)
+			'token'        => $JWTManager->create($user_result)
 
 		];
- 		return new JsonResponse(['message' => "User registered", "user" => $return], Response::HTTP_CREATED);
+		return new JsonResponse(['message' => "User registered", "user" => $return], Response::HTTP_CREATED);
 	}
 
 	/**
@@ -74,9 +80,9 @@ class UserController extends AbstractController
 		$return = [];
 		foreach ($users as $user) {
 			$return[] = [
-				'id'       => $user->getId(),
-				'username' => $user->getUsername(),
-				'email'    => $user->getEmail(),
+				'id'           => $user->getId(),
+				'username'     => $user->getUsername(),
+				'email'        => $user->getEmail(),
 				'twitter_name' => $user->getTwitterName()
 			];
 		}
@@ -95,9 +101,9 @@ class UserController extends AbstractController
 		}
 
 		$return = [
-			'id'       => $user->getId(),
-			'username' => $user->getUsername(),
-			'email'    => $user->getEmail(),
+			'id'           => $user->getId(),
+			'username'     => $user->getUsername(),
+			'email'        => $user->getEmail(),
 			'twitter_name' => $user->getTwitterName()
 		];
 		return new JsonResponse(["user" => $return], Response::HTTP_OK);
@@ -252,9 +258,10 @@ class UserController extends AbstractController
 			Response::HTTP_OK
 		);
 	}
+
 	/**
- 	* @Route("/api/twitter_name", name="update_twitter_name", methods={"PUT"})
- 	*/
+	 * @Route("/api/twitter_name", name="update_twitter_name", methods={"PUT"})
+	 */
 	public function updateTwitterName(Request $request, UserRepository $u_repo)
 	{
 		try {

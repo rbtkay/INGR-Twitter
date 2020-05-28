@@ -1,7 +1,5 @@
-import React from "react";
-
-// import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import {
     Header,
     Input,
@@ -14,12 +12,12 @@ import {
     Label,
 } from "semantic-ui-react";
 
-import Auth from "../components/Auth";
 import NavigationBar from "../components/NavigationBar";
 import Tweets from "../components/Tweets";
-import Keywords from '../components/Keywords';
+import Keywords from "../components/Keywords";
 
 const HomePage = () => {
+    const user = useSelector((state) => state);
     //The component Tweets take in an array and render a list of tweets.
     const keywords = [
         { value: "#dev", isSelected: false },
@@ -34,9 +32,7 @@ const HomePage = () => {
 
     return (
         <div>
-            <NavigationBar username={"rbtkay"} />{" "}
-            {/*the user name should be passed here dynamically*/}
-            <Auth />
+            <NavigationBar username={user.username || ""} />
             <br />
             <Grid columns={2}>
                 <GridColumn width={12} textAlign={"center"}>
