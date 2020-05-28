@@ -1,9 +1,12 @@
 #!/bin/sh
+
 TIMEOUT=15
 QUIET=0
+
 echoerr() {
   if [ "$QUIET" -ne 1 ]; then printf "%s\n" "$*" 1>&2; fi
 }
+
 usage() {
   exitcode="$1"
   cat << USAGE >&2
@@ -15,6 +18,7 @@ Usage:
 USAGE
   exit "$exitcode"
 }
+
 wait_for() {
   for i in `seq $TIMEOUT` ; do
     nc -z "$HOST" "$PORT" > /dev/null 2>&1
@@ -31,6 +35,7 @@ wait_for() {
   echo "Operation timed out" >&2
   exit 1
 }
+
 while [ $# -gt 0 ]
 do
   case "$1" in
@@ -65,8 +70,10 @@ do
     ;;
   esac
 done
+
 if [ "$HOST" = "" -o "$PORT" = "" ]; then
   echoerr "Error: you need to provide a host and port to test."
   usage 2
 fi
+
 wait_for "$@"
