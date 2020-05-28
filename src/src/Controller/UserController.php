@@ -93,7 +93,21 @@ class UserController extends AbstractController
       ];
       return new JsonResponse($return, Response::HTTP_OK);
    }
-  
+
+   /**
+    * @Route("/api/user", name="user", methods={"GET"})
+    */
+   public function getOwnUser($id, Request $request, UserRepository $u_repo)
+   {
+      $user = $this->getUser();
+      $return = [
+         'id'       => $user->getId(),
+         'username' => $user->getUsername(),
+         'email'    => $user->getEmail(),
+      ];
+      return new JsonResponse($return, Response::HTTP_OK);
+   }
+
    /**
     * @Route("/api/user", name="delete_own_user", methods={"DELETE"})
     */
