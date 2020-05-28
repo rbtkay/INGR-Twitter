@@ -1,10 +1,10 @@
 FROM php:fpm-alpine
 
-COPY wait-for.sh /usr/bin/wait-for.sh
+COPY wait-for-it.sh /usr/bin/wait-for-it
 # COPY test.sh /usr/bin/test.sh
 # COPY test2.sh /usr/bin/test2.sh
 
-RUN chmod 777 /usr/bin/wait-for.sh
+RUN chmod +x /usr/bin/wait-for-it
 # RUN chmod 777 /usr/bin/test.sh
 # RUN chmod 777 /usr/bin/test2.sh
 
@@ -18,7 +18,7 @@ WORKDIR /var/www
 
 # CMD composer install ; wait-for-it database:3306 -- bin/console doctrine:migrations:migrate ;  php-fpm
 
-CMD composer install ; wait-for.sh database:3306 -- make:migration ; php-fpm
+CMD composer install ; wait-for-it database:3306 -- bin/console doctrine:migrations:migrate ; php-fpm
 #wait-for-it.sh database:3306 -- doctrine:migrations:migrate ; 
 # openssl genrsa -aes256 -passout pass:"LeMeilleurGroupeCestINGR!" -out config/jwt/private.pem 4096 ; openssl rsa -in config/jwt/private.pem -passin pass:"LeMeilleurGroupeCestINGR!" -pubout -out config/jwt/public.pem
 # openssl rsa -in privkey.pem -passin pass:foobar -pubout -out privkey.pub
