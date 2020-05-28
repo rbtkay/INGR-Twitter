@@ -1,13 +1,11 @@
-import React, { useState } from "react";
-
-import { Menu, Input, Image, Dropdown } from "semantic-ui-react";
-import { Link, Switch, Route } from "react-router-dom";
-
+import React from "react";
+import { useSelector } from "react-redux";
+import { Menu } from "semantic-ui-react";
+import { Link } from "react-router-dom";
 import UserPanel from "./UserPanel";
 
-const NavigationBar = ({ username }) => {
-    const [activeItem, setActiveUser] = useState("editorials");
-
+const NavigationBar = () => {
+    const token = useSelector((state) => state.token);
     return (
         <div>
             <Menu>
@@ -16,12 +14,7 @@ const NavigationBar = ({ username }) => {
                         Home
                     </Link>
                 </Menu.Item>
-                <Route path="/home" exact>
-                    <UserPanel />
-                </Route>
-                <Route path="/settings" exact>
-                    <UserPanel />
-                </Route>
+                {token && <UserPanel />}
             </Menu>
         </div>
     );

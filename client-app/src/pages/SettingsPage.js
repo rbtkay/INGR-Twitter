@@ -1,36 +1,15 @@
-import React, { Fragment } from "react";
-
-import {
-    Header,
-    Segment,
-    Grid,
-    Container,
-    Button,
-    Divider,
-} from "semantic-ui-react";
-import { Link, Switch, Route, useHistory } from "react-router-dom";
-
+import React from "react";
+import { useSelector } from "react-redux";
+import { Header, Segment, Grid, Container, Button, Divider } from "semantic-ui-react";
 import NavigationBar from "../components/NavigationBar";
 import FormPassword from "../components/forms/FormPassword";
 import MiniForm from "../components/forms/MiniForm";
-import Input from "../components/forms/Input";
 
 const SettingsPage = () => {
-    const history = useHistory();
-
-    const usernameChange = ({ username }) => {
-        console.log();
-    };
-    const emailChange = ({}) => {
-        console.log();
-    };
-    const passwordChange = ({ oldPassword, newPassword, confirmPassword }) => {
-        console.log();
-    };
-
+    const user = useSelector((state) => state);
     return (
         <div>
-            <NavigationBar username={""} />
+            <NavigationBar />
             <Container>
                 <Segment>
                     <Grid columns={2} relaxed="very">
@@ -40,19 +19,19 @@ const SettingsPage = () => {
                                 url="username"
                                 name="username"
                                 label="Change Username"
-                                // placeholder={ username stored }
+                                placeholder={user.username}
                             />
                             <MiniForm
                                 url="email"
                                 name="email"
                                 label="Change Email Address"
-                                // placeholder={ email stored }
+                                placeholder={user.email}
                             />
                             <MiniForm
                                 url="twitter_name"
                                 name="twitter_name"
                                 label="Change registered Twitter login"
-                                // placeholder={ twitter_name stored }
+                                placeholder={user.twitter_name}
                             />
                         </Grid.Column>
                         <Grid.Column>

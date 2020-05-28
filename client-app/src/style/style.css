@@ -1,0 +1,19 @@
+/* Menu extends links to div item and not only text */
+.menu .item {
+    position: relative;
+}
+
+.menu .item .ui.dropdown {
+    position: static;
+}
+
+.menu .item a::before,
+.menu .item .ui.dropdown::before {
+    content: '';
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}

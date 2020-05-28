@@ -1,17 +1,17 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { Form, Button, Message } from "semantic-ui-react";
+import { setUser } from "../../actions";
 import useFetch from "../../hooks/fetch";
 import Input from "./Input";
 
-//import NavigationBar from "../components/NavigationBar";
-
 const FormSignUp = () => {
-    const history = useHistory();
-    const { result, load, loading } = useFetch("users", "POST");
-
+    const dispatch = useDispatch();
+    const { result, load } = useFetch("users", "POST");
+    const [loading, setLoading] = useState(false);
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
+    const [twitter_name, setTwitterName] = useState("");
     const [password, setPassword] = useState("");
     const [confirmation, setConfirmation] = useState("");
     const [message, setMessage] = useState({
@@ -28,8 +28,9 @@ const FormSignUp = () => {
                     type: "success",
                     value: result.message,
                 });
-                // history.push("/home");
+                dispatch(setUser(result.user));
             } else {
+                setLoading(false);
                 setMessage({
                     display: !result.success,
                     type: "error",
@@ -74,11 +75,17 @@ const FormSignUp = () => {
     const onSubmit = useCallback(
         (e) => {
             e.preventDefault();
-            if (checkValues()) {
-                load({ username, email, password, confirmation });
+            if (checkValues() && !loading) {
+                load(null, {
+                    username,
+                    email,
+                    password,
+                    confirmation,
+                    twitter_name,
+                });
             }
         },
-        [load, username, email, password, confirmation]
+        [load, username, email, password, confirmation, twitter_name]
     );
 
     return (
@@ -93,6 +100,12 @@ const FormSignUp = () => {
                 placeholder="Enter username"
                 setValue={(value) => setUsername(value)}
                 required={true}
+            />
+            <Input
+                name={"twitterName"}
+                label="Login Twitter"
+                placeholder="Enter your login Twitter"
+                setValue={(value) => setTwitterName(value)}
             />
             <Input
                 name={"email"}
@@ -120,7 +133,7 @@ const FormSignUp = () => {
             <Message error content={message.value} />
             <Message success content={message.value} />
             <div style={{ textAlign: "center" }}>
-                <Button color="green" type="submit">
+                <Button color="green" type="submit" disabled={loading}>
                     Register
                 </Button>
             </div>

@@ -40,12 +40,13 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 		$this->_em->flush();
 	}
 
-	public function insert(string $username, string $password, string $email)
+	public function insert(string $username, string $password, string $email, string $twitter_name)
 	{
 		$user = new User();
 		$user->setUsername($username);
 		$user->setEmail($email);
 		$user->setPassword($this->passwordEncoder->encodePassword($user, $password));
+		$user->setTwitterName($twitter_name);
 		$user->setRoles($user->getRoles());
 		$this->_em->persist($user);
 		$this->_em->flush();
@@ -75,6 +76,9 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 		}
 		if (!empty($data['password'])) {
 			$user->setPassword($this->passwordEncoder->encodePassword($user, $data['password']));
+		}
+		if (!empty($data['twitter_name'])) {
+			$user->setTwitterName($data['twitter_name']);
 		}
 		$this->_em->persist($user);
 		$this->_em->flush();

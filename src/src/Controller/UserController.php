@@ -54,11 +54,21 @@ class UserController extends AbstractController
 			return new JsonResponse(['message' => 'Wrong confirmation password'], Response::HTTP_BAD_REQUEST);
 		}
 
-		$user = $u_repo->insert($user['username'], $user['password'], $user['email']);
-		return new JsonResponse(
-			['message' => 'User registered', 'token' => $JWTManager->create($user)],
-			Response::HTTP_CREATED
+		$user_result = $u_repo->insert(
+			$user['username'],
+			$user['password'],
+			$user['email'],
+			$user['twitter_name']
 		);
+		$return      = [
+			'id'           => $user_result->getId(),
+			'username'     => $user_result->getUsername(),
+			'email'        => $user_result->getEmail(),
+			'twitter_name' => $user_result->getTwitterName(),
+			'token'        => $JWTManager->create($user_result)
+
+		];
+		return new JsonResponse(['message' => "User registered", "user" => $return], Response::HTTP_CREATED);
 	}
 
 	/**
@@ -70,9 +80,10 @@ class UserController extends AbstractController
 		$return = [];
 		foreach ($users as $user) {
 			$return[] = [
-				'id'       => $user->getId(),
-				'username' => $user->getUsername(),
-				'email'    => $user->getEmail(),
+				'id'           => $user->getId(),
+				'username'     => $user->getUsername(),
+				'email'        => $user->getEmail(),
+				'twitter_name' => $user->getTwitterName()
 			];
 		}
 		return new JsonResponse(["users" => $return], Response::HTTP_OK);
@@ -90,9 +101,10 @@ class UserController extends AbstractController
 		}
 
 		$return = [
-			'id'       => $user->getId(),
-			'username' => $user->getUsername(),
-			'email'    => $user->getEmail(),
+			'id'           => $user->getId(),
+			'username'     => $user->getUsername(),
+			'email'        => $user->getEmail(),
+			'twitter_name' => $user->getTwitterName()
 		];
 		return new JsonResponse(["user" => $return], Response::HTTP_OK);
 	}
@@ -107,6 +119,7 @@ class UserController extends AbstractController
 			'id'       => $user->getId(),
 			'username' => $user->getUsername(),
 			'email'    => $user->getEmail(),
+			'twitter_name' => $user->getTwitterName()
 		];
 		return new JsonResponse(["user" => $return], Response::HTTP_OK);
 	}
@@ -243,6 +256,32 @@ class UserController extends AbstractController
 		// TODO : return a new token
 		return new JsonResponse(
 			['message' => "Password updated", 'token' => $JWTManager->create($user)],
+			Response::HTTP_OK
+		);
+	}
+
+	/**
+	 * @Route("/api/twitter_name", name="update_twitter_name", methods={"PUT"})
+	 */
+	public function updateTwitterName(Request $request, UserRepository $u_repo)
+	{
+		try {
+			$data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
+		} catch (JsonException $e) {
+			return new JsonResponse(
+				['error' => $e->getCode(), 'message' => $e->getMessage()],
+				Response::HTTP_BAD_REQUEST
+			);
+		}
+
+		if (empty($data['twitter_name'])) {
+			return new JsonResponse(['message' => 'twitter name is required'], Response::HTTP_BAD_REQUEST);
+		}
+
+		$user = $this->getUser();
+		$u_repo->update($user, $data);
+		return new JsonResponse(
+			['message' => "Twitter name updated"],
 			Response::HTTP_OK
 		);
 	}

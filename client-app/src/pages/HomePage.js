@@ -1,7 +1,4 @@
 import React from "react";
-
-// import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-
 import {
     Header,
     Input,
@@ -14,7 +11,6 @@ import {
     Label,
 } from "semantic-ui-react";
 
-import Auth from "../components/Auth";
 import NavigationBar from "../components/NavigationBar";
 import Tweets from "../components/Tweets";
 import Keywords from "../components/Keywords";
@@ -28,15 +24,11 @@ const HomePage = () => {
         { value: "#ingr", isSelected: false },
     ];
 
-    const selectKeyword = (keyword) => {
-        console.log(keyword);
-    };
+    const selectKeyword = (keyword) => {};
 
     return (
         <div>
-            <NavigationBar username={""} />{" "}
-            {/*the user name should be passed here dynamically*/}
-            <Auth />
+            <NavigationBar />
             <br />
             <Grid columns={2}>
                 <GridColumn width={12} textAlign={"center"}>
@@ -49,9 +41,8 @@ const HomePage = () => {
                     <br />
                     <div>
                         <p>
-                            Hastags you've already added, by{" "}
-                            <b>clicking on one</b> you add it the analytics
-                            graph
+                            Hastags you've already added, by <b>clicking on one</b> you
+                            add it the analytics graph
                         </p>
                         <Keywords
                             keywords={keywords}
