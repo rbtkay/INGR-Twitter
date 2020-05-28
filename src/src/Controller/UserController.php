@@ -72,7 +72,7 @@ class UserController extends AbstractController
             'email'    => $user->getEmail(),
          ];
       }
-      return new JsonResponse($return, Response::HTTP_OK);
+      return new JsonResponse(["users" => $return], Response::HTTP_OK);
    }
   
    /**
@@ -91,7 +91,7 @@ class UserController extends AbstractController
          'username' => $user->getUsername(),
          'email'    => $user->getEmail(),
       ];
-      return new JsonResponse($return, Response::HTTP_OK);
+      return new JsonResponse(["user" => $return], Response::HTTP_OK);
    }
 
    /**
@@ -105,7 +105,7 @@ class UserController extends AbstractController
          'username' => $user->getUsername(),
          'email'    => $user->getEmail(),
       ];
-      return new JsonResponse($return, Response::HTTP_OK);
+      return new JsonResponse(["user" => $return], Response::HTTP_OK);
    }
 
    /**
