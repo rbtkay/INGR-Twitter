@@ -46,6 +46,10 @@ class User implements UserInterface
 	 */
 	private $keywords;
 
+	/**
+	 * @ORM\Column(type="string", length=25, nullable=true)
+	 */
+	private $twitter_name;
 
 	/**
 	 * User constructor.
@@ -159,6 +163,25 @@ class User implements UserInterface
 	{
 		$this->email = $email;
 
+		return $this;
+	}
+	
+	/**
+	 * @return string|null
+	 */
+	public function getTwitterName(): ?string
+	{
+		return $this->twitter_name;
+	}
+
+ 	/**
+	 * @param string $twitter_name
+	 * @return User
+	 */
+ 	public function setTwitterName(?string $twitter_name): self
+	{
+		$this->twitter_name = $twitter_name;
+		
 		return $this;
 	}
 
