@@ -8,10 +8,6 @@ import Logout from "../components/Logout";
 const NavigationBar = ({ username }) => {
     const [activeItem, setActiveUser] = useState("editorials");
 
-    const auth_btn_style = {
-        color: "green",
-    };
-
     return (
         <div>
             <Menu>
@@ -23,18 +19,6 @@ const NavigationBar = ({ username }) => {
                 <Menu.Menu position={"right"}>
                     <Menu.Item>
                         <Switch>
-                            <Route
-                                path="/"
-                                exact
-                                component={() => (
-                                    <Link
-                                        to={"/register"}
-                                        style={auth_btn_style}
-                                    >
-                                        Sign Up
-                                    </Link>
-                                )}
-                            />
                             <Route
                                 path="/home"
                                 exact
