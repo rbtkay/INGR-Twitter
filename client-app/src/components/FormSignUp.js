@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { Form, Button, Message } from "semantic-ui-react";
 import useFetch from "../hooks/fetch";
@@ -7,6 +7,7 @@ import Input from "./Input";
 //import NavigationBar from "../components/NavigationBar";
 
 const FormSignUp = () => {
+    const mounted = useRef(true);
     const history = useHistory();
     const { result, load, loading } = useFetch("users", "POST");
 
@@ -21,7 +22,16 @@ const FormSignUp = () => {
     });
 
     useEffect(() => {
-        if (result) {
+        if (!mounted.current) {
+            mounted.current = true;
+        }
+        return () => {
+            mounted.current = false;
+        };
+    });
+
+    useEffect(() => {
+        if (result && mounted.current) {
             if (result.success) {
                 setMessage({
                     display: result.success,
@@ -75,7 +85,7 @@ const FormSignUp = () => {
         (e) => {
             e.preventDefault();
             if (checkValues()) {
-                load({ username, email, password, confirmation });
+                load(null, { username, email, password, confirmation });
             }
         },
         [load, username, email, password, confirmation]

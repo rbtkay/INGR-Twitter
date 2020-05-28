@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Form, Button, Message } from "semantic-ui-react";
@@ -9,6 +9,7 @@ import Input from "./Input";
 //import NavigationBar from "../components/NavigationBar";
 
 const FormSignIn = () => {
+    const mounted = useRef();
     const dispatch = useDispatch();
     const history = useHistory();
     const { result, load, loading } = useFetch("login_check", "POST");
@@ -22,7 +23,16 @@ const FormSignIn = () => {
     });
 
     useEffect(() => {
-        if (result) {
+        if (!mounted.current) {
+            mounted.current = true;
+        }
+        return () => {
+            mounted.current = false;
+        };
+    });
+
+    useEffect(() => {
+        if (result && mounted.current) {
             if (result.success) {
                 dispatch(setToken(result.token));
                 history.push("/home");
@@ -52,7 +62,7 @@ const FormSignIn = () => {
         (e) => {
             e.preventDefault();
             if (checkValues()) {
-                load({ username, password });
+                load(null, { username, password });
             }
         },
         [load, username, password]

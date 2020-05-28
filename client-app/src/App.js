@@ -6,7 +6,8 @@ import {
     Route,
     Redirect,
 } from "react-router-dom";
-import { setToken } from "./actions";
+import useFetch from "./hooks/fetch";
+import { setUser, removeUser, setToken } from "./actions";
 import { STORAGE_KEY } from "./constants";
 import HomePage from "./pages/HomePage";
 import LandingPage from "./pages/LandingPage";
@@ -15,7 +16,8 @@ const App = () => {
     const mounted = useRef();
     const dispatch = useDispatch();
     const token = useSelector((state) => state.token);
-
+    const { result, load, loading } = useFetch("user");
+    // Get Token from local storage
     useEffect(() => {
         if (!mounted.current) {
             // Component will mount
@@ -23,12 +25,26 @@ const App = () => {
                 const st_token = localStorage.getItem(STORAGE_KEY);
                 if (st_token) {
                     dispatch(setToken(st_token));
+                    load(st_token);
                 }
             }
             mounted.current = true;
         }
     });
-
+    // Get User
+    useEffect(() => {
+        if (result) {
+            console.log(result);
+            if (result.success) {
+                dispatch(setUser(result.user));
+            } else {
+                localStorage.removeItem(STORAGE_KEY);
+                localStorage.clear();
+                dispatch(removeUser());
+            }
+        }
+    }, [result]);
+    // Update Token
     useEffect(() => {
         if (token) {
             localStorage.setItem(STORAGE_KEY, token);

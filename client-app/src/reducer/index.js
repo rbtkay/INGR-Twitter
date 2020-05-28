@@ -5,7 +5,10 @@ const reducer = (state = {}, action) => {
 
     switch (action.type) {
         case types.SET_USER:
-            nextState = action.user;
+            nextState = {
+                ...state,
+                ...action.user,
+            };
             return nextState || state;
 
         case types.SET_TOKEN:
