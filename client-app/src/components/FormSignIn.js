@@ -1,12 +1,15 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { Form, Button, Message } from "semantic-ui-react";
+import { setToken } from "../actions";
 import useFetch from "../hooks/fetch";
 import Input from "./Input";
 
 //import NavigationBar from "../components/NavigationBar";
 
 const FormSignIn = () => {
+    const dispatch = useDispatch();
     const history = useHistory();
     const { result, load, loading } = useFetch("login_check", "POST");
 
@@ -21,6 +24,7 @@ const FormSignIn = () => {
     useEffect(() => {
         if (result) {
             if (result.success) {
+                dispatch(setToken(result.token));
                 history.push("/home");
             } else {
                 setMessage({
