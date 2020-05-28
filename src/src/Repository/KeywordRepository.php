@@ -50,7 +50,7 @@ class KeywordRepository extends ServiceEntityRepository
 		$updated_rows = [];
 		if (!empty($data['name'])) {
 			$keyword->setName($data['name']);
-			$updated_rows[] = 'username';
+			$updated_rows[] = 'name';
 		}
 
 		$this->_em->persist($keyword);

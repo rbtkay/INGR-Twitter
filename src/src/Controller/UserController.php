@@ -98,7 +98,7 @@ class UserController extends AbstractController
 	}
 
 	/**
-	 * @Route("/api/user", name="user", methods={"GET"})
+	 * @Route("/api/user", name="own_user", methods={"GET"})
 	 */
 	public function getOwnUser(Request $request, UserRepository $u_repo)
 	{

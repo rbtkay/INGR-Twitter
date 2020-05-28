@@ -19,8 +19,11 @@ Request JSON :
 }
 ```
 Response JSON :
-```
-[]
+```ts
+{
+    "message": "User registered",
+    "token": string
+}
 ```
 
 ###Login
@@ -52,14 +55,16 @@ Request JSON :
 ```
 Response JSON :
 ```ts
-[
-    {
-        "id": int,
-        "username": string,
-        "email": string
-    },
-    ...
-]
+{
+    "users": [
+        {
+            "id": int,
+            "username": string,
+            "email": string
+        },
+        ...
+    ]
+}
 ```
 
 ###Get User
@@ -73,14 +78,13 @@ Request JSON :
 ```
 Response JSON :
 ```ts
-[
-    {
+{
+    "user": {
         "id": int,
         "username": string,
         "email": string
-    },
-    ...
-]
+    }
+}
 ```
 
 ###Get Own User
@@ -94,14 +98,13 @@ Request JSON :
 ```
 Response JSON :
 ```ts
-[
-    {
+{
+    "user": {
         "id": int,
         "username": string,
         "email": string
-    },
-    ...
-]
+    }
+}
 ```
 
 ###Update Username
@@ -117,7 +120,10 @@ Request JSON :
 ```
 Response JSON :
 ```ts
-[]
+{
+    "message": "Username updated",
+    "token": string
+}
 ```
 
 ###Update Email
@@ -133,7 +139,9 @@ Request JSON :
 ```
 Response JSON :
 ```ts
-[]
+{
+    "message": "Email updated"
+}
 ```
 
 ###Update Password
@@ -151,7 +159,10 @@ Request JSON :
 ```
 Response JSON :
 ```ts
-[]
+{
+    "message": "Password updated",
+    "token": string
+}
 ```
 
 ###Delete Own User
@@ -165,7 +176,9 @@ Request JSON :
 ```
 Response JSON :
 ```ts
-[]
+{
+    "message": "Your account is deleted"
+}
 ```
 
 <!---
@@ -193,7 +206,9 @@ Request JSON :
 ```
 Response JSON :
 ```ts
-[]
+{
+    "message": "Keyword registered"
+}
 ```
 
 ###Get Keywords
@@ -210,8 +225,7 @@ Response JSON :
 [
     {
         "id": int,
-        "name": string,
-        "user_id": int
+        "name": string
     },
     ...
 ]
@@ -228,53 +242,10 @@ Request JSON :
 ```
 Response JSON :
 ```ts
-[
-    {
-        "id": int,
-        "name": string,
-        "user_id": int
-    }
-]
-```
-
-###Get Keyword
-
-URI : `/api/keywords/{id}`<br/>
-Method : `GET`<br/>
-Authorization: `Bearer Token`<br/>
-Request JSON :
-```ts
-{}
-```
-Response JSON :
-```ts
-[
-    {
-        "id": int,
-        "name": string,
-        "user_id": int
-    }
-]
-```
-
-###Get Own Keyword
-
-URI : `/api/keyword`<br/>
-Method : `GET`<br/>
-Authorization: `Bearer Token`<br/>
-Request JSON :
-```ts
-{}
-```
-Response JSON :
-```ts
-[
-    {
-        "id": int,
-        "name": string,
-        "user_id": int
-    }
-]
+{
+    "id": int,
+    "name": string
+}
 ```
 
 ###Update Keyword
@@ -290,13 +261,15 @@ Request JSON :
 ```
 Response JSON :
 ```ts
-[]
+{
+    "message": "Item name update"
+}
 ```
 
 ###Delete Keyword
 
 URI : `/api/keywords/{id}`<br/>
-Method : `PUT`<br/>
+Method : `DELETE`<br/>
 Authorization: `Bearer Token`<br/>
 Request JSON :
 ```ts
@@ -304,5 +277,7 @@ Request JSON :
 ```
 Response JSON :
 ```ts
-[]
+{
+    "message": "Keyword deleted"
+}
 ```
