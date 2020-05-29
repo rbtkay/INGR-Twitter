@@ -52,11 +52,17 @@ class User implements UserInterface
 	private $keywords;
 
 	/**
+     * @ORM\OneToMany(targetEntity=Tweet::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $tweets;
+
+	/**
 	 * User constructor.
 	 */
 	public function __construct()
 	{
 		$this->keywords = new ArrayCollection();
+		$this->tweets = new ArrayCollection();
 	}
 
 	/**
@@ -223,4 +229,35 @@ class User implements UserInterface
 
 		return $this;
 	}
+
+	/**
+     * @return Collection|Tweet[]
+     */
+    public function getTweets(): Collection
+    {
+        return $this->tweets;
+    }
+
+    public function addTweet(Tweet $tweet): self
+    {
+        if (!$this->tweets->contains($tweet)) {
+            $this->tweets[] = $tweet;
+            $tweet->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTweet(Tweet $tweet): self
+    {
+        if ($this->tweets->contains($tweet)) {
+            $this->tweets->removeElement($tweet);
+            // set the owning side to null (unless already changed)
+            if ($tweet->getUser() === $this) {
+                $tweet->setUser(null);
+            }
+        }
+
+        return $this;
+    }
 }
