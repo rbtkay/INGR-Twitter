@@ -238,7 +238,11 @@ class User implements UserInterface
         return $this->tweets;
     }
 
-    public function addTweet(Tweet $tweet): self
+	/**
+	 * @param Tweet $tweet
+	 * @return User
+	 */
+	public function addTweet(Tweet $tweet): self
     {
         if (!$this->tweets->contains($tweet)) {
             $this->tweets[] = $tweet;
@@ -248,7 +252,11 @@ class User implements UserInterface
         return $this;
     }
 
-    public function removeTweet(Tweet $tweet): self
+	/**
+	 * @param Tweet $tweet
+	 * @return User
+	 */
+	public function removeTweet(Tweet $tweet): self
     {
         if ($this->tweets->contains($tweet)) {
             $this->tweets->removeElement($tweet);
