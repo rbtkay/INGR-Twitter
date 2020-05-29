@@ -15,14 +15,20 @@ Request JSON :
     "username": string,
     "email": string,
     "password": string,
-    "confirmation": string
+    "confirmation": string,
+    "twitter_name": string
 }
 ```
 Response JSON :
 ```ts
 {
     "message": "User registered",
-    "token": string
+    "user": {
+        "username": string,
+        "email": string,
+        "twitter_name": string,
+        "token": string
+    }
 }
 ```
 
@@ -60,7 +66,8 @@ Response JSON :
         {
             "id": int,
             "username": string,
-            "email": string
+            "email": string,
+            "twitter_name": string
         },
         ...
     ]
@@ -82,7 +89,8 @@ Response JSON :
     "user": {
         "id": int,
         "username": string,
-        "email": string
+        "email": string,
+        "twitter_name": string
     }
 }
 ```
@@ -102,7 +110,8 @@ Response JSON :
     "user": {
         "id": int,
         "username": string,
-        "email": string
+        "email": string,
+        "twitter_name": string
     }
 }
 ```
