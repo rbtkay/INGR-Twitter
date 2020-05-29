@@ -9,6 +9,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Abraham\TwitterOAuth\TwitterOAuth;
 
 class UpdateKeywordsCommand extends Command
 {
@@ -47,9 +48,54 @@ class UpdateKeywordsCommand extends Command
 
         $users  = $this->u_repo->findAll();
 
-        foreach ($users as $user){
-            $twitter_name = $user->getTwitterName();
-            
+        $url ="https://api.twitter.com/1.1/statuses/user_timeline.json";
+        $oauth_access_token = "820346185974185984-BjPUMU2oktVoaQ6IX9kDTRsJguzsRua";
+        $oauth_access_token_secret = "ZjDbhRSav74fgVYEg6gDY0vrHc91HZL9eg46eBWp2yw4b";
+        $consumer_key = "LIq1jsQscdOdLV5hFySxgG5gN";
+        $consumer_secret = "AYvcwt9VNqx5MrThaA0WLVHtpurWGHxnxErvtOvTMwbgA63iFF";
+
+        $connection = new TwitterOAuth($consumer_key, $consumer_secret, $oauth_access_token, $oauth_access_token_secret);
+        $tweets = $connection->get("statuses/user_timeline", ["screen_name" => "ingr_project"]);
+
+//        dd(gettype($statuses));
+//
+//        $oauth = array( 'oauth_consumer_key' => $consumer_key,
+//            'oauth_nonce' => time(),
+//            'oauth_signature_method' => 'HMAC-SHA1',
+//            'oauth_token' => $oauth_access_token,
+//            'oauth_timestamp' => time(),
+//            'oauth_version' => '1.0');
+//
+//        // Make requests
+//        $header = array(buildAuthorizationHeader($oauth), 'Expect:');
+//        $options = array( CURLOPT_HTTPHEADER => $header,
+//            //CURLOPT_POSTFIELDS => $postfields,
+//            CURLOPT_HEADER => false,
+//            CURLOPT_URL => $url,
+//            CURLOPT_RETURNTRANSFER => true,
+//            CURLOPT_SSL_VERIFYPEER => false);
+//
+//        $base_info = buildBaseString($url, 'GET', $oauth);
+//        $composite_key = rawurlencode($consumer_secret) . '&' . rawurlencode($oauth_access_token_secret);
+//        $oauth_signature = base64_encode(hash_hmac('sha1', $base_info, $composite_key, true));
+//        $oauth['oauth_signature'] = $oauth_signature;
+//
+//        $feed = curl_init();
+//        curl_setopt_array($feed, $options);
+//        $json = curl_exec($feed);
+//        curl_close($feed);
+//
+//        $twitter_data = json_decode($json);
+
+        //print it out
+
+
+        foreach ($tweets as $tweet){
+//            gettype($tweet);
+            $io->success($tweet->id);
+            $io->success($tweet->text);
+            $io->success($tweet->created_at);
+//            dd($tweet, gettype($tweet));
         }
         $myfile = fopen("../../var/www/result.txt", "a") or die("Unable to open file!");
         $txt = "The Cron is working \n";
