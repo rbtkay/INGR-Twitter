@@ -29,7 +29,7 @@ class KeywordRepository extends ServiceEntityRepository
 	 * @throws \Doctrine\ORM\ORMException
 	 * @throws \Doctrine\ORM\OptimisticLockException
 	 */
-	public function insert(string $name, User $user)
+	public function insert(User $user, string $name)
 	{
 		$keyword = new Keyword();
 		$keyword->setName($name);
@@ -68,4 +68,21 @@ class KeywordRepository extends ServiceEntityRepository
 		$this->_em->remove($keyword);
 		$this->_em->flush();
 	}
+
+//	/**
+//	 * @param User $user
+//	 * @param array $data
+//	 * @throws \Doctrine\ORM\ORMException
+//	 * @throws \Doctrine\ORM\OptimisticLockException
+//	 */
+//	public function insertScore(User $user, array $data)
+//	{
+//		$keyword = new Keyword();
+//		$keyword->setName($data['name']);
+//		$keyword->setScore($data['score']);
+//		$keyword->setDate($data['date']);
+//		$keyword->setUser($user);
+//		$this->_em->persist($keyword);
+//		$this->_em->flush();
+//	}
 }

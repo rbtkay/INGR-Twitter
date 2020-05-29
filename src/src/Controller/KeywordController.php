@@ -44,7 +44,7 @@ class KeywordController extends AbstractController
 					Response::HTTP_INTERNAL_SERVER_ERROR
 				);
 			}
-			$k_repo->insert($keyword['name'], $this->getUser());
+			$k_repo->insert($this->getUser(), $keyword['name']);
 
 			return new JsonResponse(['message' => 'Keyword registered'], Response::HTTP_CREATED);
 		}
@@ -164,4 +164,65 @@ class KeywordController extends AbstractController
 			Response::HTTP_OK
 		);
 	}
+
+//	/**
+//	 * @Route("/api/keywords/score", name="insert_score", methods={"POST"})
+//	 * @param Request $request
+//	 * @param KeywordRepository $k_repo
+//	 * @return JsonResponse
+//	 * @throws \Doctrine\ORM\ORMException
+//	 * @throws \Doctrine\ORM\OptimisticLockException
+//	 */
+//	public function addScore(Request $request, KeywordRepository $k_repo)
+//	{
+//		try {
+//			$data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
+//		} catch (JsonException $e) {
+//			return new JsonResponse(
+//				['error' => $e->getCode(), 'message' => $e->getMessage()],
+//				Response::HTTP_BAD_REQUEST
+//			);
+//		}
+//
+//		if (empty($data['name'])) {
+//			return new JsonResponse(['message' => 'Name is required'], Response::HTTP_BAD_REQUEST);
+//		}
+//		if (empty($data['score'])) {
+//			return new JsonResponse(['message' => 'Score is required'], Response::HTTP_BAD_REQUEST);
+//		}
+//		if (empty($data['date'])) {
+//			return new JsonResponse(['message' => 'Datetime is required'], Response::HTTP_BAD_REQUEST);
+//		}
+//		if (!empty($data['name']) && !empty($data['score']) && !empty($data['date'])) {
+//			$exists = $k_repo->findOneBy(
+//				[
+//					'name' => $data['name'],
+//					'score' => $data['score'],
+//					'date'	=> $data['date'],
+//					'user' => $this->getUser()
+//				]
+//			);
+//			if (!empty($exists)) {
+//				return new JsonResponse(
+//					['message' => 'Score\'s keyword for this datetime is already used'],
+//					Response::HTTP_INTERNAL_SERVER_ERROR
+//				);
+//			}
+//			$k_repo->insertScore($this->getUser(), $data);
+//
+//			return new JsonResponse(['message' => 'Score\'s keyword registered'], Response::HTTP_CREATED);
+//		}
+//		return new JsonResponse(['error' => 'Score\'s keyword incomplete'], Response::HTTP_BAD_REQUEST);
+//	}
+
+//	/**
+//	 * @Route("/api/keyyword/{id}/score", name="scores", methods={"GET"})
+//	 */
+//
+//	/**
+//	 * @Route("/api/keyyword/{id}/score/{id}", name="score", methods={"GET"})
+//	 */
+
+	// TODO : delete on cascade les scores quand on supprime un keyword
+
 }
