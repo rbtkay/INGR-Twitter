@@ -1,23 +1,19 @@
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import React from "react";
 import {
     Header,
-    Input,
     Grid,
     GridColumn,
     Segment,
     Button,
     Container,
-    Icon,
+    Form,
     Label,
 } from "semantic-ui-react";
-
-import NavigationBar from "../components/NavigationBar";
+import MiniForm from "../components/forms/MiniForm";
 import Tweets from "../components/Tweets";
 import Keywords from "../components/Keywords";
 
 const HomePage = () => {
-    const user = useSelector((state) => state);
     //The component Tweets take in an array and render a list of tweets.
     const keywords = [
         { value: "#dev", isSelected: false },
@@ -26,62 +22,42 @@ const HomePage = () => {
         { value: "#ingr", isSelected: false },
     ];
 
-    const selectKeyword = (keyword) => {
-        console.log(keyword);
-    };
+    const setKeyword = (value) => {};
+    const selectKeyword = (keyword) => {};
 
     return (
-        <div>
-            <NavigationBar username={user.username || ""} />
-            <br />
-            <Grid columns={2}>
-                <GridColumn width={12} textAlign={"center"}>
-                    <Header as="h1">Add a new keyword</Header>
-                    <Input />
-                    <br />
-                    <br />
-                    <Button color={"green"}>+</Button>
-                    <br />
-                    <br />
-                    <div>
-                        <p>
-                            Hastags you've already added, by{" "}
-                            <b>clicking on one</b> you add it the analytics
-                            graph
-                        </p>
-                        <Keywords
-                            keywords={keywords}
-                            callback={(keyword) => selectKeyword(keyword)}
+        <main className="home">
+            <Container fluid>
+                <Grid columns={2}>
+                    <GridColumn width={12} textAlign={"center"}>
+                        <Header as="h1">Dashboard</Header>
+                        <MiniForm
+                            url="keywords"
+                            name="Add a new keyword"
+                            label="Enter a keyword"
+                            placeholder={"#"}
+                            submitLabel={"+"}
                         />
-                    </div>
-                    <br />
-                    <br />
-                    <br />
-                    <Container textAlign={"left"}>
+                        <p>
+                            Hastags you've already added, by <b>clicking on one</b> you
+                            add it the analytics graph
+                        </p>
+                        <div className="keyword-menu">
+                            <Keywords
+                                keywords={keywords}
+                                callback={(keyword) => selectKeyword(keyword)}
+                            />
+                        </div>
+                    </GridColumn>
+                    <GridColumn width={3}>
                         <Segment>
-                            <p>
-                                <br />
-                                <br />
-                                <br />
-                                <br />
-                                <br />
-                                <br />
-                                <br />
-                                <br />
-                                <br />
-                                <br />
-                            </p>
+                            <Header as="h3">The Recent Tweets</Header>
+                            <Tweets tweets={[1, 2, 3, 4]} />
                         </Segment>
-                    </Container>
-                </GridColumn>
-                <GridColumn width={3}>
-                    <Segment>
-                        <Header as="h3">The Recent Tweets</Header>
-                        <Tweets tweets={[1, 2, 3, 4]} />
-                    </Segment>
-                </GridColumn>
-            </Grid>
-        </div>
+                    </GridColumn>
+                </Grid>
+            </Container>
+        </main>
     );
 };
 
