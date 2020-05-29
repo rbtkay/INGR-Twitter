@@ -75,6 +75,7 @@ const FormPassword = () => {
             error={message.type === "error" && message.display}
             success={message.type === "success" && message.display}
             onSubmit={onSubmit}
+            loading={loading}
         >
             <Input
                 name={"old_password"}
@@ -103,7 +104,7 @@ const FormPassword = () => {
             <Message error content={message.value} />
             <Message success content={message.value} />
             <div style={{ textAlign: "center" }}>
-                <Button color="green" type="submit" loading={loading}>
+                <Button color="blue" type="submit" disabled={loading}>
                     Validate
                 </Button>
             </div>

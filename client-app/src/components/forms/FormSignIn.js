@@ -78,6 +78,7 @@ const FormSignIn = () => {
             error={message.type === "error" && message.display}
             success={message.type === "success" && message.display}
             onSubmit={onSubmit}
+            loading={loading}
         >
             <Input
                 name={"username"}
@@ -97,7 +98,7 @@ const FormSignIn = () => {
             <Message error content={message.value} />
             <Message success content={message.value} />
             <div style={{ textAlign: "center" }}>
-                <Button color="green" type="submit" disabled={loading}>
+                <Button color="blue" type="submit" disabled={loading}>
                     Login
                 </Button>
             </div>

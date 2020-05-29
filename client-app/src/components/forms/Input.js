@@ -1,9 +1,9 @@
-import React, {useState, useCallback, useEffect} from "react";
-import {FormField} from "semantic-ui-react";
+import React, { Fragment } from "react";
+import { FormField } from "semantic-ui-react";
 
 const Input = (props) => {
-    return (
-        <FormField>
+    const input = (
+        <Fragment>
             <label htmlFor={props.name}>{props.label}</label>
             <input
                 id={props.name}
@@ -13,8 +13,13 @@ const Input = (props) => {
                 onChange={(e) => props.setValue(e.target.value)}
                 required={!!props.required}
             />
-        </FormField>
+        </Fragment>
     );
+
+    if (props.inline) {
+        return input;
+    }
+    return <FormField>{input}</FormField>;
 };
 
 export default Input;

@@ -1,15 +1,13 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Header, Segment, Grid, Container, Button, Divider } from "semantic-ui-react";
-import NavigationBar from "../components/NavigationBar";
 import FormPassword from "../components/forms/FormPassword";
 import MiniForm from "../components/forms/MiniForm";
 
 const SettingsPage = () => {
     const user = useSelector((state) => state);
     return (
-        <div>
-            <NavigationBar />
+        <main className="settings">
             <Container>
                 <Segment>
                     <Grid columns={2} relaxed="very">
@@ -20,18 +18,21 @@ const SettingsPage = () => {
                                 name="username"
                                 label="Change Username"
                                 placeholder={user.username}
+                                method="PUT"
                             />
                             <MiniForm
                                 url="email"
                                 name="email"
                                 label="Change Email Address"
                                 placeholder={user.email}
+                                method="PUT"
                             />
                             <MiniForm
                                 url="twitter_name"
                                 name="twitter_name"
                                 label="Change registered Twitter login"
                                 placeholder={user.twitter_name}
+                                method="PUT"
                             />
                         </Grid.Column>
                         <Grid.Column>
@@ -44,7 +45,7 @@ const SettingsPage = () => {
                     <Divider vertical>OR</Divider>
                 </Segment>
             </Container>
-        </div>
+        </main>
     );
 };
 

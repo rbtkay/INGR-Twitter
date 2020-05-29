@@ -6,7 +6,7 @@ import Input from "./Input";
 
 const FormPassword = (props) => {
     const history = useHistory();
-    const { result, load } = useFetch(props.url, "PUT");
+    const { result, load } = useFetch(props.url, props.method || "POST");
 
     const [value, setValue] = useState("");
     const [loading, setLoading] = useState(false);
@@ -65,18 +65,23 @@ const FormPassword = (props) => {
             error={message.type === "error" && message.display}
             success={message.type === "success" && message.display}
             onSubmit={onSubmit}
+            loading={loading}
+            className="mini-form"
         >
-            <Input
-                name={props.name}
-                label={props.label}
-                placeholder={props.placeholder || ""}
-                // TODO control value
-                setValue={(value) => setValue(value)}
-                required={true}
-            />
-            <Button color="green" type="submit" loading={loading}>
-                Ok
-            </Button>
+            <Form.Field inline>
+                <Input
+                    name={props.name}
+                    label={props.label}
+                    placeholder={props.placeholder || ""}
+                    // TODO control value
+                    setValue={(value) => setValue(value)}
+                    required={true}
+                    inline={true}
+                />
+                <Button color="blue" type="submit" disabled={loading}>
+                    {props.submitLabel || "Ok"}
+                </Button>
+            </Form.Field>
             <Message error content={message.value} />
             <Message success content={message.value} />
         </Form>
