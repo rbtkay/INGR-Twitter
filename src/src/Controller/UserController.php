@@ -119,6 +119,7 @@ class UserController extends AbstractController
 			'id'       => $user->getId(),
 			'username' => $user->getUsername(),
 			'email'    => $user->getEmail(),
+			'twitter_name' => $user->getTwitterName()
 		];
 		return new JsonResponse(["user" => $return], Response::HTTP_OK);
 	}

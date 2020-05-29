@@ -1,0 +1,70 @@
+// Variables
+// ui blue
+$blue: #2185d0;
+
+/* Menu */
+.menu .item {
+    position: relative;
+    .ui.dropdown {
+        position: static;
+    }
+
+    a::before,
+    .ui.dropdown::before {
+        content: '';
+        z-index: 1;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    a.active {
+        cursor: initial;
+        color: grey;
+    }
+}
+
+/* Main */
+main {
+    padding-top: 30px;
+}
+
+.container.fluid {
+    padding: 0 15px;
+}
+
+h1.ui.header{
+    margin-bottom: 30px;
+}
+h2.ui.header,
+h3.ui.header{
+    margin-bottom: 25px;
+}
+
+.landing{
+    padding-top: 30px;
+}
+
+.keyword-menu {
+    padding: 15px 0;
+}
+
+/* Form */
+.ui.form .field.inline {
+    input{
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+    .ui.button{
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        border: 1px solid transparent;
+        vertical-align: middle;
+    }
+}
+
+.ui.form.mini-form{
+    margin-bottom: 25px;
+}

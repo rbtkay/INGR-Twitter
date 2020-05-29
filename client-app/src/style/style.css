@@ -1,19 +1,68 @@
-/* Menu extends links to div item and not only text */
+/* Menu */
 .menu .item {
-    position: relative;
+  position: relative;
 }
 
 .menu .item .ui.dropdown {
-    position: static;
+  position: static;
 }
 
 .menu .item a::before,
 .menu .item .ui.dropdown::before {
-    content: '';
-    z-index: 1;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+  content: '';
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
+
+.menu .item a.active {
+  cursor: initial;
+  color: grey;
+}
+
+/* Main */
+main {
+  padding-top: 30px;
+}
+
+.container.fluid {
+  padding: 0 15px;
+}
+
+h1.ui.header {
+  margin-bottom: 30px;
+}
+
+h2.ui.header,
+h3.ui.header {
+  margin-bottom: 25px;
+}
+
+.landing {
+  padding-top: 30px;
+}
+
+.keyword-menu {
+  padding: 15px 0;
+}
+
+/* Form */
+.ui.form .field.inline input {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.ui.form .field.inline .ui.button {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border: 1px solid transparent;
+  vertical-align: middle;
+}
+
+.ui.form.mini-form {
+  margin-bottom: 25px;
+}
+/*# sourceMappingURL=style.css.map */
