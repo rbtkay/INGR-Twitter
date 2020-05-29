@@ -10,6 +10,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Abraham\TwitterOAuth\TwitterOAuth;
+use Symfony\Component\Dotenv\Dotenv;
 
 class UpdateKeywordsCommand extends Command
 {
@@ -48,15 +49,27 @@ class UpdateKeywordsCommand extends Command
 
         $users  = $this->u_repo->findAll();
 
+        $dotenv = new Dotenv();
+        $dotenv->load('/var/www/.env');
+//        dd($_ENV["TWITTER_API_ACCESS_TOKEN"]);
+// You can also load several files
+
+
+//        TWITTER_API_ACCESS_TOKEN=820346185974185984-BjPUMU2oktVoaQ6IX9kDTRsJguzsRua;
+//        TWITTER_API_ACCESS_TOKEN_SECRET=ZjDbhRSav74fgVYEg6gDY0vrHc91HZL9eg46eBWp2yw4b;
+//        CONSUMER_KEY=LIq1jsQscdOdLV5hFySxgG5gN;
+//        CONSUMER_SECRET=AYvcwt9VNqx5MrThaA0WLVHtpurWGHxnxErvtOvTMwbgA63iFF;
+
+
         $url ="https://api.twitter.com/1.1/statuses/user_timeline.json";
-        $oauth_access_token = "820346185974185984-BjPUMU2oktVoaQ6IX9kDTRsJguzsRua";
-        $oauth_access_token_secret = "ZjDbhRSav74fgVYEg6gDY0vrHc91HZL9eg46eBWp2yw4b";
-        $consumer_key = "LIq1jsQscdOdLV5hFySxgG5gN";
-        $consumer_secret = "AYvcwt9VNqx5MrThaA0WLVHtpurWGHxnxErvtOvTMwbgA63iFF";
+//        $oauth_access_token = ;
+//        $oauth_access_token_secret = ;
+//        $consumer_key = ;
+//        $consumer_secret = ;
 
-        $connection = new TwitterOAuth($consumer_key, $consumer_secret, $oauth_access_token, $oauth_access_token_secret);
+        $connection = new TwitterOAuth($_ENV["CONSUMER_KEY"], $_ENV["CONSUMER_SECRET"], $_ENV["TWITTER_API_ACCESS_TOKEN"], $_ENV["TWITTER_API_ACCESS_TOKEN_SECRET"]);
         $tweets = $connection->get("statuses/user_timeline", ["screen_name" => "ingr_project"]);
-
+//        $connection = new TwitterOAuth(, , , );
 //        dd(gettype($statuses));
 //
 //        $oauth = array( 'oauth_consumer_key' => $consumer_key,
