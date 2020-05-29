@@ -42,14 +42,14 @@ class User implements UserInterface
 	private $email;
 
 	/**
-	 * @ORM\OneToMany(targetEntity=Keyword::class, mappedBy="user")
-	 */
-	private $keywords;
-
-	/**
 	 * @ORM\Column(type="string", length=25, nullable=true)
 	 */
 	private $twitter_name;
+
+	/**
+	 * @ORM\OneToMany(targetEntity=Keyword::class, mappedBy="user")
+	 */
+	private $keywords;
 
 	/**
 	 * User constructor.
@@ -165,23 +165,23 @@ class User implements UserInterface
 
 		return $this;
 	}
-	
+
 	/**
 	 * @return string|null
 	 */
-	public function getTwitterName(): ?string
+	public function getTwitterName() : ?string
 	{
 		return $this->twitter_name;
 	}
 
- 	/**
+	/**
 	 * @param string $twitter_name
 	 * @return User
 	 */
- 	public function setTwitterName(?string $twitter_name): self
+	public function setTwitterName(?string $twitter_name) : self
 	{
 		$this->twitter_name = $twitter_name;
-		
+
 		return $this;
 	}
 
