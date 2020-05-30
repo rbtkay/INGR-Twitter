@@ -61,9 +61,11 @@ class UpdateKeywordsCommand extends Command
 
         $connection = new TwitterOAuth($_ENV["CONSUMER_KEY"], $_ENV["CONSUMER_SECRET"], $_ENV["TWITTER_API_ACCESS_TOKEN"], $_ENV["TWITTER_API_ACCESS_TOKEN_SECRET"]);
 
+//        $keyword_in_tweets = $connection->get("statuses/user_timeline", ["q" => "#Motivation"]);
+
         foreach ($users as $user) {
             $tweets = $connection->get("statuses/user_timeline", ["screen_name" => $user->getTwitterName()]);
-            $this->addTweets($tweets, $user);
+            $this->addNewTweets($tweets, $user);
             $this->deleteOldTweets($tweets, $user);
         }
 
@@ -72,7 +74,7 @@ class UpdateKeywordsCommand extends Command
     }
 
 
-    private function addTweets(array $tweets, User $user)
+    private function addNewTweets(array $tweets, User $user)
     {
         foreach ($tweets as $tweet) {
             $tweet_result = $this->t_repo->findOneById($tweet->id);
@@ -85,46 +87,17 @@ class UpdateKeywordsCommand extends Command
     private function deleteOldTweets(array $tweets, User $user)
     {
         $user_tweets = $this->t_repo->findTweetsByUser($user->getId());
-//        $tweets_diff = array_diff_assoc($user_tweets, $tweets);
-//        $tweets_diff = array_udiff($user_tweets, $tweets,
-//            function ($user_tweet, $tweet) {
-//                return $user_tweet-> - $tweet->tweet;
-//            }
-//        );
+
         $tweets_ids = array_map(function ($tweet) {
             return $tweet->id;
         }, $tweets);
-//        $user_tweets = array_column($user_tweets, null, "twitter_id");
-//        dump($user_tweets);
-        foreach ($user_tweets as $user_tweet) {
-            // Use the propertyName value from array1 to find details
-//            dump($tweet);
-            $is_still_here = in_array($user_tweet->getTwitterId(), $tweets_ids);
-            dump($is_still_here);
-            if(!$is_still_here){
-                //delete tweet from database;
+
+        for ($i = 0; $i < count($user_tweets); $i++) {
+            $user_tweet_id = $user_tweets[$i]->getTwitterId();
+
+            if(!in_array($user_tweet_id, $tweets_ids)){
+                $this->t_repo->delete($user_tweets[$i]);
             }
-//            dump ($user_tweets[$tweet->id]);
         }
-//
-//        if(count($tweets_diff) > 0){
-//        foreach ($tweets as $tweet){
-//            dump($tweet->id);
-//        }
-//        }
-        echo "Syccess";
-//        dump("Delete Success");
-//        dump($user_tweets);
-//        foreach ($tweets as $tweet) {
-//            $tweet_result = $this->t_repo->findOneById($tweet->id);
-//            if (is_null($tweet_result)) {
-//                $this->t_repo->insert($tweet->id, $tweet->text, $tweet->created_at, $user->getTwitterName(), $user);
-//            }
-//        }
-    }
-
-    function getId()
-    {
-
     }
 }
