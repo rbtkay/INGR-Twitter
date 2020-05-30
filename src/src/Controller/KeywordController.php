@@ -135,7 +135,6 @@ class KeywordController extends AbstractController
 		}
 
 		$updated_rows = $k_repo->update($keyword, $data);
-		//		dd($updated_rows);
 		$k_return = [
 			'id'      => $keyword->getId(),
 			'name'    => $updated_rows['name'],
