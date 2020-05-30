@@ -32,6 +32,8 @@ class KeywordController extends AbstractController
 		}
 
 		if (!empty($keyword['name'])) {
+			if (substr($keyword['name'], 0, 1) !== "#") $keyword['name'] = "#" . $keyword['name'];
+
 			$exists = $k_repo->findOneBy(
 				[
 					'name' => $keyword['name'],
@@ -44,9 +46,14 @@ class KeywordController extends AbstractController
 					Response::HTTP_INTERNAL_SERVER_ERROR
 				);
 			}
-			$k_repo->insert($keyword['name'], $this->getUser());
+			$keyword_result = $k_repo->insert($keyword['name'], $this->getUser());
+			$return = [
+				'id'      => $keyword_result->getId(),
+				'name'    => $keyword_result->getName(),
+				'user_id' => $keyword_result->getUser()->getId()
+			];
 
-			return new JsonResponse(['message' => 'Keyword registered'], Response::HTTP_CREATED);
+			return new JsonResponse(['message' => 'Keyword registered', "keyword" => $return], Response::HTTP_CREATED);
 		}
 		return new JsonResponse(['error' => 'Keyword incomplete'], Response::HTTP_BAD_REQUEST);
 	}
@@ -64,12 +71,12 @@ class KeywordController extends AbstractController
 		$return   = [];
 		foreach ($keywords as $keyword) {
 			$return[] = [
-				'id'      => $keyword->getId(),
-				'name'    => $keyword->getName(),
+				'id'   => $keyword->getId(),
+				'name' => $keyword->getName(),
 			];
 		}
 
-		return new JsonResponse($return, Response::HTTP_OK);
+		return new JsonResponse(["keywords" => $return, "user_id" => $user->getId()], Response::HTTP_OK);
 	}
 
 	/**
@@ -96,9 +103,10 @@ class KeywordController extends AbstractController
 		$return = [
 			'id'      => $keyword->getId(),
 			'name'    => $keyword->getName(),
+			'user_id' => $user->getId()
 		];
 
-		return new JsonResponse($return, Response::HTTP_OK);
+		return new JsonResponse(["keyword" => $return], Response::HTTP_OK);
 	}
 
 	/**
@@ -127,6 +135,12 @@ class KeywordController extends AbstractController
 		}
 
 		$updated_rows = $k_repo->update($keyword, $data);
+		//		dd($updated_rows);
+		$k_return = [
+			'id'      => $keyword->getId(),
+			'name'    => $updated_rows['name'],
+			'user_id' => $keyword->getUser()->getId(),
+		];
 
 		$rows_length = count($updated_rows);
 		if (!$rows_length) {
@@ -135,7 +149,7 @@ class KeywordController extends AbstractController
 
 		$updated_rows_string = implode(',', $updated_rows);
 		return new JsonResponse(
-			['message' => "Item $updated_rows_string update"],
+			['message' => "Item $updated_rows_string update", 'keyword' => $k_return],
 			Response::HTTP_OK
 		);
 	}
