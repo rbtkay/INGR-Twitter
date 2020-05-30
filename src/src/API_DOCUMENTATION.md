@@ -9,20 +9,26 @@ Base URL : `http://localhost:8080`
 
 URI : `/api/users`<br/>
 Method : `POST`<br/>
-Request JSON :
+Body JSON :
 ```ts
 {
     "username": string,
     "email": string,
     "password": string,
-    "confirmation": string
+    "confirmation": string,
+    "twitter_name": string
 }
 ```
 Response JSON :
 ```ts
 {
     "message": "User registered",
-    "token": string
+    "user": {
+        "username": string,
+        "email": string,
+        "twitter_name": string,
+        "token": string
+    }
 }
 ```
 
@@ -30,7 +36,7 @@ Response JSON :
 
 URI : `/api/login_check`<br/>
 Method : `POST`<br/>
-Request JSON :
+Body JSON :
 ```ts
 {
     "username": string,
@@ -49,10 +55,6 @@ Response JSON :
 URI : `/api/users`<br/>
 Method : `GET`<br/>
 Authorization: `Bearer Token`<br/>
-Request JSON :
-```ts
-{}
-```
 Response JSON :
 ```ts
 {
@@ -60,7 +62,8 @@ Response JSON :
         {
             "id": int,
             "username": string,
-            "email": string
+            "email": string,
+            "twitter_name": string
         },
         ...
     ]
@@ -72,17 +75,14 @@ Response JSON :
 URI : `/api/users/{id}`<br/>
 Method : `GET`<br/>
 Authorization: `Bearer Token`<br/>
-Request JSON :
-```ts
-{}
-```
 Response JSON :
 ```ts
 {
     "user": {
         "id": int,
         "username": string,
-        "email": string
+        "email": string,
+        "twitter_name": string
     }
 }
 ```
@@ -92,17 +92,14 @@ Response JSON :
 URI : `/api/user`<br/>
 Method : `GET`<br/>
 Authorization: `Bearer Token`<br/>
-Request JSON :
-```ts
-{}
-```
 Response JSON :
 ```ts
 {
     "user": {
         "id": int,
         "username": string,
-        "email": string
+        "email": string,
+        "twitter_name": string
     }
 }
 ```
@@ -112,7 +109,7 @@ Response JSON :
 URI : `/api/username`<br/>
 Method : `PUT`<br/>
 Authorization: `Bearer Token`<br/>
-Request JSON :
+Body JSON :
 ```ts
 {
     "username": string
@@ -131,7 +128,7 @@ Response JSON :
 URI : `/api/email`<br/>
 Method : `PUT`<br/>
 Authorization: `Bearer Token`<br/>
-Request JSON :
+Body JSON :
 ```ts
 {
     "email": string
@@ -149,7 +146,7 @@ Response JSON :
 URI : `/api/password`<br/>
 Method : `PUT`<br/>
 Authorization: `Bearer Token`<br/>
-Request JSON :
+Body JSON :
 ```ts
 {
     "old_password": string,
@@ -170,10 +167,6 @@ Response JSON :
 URI : `/api/user`<br/>
 Method : `DELETE`<br/>
 Authorization: `Bearer Token`<br/>
-Request JSON :
-```ts
-{}
-```
 Response JSON :
 ```ts
 {
@@ -198,7 +191,7 @@ Response JSON :
 URI : `/api/keywords`<br/>
 Method : `POST`<br/>
 Authorization: `Bearer Token`<br/>
-Request JSON :
+Body JSON :
 ```ts
 {
     "name": string
@@ -207,7 +200,12 @@ Request JSON :
 Response JSON :
 ```ts
 {
-    "message": "Keyword registered"
+    "message": "Keyword registered",
+    "keyword": {
+        "id": int,
+        "name": string,
+        "user_id": int
+    }
 }
 ```
 
@@ -216,19 +214,18 @@ Response JSON :
 URI : `/api/keywords`<br/>
 Method : `GET`<br/>
 Authorization: `Bearer Token`<br/>
-Request JSON :
-```ts
-{}
-```
 Response JSON :
 ```ts
-[
-    {
-        "id": int,
-        "name": string
-    },
-    ...
-]
+{
+    "keywords": [
+        {
+            "id": int,
+            "name": string
+        },
+        ...
+    ],
+    "user_id: int
+}
 ```
 
 ###Get Keyword
@@ -236,15 +233,14 @@ Response JSON :
 URI : `/api/keywords/{id}`<br/>
 Method : `GET`<br/>
 Authorization: `Bearer Token`<br/>
-Request JSON :
-```ts
-{}
-```
 Response JSON :
 ```ts
 {
-    "id": int,
-    "name": string
+    "keyword": {
+        "id": int,
+        "name": string,
+        "user_id": int
+    }
 }
 ```
 
@@ -253,7 +249,7 @@ Response JSON :
 URI : `/api/keywords/{id}`<br/>
 Method : `PUT`<br/>
 Authorization: `Bearer Token`<br/>
-Request JSON :
+Body JSON :
 ```ts
 {
     "name": string
@@ -262,7 +258,12 @@ Request JSON :
 Response JSON :
 ```ts
 {
-    "message": "Item name update"
+    "message": "Item chill update",
+    "keyword": {
+        "id": int,
+        "name": string,
+        "user_id": int
+    }
 }
 ```
 
@@ -271,10 +272,6 @@ Response JSON :
 URI : `/api/keywords/{id}`<br/>
 Method : `DELETE`<br/>
 Authorization: `Bearer Token`<br/>
-Request JSON :
-```ts
-{}
-```
 Response JSON :
 ```ts
 {
