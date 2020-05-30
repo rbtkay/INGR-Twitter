@@ -42,7 +42,7 @@ class KeywordController extends AbstractController
 			);
 			if (!empty($exists)) {
 				return new JsonResponse(
-					['message' => 'Keyword for this name is already used'],
+					['message' => 'This keyword is already added'],
 					Response::HTTP_INTERNAL_SERVER_ERROR
 				);
 			}
@@ -129,7 +129,13 @@ class KeywordController extends AbstractController
 			);
 		}
 
-		$keyword = $k_repo->find($id);
+		$user    = $this->getUser();
+		$keyword = $k_repo->findOneBy(
+			[
+				"user" =>$user,
+				"id" => $id
+			]
+		);
 		if (empty($keyword)) {
 			return new JsonResponse(['message' => 'Wrong id'], Response::HTTP_NOT_FOUND);
 		}
@@ -164,7 +170,14 @@ class KeywordController extends AbstractController
 	 */
 	public function deleteKeyword($id, Request $request, KeywordRepository $k_repo)
 	{
-		$keyword = $k_repo->find($id);
+
+		$user    = $this->getUser();
+		$keyword = $k_repo->findOneBy(
+			[
+				"user" =>$user,
+				"id" => $id
+			]
+		);
 
 		if (empty($keyword)) {
 			return new JsonResponse(['message' => 'Wrong id'], Response::HTTP_NOT_FOUND);
