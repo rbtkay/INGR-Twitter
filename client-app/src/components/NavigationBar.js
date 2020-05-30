@@ -8,7 +8,7 @@ const NavigationBar = () => (
         <Menu>
             <Menu.Item>
                 <Link to="home">
-                    <Icon name="twitter" size="large" verticalAlign="middle" />
+                    <Icon name="twitter" size="large" />
                     INGR
                 </Link>
             </Menu.Item>

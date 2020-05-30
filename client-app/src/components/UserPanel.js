@@ -27,11 +27,7 @@ const UserPanel = () => {
                             <Link to={"/settings"}>Settings</Link>
                         </Dropdown.Item>
                         <Dropdown.Item>
-                            <Link
-                                to={"/"}
-                                style={{ color: "red" }}
-                                onClick={destroySession}
-                            >
+                            <Link to={"/"} className="text-red" onClick={destroySession}>
                                 Sign out
                             </Link>
                         </Dropdown.Item>

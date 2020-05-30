@@ -1,11 +1,11 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { Form, Button, Message } from "semantic-ui-react";
 import useFetch from "../../hooks/fetch";
 import Input from "./Input";
 
 const FormPassword = (props) => {
-    const history = useHistory();
+    const token = useSelector((state) => state.token);
     const { result, load } = useFetch(props.url, props.method || "POST");
 
     const [value, setValue] = useState("");
@@ -26,7 +26,9 @@ const FormPassword = (props) => {
                     type: "success",
                     value: result.message,
                 });
-                // TODO If Token Set Token
+                if (props.callback) {
+                    props.callback(result);
+                }
             } else {
                 setMessage({
                     display: !result.success,
@@ -54,7 +56,9 @@ const FormPassword = (props) => {
             e.preventDefault();
             if (!loading && checkValue()) {
                 setLoading(true);
-                load({ value });
+                const tp_value = {};
+                tp_value[props.name] = value;
+                load(token, tp_value);
             }
         },
         [load, value]
@@ -73,7 +77,6 @@ const FormPassword = (props) => {
                     name={props.name}
                     label={props.label}
                     placeholder={props.placeholder || ""}
-                    // TODO control value
                     setValue={(value) => setValue(value)}
                     required={true}
                     inline={true}

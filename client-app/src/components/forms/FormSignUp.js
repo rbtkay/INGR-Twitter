@@ -133,7 +133,7 @@ const FormSignUp = () => {
             />
             <Message error content={message.value} />
             <Message success content={message.value} />
-            <div style={{ textAlign: "center" }}>
+            <div className="text-center">
                 <Button color="blue" type="submit" disabled={loading}>
                     Register
                 </Button>

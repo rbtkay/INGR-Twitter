@@ -1,11 +1,13 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { Form, Button, Message } from "semantic-ui-react";
+import { setToken } from "../../actions";
 import useFetch from "../../hooks/fetch";
 import Input from "./Input";
 
 const FormPassword = () => {
-    const history = useHistory();
+    const dispatch = useDispatch();
+    const token = useSelector((state) => state.token);
     const { result, load } = useFetch("password", "PUT");
 
     const [old_password, setOldPassword] = useState("");
@@ -28,7 +30,7 @@ const FormPassword = () => {
                     type: "success",
                     value: result.message,
                 });
-                // TODO Set Token
+                dispatch(setToken(result.token));
             } else {
                 setMessage({
                     display: !result.success,
@@ -64,7 +66,7 @@ const FormPassword = () => {
             e.preventDefault();
             if (!loading && checkValues()) {
                 setLoading(true);
-                load({ old_password, new_password, confirmation });
+                load(token, { old_password, new_password, confirmation });
             }
         },
         [load, old_password, new_password, confirmation]
@@ -103,7 +105,7 @@ const FormPassword = () => {
             />
             <Message error content={message.value} />
             <Message success content={message.value} />
-            <div style={{ textAlign: "center" }}>
+            <div className="text-center">
                 <Button color="blue" type="submit" disabled={loading}>
                     Validate
                 </Button>
