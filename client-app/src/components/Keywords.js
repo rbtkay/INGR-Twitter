@@ -19,7 +19,7 @@ const Keyword = ({ index, keyword, callback, deleteIt }) => (
             color={keyword.selected ? "blue" : "grey"}
             className="keyword-label"
         >
-            #{keyword.name}
+            {keyword.name}
             {keyword.selected && <Icon name="delete" />}
         </Label>
         <Label onClick={() => deleteIt(index)} color="red" className="delete">
