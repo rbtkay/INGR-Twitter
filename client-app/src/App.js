@@ -15,7 +15,18 @@ const App = () => {
     let history = useHistory();
     const token = useSelector((state) => state.token);
     const [loading, setLoading] = useState(true);
-    const { result, load } = useFetch("user");
+    const [timer, setTimer] = useState(null);
+    const { result: resultUser, load: getUser } = useFetch("user");
+    const { result: resultToken, load: refreshToken } = useFetch("refresh-token");
+
+    const setTimerToRefreshToken = () => {
+        // Stops timer if token has change beetween the 30 min, to relaunch it
+        if (timer) {
+            clearTimeout(timer);
+        }
+        // Refreshs token in 30 min
+        setTimer(setTimeout(refreshToken(token), 1800000));
+    };
 
     // Get Token from local storage
     useEffect(() => {
@@ -26,7 +37,7 @@ const App = () => {
                 setLoading(false);
                 if (st_token) {
                     dispatch(setToken(st_token));
-                    load(st_token);
+                    getUser(st_token);
                 } else {
                     history.push("/");
                 }
@@ -38,19 +49,33 @@ const App = () => {
     });
     // Get User
     useEffect(() => {
-        if (result) {
-            if (result.success) {
-                dispatch(setUser(result.user));
+        if (resultUser) {
+            if (resultUser.success) {
+                dispatch(setUser(resultUser.user));
             } else {
                 localStorage.removeItem(STORAGE_KEY);
                 localStorage.clear();
                 dispatch(removeUser());
             }
         }
-    }, [result]);
+    }, [resultUser]);
+    // Refresh Token
+    useEffect(() => {
+        if (resultToken) {
+            if (resultToken.success) {
+                dispatch(setToken(resultToken.token));
+            } else {
+                clearTimeout(timer);
+                localStorage.removeItem(STORAGE_KEY);
+                localStorage.clear();
+                dispatch(removeUser());
+            }
+        }
+    }, [resultToken]);
     // Update Token
     useEffect(() => {
         if (token) {
+            setTimerToRefreshToken(token);
             localStorage.setItem(STORAGE_KEY, token);
         }
     }, [token]);

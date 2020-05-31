@@ -14,6 +14,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
 	/**
+	 * @Route("/api/refresh-token", name="refresh-token", methods={"GET"})
+	 */
+	public function refreshToken(Request $request, JWTTokenManagerInterface $JWTManager)
+	{
+		return new JsonResponse(
+			["token" => $JWTManager->create($this->getUser())],
+			Response::HTTP_OK
+		);
+	}
+
+	/**
 	 * @Route("/api/users", name="register", methods={"POST"})
 	 */
 	public function register(Request $request, UserRepository $u_repo, JWTTokenManagerInterface $JWTManager)
@@ -116,9 +127,9 @@ class UserController extends AbstractController
 	{
 		$user   = $this->getUser();
 		$return = [
-			'id'       => $user->getId(),
-			'username' => $user->getUsername(),
-			'email'    => $user->getEmail(),
+			'id'           => $user->getId(),
+			'username'     => $user->getUsername(),
+			'email'        => $user->getEmail(),
 			'twitter_name' => $user->getTwitterName()
 		];
 		return new JsonResponse(["user" => $return], Response::HTTP_OK);
