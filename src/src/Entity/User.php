@@ -51,6 +51,11 @@ class User implements UserInterface
 	 */
 	private $twitter_name;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Tweet::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $tweets;
+
 	/**
      * @ORM\OneToMany(targetEntity=Tweet::class, mappedBy="user", orphanRemoval=true)
      */
@@ -69,9 +74,9 @@ class User implements UserInterface
 	 * @return int|null
 	 */
 	public function getId() : ?int
-	{
-		return $this->id;
-	}
+               	{
+               		return $this->id;
+               	}
 
 	/**
 	 * A visual identifier that represents this user.
@@ -79,106 +84,106 @@ class User implements UserInterface
 	 * @see UserInterface
 	 */
 	public function getUsername() : string
-	{
-		return (string) $this->username;
-	}
+               	{
+               		return (string) $this->username;
+               	}
 
 	/**
 	 * @param string $username
 	 * @return User
 	 */
 	public function setUsername(string $username) : self
-	{
-		$this->username = $username;
-
-		return $this;
-	}
+               	{
+               		$this->username = $username;
+               
+               		return $this;
+               	}
 
 	/**
 	 * @see UserInterface
 	 */
 	public function getRoles() : array
-	{
-		$roles = $this->roles;
-		// guarantee every user at least has ROLE_USER
-		$roles[] = 'ROLE_USER';
-
-		return array_unique($roles);
-	}
+               	{
+               		$roles = $this->roles;
+               		// guarantee every user at least has ROLE_USER
+               		$roles[] = 'ROLE_USER';
+               
+               		return array_unique($roles);
+               	}
 
 	/**
 	 * @param array $roles
 	 * @return User
 	 */
 	public function setRoles(array $roles) : self
-	{
-		$this->roles = $roles;
-
-		return $this;
-	}
+               	{
+               		$this->roles = $roles;
+               
+               		return $this;
+               	}
 
 	/**
 	 * @see UserInterface
 	 */
 	public function getPassword() : string
-	{
-		return (string) $this->password;
-	}
+               	{
+               		return (string) $this->password;
+               	}
 
 	/**
 	 * @param string $password
 	 * @return User
 	 */
 	public function setPassword(string $password) : self
-	{
-		$this->password = $password;
-
-		return $this;
-	}
+               	{
+               		$this->password = $password;
+               
+               		return $this;
+               	}
 
 	/**
 	 * @see UserInterface
 	 */
 	public function getSalt()
-	{
-		// not needed when using the "bcrypt" algorithm in security.yaml
-	}
+               	{
+               		// not needed when using the "bcrypt" algorithm in security.yaml
+               	}
 
 	/**
 	 * @see UserInterface
 	 */
 	public function eraseCredentials()
-	{
-		// If you store any temporary, sensitive data on the user, clear it here
-		// $this->plainPassword = null;
-	}
+               	{
+               		// If you store any temporary, sensitive data on the user, clear it here
+               		// $this->plainPassword = null;
+               	}
 
 	/**
 	 * @return string|null
 	 */
 	public function getEmail() : ?string
-	{
-		return $this->email;
-	}
+               	{
+               		return $this->email;
+               	}
 
 	/**
 	 * @param string $email
 	 * @return User
 	 */
 	public function setEmail(string $email) : self
-	{
-		$this->email = $email;
-
-		return $this;
-	}
+               	{
+               		$this->email = $email;
+               
+               		return $this;
+               	}
 	
 	/**
 	 * @return string|null
 	 */
 	public function getTwitterName(): ?string
-	{
-		return $this->twitter_name;
-	}
+               	{
+               		return $this->twitter_name;
+               	}
 
  	/**
 	 * @param string $twitter_name
@@ -195,42 +200,42 @@ class User implements UserInterface
 	 * @return Collection|Keyword[]
 	 */
 	public function getKeywords() : Collection
-	{
-		return $this->keywords;
-	}
+               	{
+               		return $this->keywords;
+               	}
 
 	/**
 	 * @param Keyword $keyword
 	 * @return User
 	 */
 	public function addKeyword(Keyword $keyword) : self
-	{
-		if (!$this->keywords->contains($keyword)) {
-			$this->keywords[] = $keyword;
-			$keyword->setUser($this);
-		}
-
-		return $this;
-	}
+               	{
+               		if (!$this->keywords->contains($keyword)) {
+               			$this->keywords[] = $keyword;
+               			$keyword->setUser($this);
+               		}
+               
+               		return $this;
+               	}
 
 	/**
 	 * @param Keyword $keyword
 	 * @return User
 	 */
 	public function removeKeyword(Keyword $keyword) : self
-	{
-		if ($this->keywords->contains($keyword)) {
-			$this->keywords->removeElement($keyword);
-			// set the owning side to null (unless already changed)
-			if ($keyword->getUser() === $this) {
-				$keyword->setUser(null);
-			}
-		}
+  {
+      if ($this->keywords->contains($keyword)) {
+          $this->keywords->removeElement($keyword);
+          // set the owning side to null (unless already changed)
+          if ($keyword->getUser() === $this) {
+              $keyword->setUser(null);
+          }
+      }
+           
+      return $this;
+  }
 
-		return $this;
-	}
-
-	/**
+    /**
      * @return Collection|Tweet[]
      */
     public function getTweets(): Collection

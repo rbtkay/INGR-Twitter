@@ -18,7 +18,7 @@ class Tweet
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255)
      */
     private $twitter_id;
 
@@ -37,6 +37,11 @@ class Tweet
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
+  
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $tweet_date;
 
     public function getId(): ?int
     {
@@ -90,4 +95,17 @@ class Tweet
 
         return $this;
     }
+
+    public function getTweetDate(): ?\DateTimeInterface
+    {
+        return $this->tweet_date;
+    }
+
+    public function setTweetDate(\DateTimeInterface $tweet_date): self
+    {
+        $this->tweet_date = $tweet_date;
+
+        return $this;
+    }
 }
+
