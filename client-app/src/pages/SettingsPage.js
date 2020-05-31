@@ -1,11 +1,14 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Header, Segment, Grid, Container, Button, Divider } from "semantic-ui-react";
+import { setToken } from "../actions";
 import FormPassword from "../components/forms/FormPassword";
 import MiniForm from "../components/forms/MiniForm";
 
 const SettingsPage = () => {
+    const dispatch = useDispatch();
     const user = useSelector((state) => state);
+
     return (
         <main className="settings">
             <Container>
@@ -19,6 +22,7 @@ const SettingsPage = () => {
                                 label="Change Username"
                                 placeholder={user.username}
                                 method="PUT"
+                                callback={(token) => dispatch(setToken(token))}
                             />
                             <MiniForm
                                 url="email"

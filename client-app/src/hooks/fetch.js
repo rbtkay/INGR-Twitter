@@ -4,7 +4,7 @@ import { API_URL } from "../constants";
 const useFetch = (url, method = "GET") => {
     const [result, setResult] = useState(null);
     const load = useCallback(
-        async (token, data) => {
+        async (token, data, dataUrl = "") => {
             // console.log(data);
             const params = {
                 method,
@@ -21,10 +21,10 @@ const useFetch = (url, method = "GET") => {
             }
 
             try {
-                const response = await fetch(API_URL + url, params);
+                const response = await fetch(API_URL + url + dataUrl, params);
                 // console.log(response);
                 const responseJson = await response.json();
-                // console.log(responseJson);
+                console.log(responseJson);
                 if (response.ok && (response.status === 200 || response.status === 201)) {
                     responseJson.success = true;
                     setResult(responseJson);

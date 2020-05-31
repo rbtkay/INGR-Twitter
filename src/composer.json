@@ -5,6 +5,7 @@
     "php": "^7.4",
     "ext-ctype": "*",
     "ext-iconv": "*",
+    "abraham/twitteroauth": "^1.1",
     "lexik/jwt-authentication-bundle": "^2.6",
     "nelmio/cors-bundle": "^2.0",
     "symfony/console": "5.0.*",

@@ -38,7 +38,7 @@ const HomePage = () => {
                 <Grid columns={2}>
                     <GridColumn>
                         <Header as="h1" color="blue">
-                            <Icon name="twitter" size="large" verticalAlign="middle" />
+                            <Icon name="twitter" size="large" />
                             INGR
                         </Header>
                         <article>
