@@ -29,6 +29,8 @@ services:
       - DATABASE_URL=mysql://${DATABASE_USER}:${DATABASE_PASSWORD}@database:3306/${DATABASE_NAME}?serverVersion=5.7
     volumes:
       - ../src:/var/www
+      # - ./cron_tasks/minute/test.sh:/etc/periodic/minute/:ro
+      # - ./cron_tasks/startup/startup.sh:/usr/local/startup.sh:ro
 
   nginx:
     container_name: server

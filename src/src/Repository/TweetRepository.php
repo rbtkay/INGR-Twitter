@@ -9,6 +9,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 use \DateTime;
+use Twig\Node\Expression\Test\ConstantTest;
+
 /**
  * @method Tweet|null find($id, $lockMode = null, $lockVersion = null)
  * @method Tweet|null findOneBy(array $criteria, array $orderBy = null)
@@ -36,32 +38,35 @@ class TweetRepository extends ServiceEntityRepository
         $this->_em->flush();
     }
 
-    // /**
-    //  * @return Tweet[] Returns an array of Tweet objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Tweet[] Returns an array of Tweet objects for a specific user
+     */
+    public function findTweetsByUser(int $user_id)
     {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('tweet')
+            ->andWhere('tweet.user = :val')
+            ->setParameter('val', $user_id)
+            ->orderBy('tweet.id', 'ASC')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Tweet
+    /**
+     * @return Tweet Returns a tweet object
+     */
+    public function findOneById($id): ?Tweet
     {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
+        return $this->createQueryBuilder('tweet')
+            ->andWhere('tweet.twitter_id = :val')
+            ->setMaxResults(1)
+            ->setParameter('val', $id)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
     }
-    */
+
+    public function delete(Tweet $tweet)
+    {
+        $this->_em->remove($tweet);
+        $this->_em->flush();
+    }
 }

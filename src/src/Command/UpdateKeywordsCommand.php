@@ -72,7 +72,7 @@ class UpdateKeywordsCommand extends Command
 //        dd($keyword_in_tweets);
         $tweet_count = count($keyword_in_tweets->statuses);
 
-        dd($$tweet_count);
+        dd($tweet_count);
         foreach ($users as $user) {
             $tweets = $connection->get($url, ["screen_name" => $user->getTwitterName()]);
             $this->addNewTweets($tweets, $user);
