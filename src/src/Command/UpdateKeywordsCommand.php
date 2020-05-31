@@ -57,14 +57,24 @@ class UpdateKeywordsCommand extends Command
         $dotenv = new Dotenv();
         $dotenv->load('/var/www/.env');
 
-        $url = "https://api.twitter.com/1.1/statuses/user_timeline.json";
-
+//        $url = "https://api.twitter.com/1.1/statuses/user_timeline.json";
+        $url = "statuses/user_timeline";
         $connection = new TwitterOAuth($_ENV["CONSUMER_KEY"], $_ENV["CONSUMER_SECRET"], $_ENV["TWITTER_API_ACCESS_TOKEN"], $_ENV["TWITTER_API_ACCESS_TOKEN_SECRET"]);
 
-//        $keyword_in_tweets = $connection->get("statuses/user_timeline", ["q" => "#Motivation"]);
+        $keyword_in_tweets = $connection->get("search/tweets", ["q" => "#ingrproject"]);
+//        dd($keyword_in_tweets);
+        //keyword_in_tweets contains an array (statuses) of tweets with the specified word, and an object (search_metadata) representing the params sent
+//        foreach ($keyword_in_tweets->statuses as $status) {
+//            echo "item - ";
+//            dump(gettype($status));
+//            dump($status->entities->hashtags);
+//        }
+//        dd($keyword_in_tweets);
+        $tweet_count = count($keyword_in_tweets->statuses);
 
+        dd($$tweet_count);
         foreach ($users as $user) {
-            $tweets = $connection->get("statuses/user_timeline", ["screen_name" => $user->getTwitterName()]);
+            $tweets = $connection->get($url, ["screen_name" => $user->getTwitterName()]);
             $this->addNewTweets($tweets, $user);
             $this->deleteOldTweets($tweets, $user);
         }
@@ -87,15 +97,12 @@ class UpdateKeywordsCommand extends Command
     private function deleteOldTweets(array $tweets, User $user)
     {
         $user_tweets = $this->t_repo->findTweetsByUser($user->getId());
-
         $tweets_ids = array_map(function ($tweet) {
             return $tweet->id;
         }, $tweets);
-
         for ($i = 0; $i < count($user_tweets); $i++) {
             $user_tweet_id = $user_tweets[$i]->getTwitterId();
-
-            if(!in_array($user_tweet_id, $tweets_ids)){
+            if (!in_array($user_tweet_id, $tweets_ids)) {
                 $this->t_repo->delete($user_tweets[$i]);
             }
         }
