@@ -51,11 +51,6 @@ class User implements UserInterface
 	 */
 	private $twitter_name;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Tweet::class, mappedBy="user", orphanRemoval=true)
-     */
-    private $tweets;
-
 	/**
      * @ORM\OneToMany(targetEntity=Tweet::class, mappedBy="user", orphanRemoval=true)
      */
