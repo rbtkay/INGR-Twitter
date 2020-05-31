@@ -26,6 +26,7 @@ class KeywordRepository extends ServiceEntityRepository
 
 	/**
 	 * @param string $name
+	 * @return Keyword
 	 * @throws \Doctrine\ORM\ORMException
 	 * @throws \Doctrine\ORM\OptimisticLockException
 	 */
@@ -36,6 +37,7 @@ class KeywordRepository extends ServiceEntityRepository
 		$keyword->setUser($user);
 		$this->_em->persist($keyword);
 		$this->_em->flush();
+		return $keyword;
 	}
 
 	/**
@@ -50,7 +52,7 @@ class KeywordRepository extends ServiceEntityRepository
 		$updated_rows = [];
 		if (!empty($data['name'])) {
 			$keyword->setName($data['name']);
-			$updated_rows[] = 'username';
+			$updated_rows['name'] = $data['name'];
 		}
 
 		$this->_em->persist($keyword);

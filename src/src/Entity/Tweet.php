@@ -37,7 +37,7 @@ class Tweet
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
-
+  
     /**
      * @ORM\Column(type="datetime")
      */
@@ -108,3 +108,4 @@ class Tweet
         return $this;
     }
 }
+

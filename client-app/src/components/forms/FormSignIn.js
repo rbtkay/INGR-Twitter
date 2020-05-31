@@ -1,8 +1,8 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Form, Button, Message } from "semantic-ui-react";
-import { setUser } from "../actions";
-import useFetch from "../hooks/fetch";
+import { setUser } from "../../actions";
+import useFetch from "../../hooks/fetch";
 import Input from "./Input";
 
 const FormSignIn = () => {
@@ -12,6 +12,7 @@ const FormSignIn = () => {
     const [loading, setLoading] = useState(false);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+
     const [message, setMessage] = useState({
         display: false,
         type: "",
@@ -77,6 +78,7 @@ const FormSignIn = () => {
             error={message.type === "error" && message.display}
             success={message.type === "success" && message.display}
             onSubmit={onSubmit}
+            loading={loading}
         >
             <Input
                 name={"username"}
@@ -95,8 +97,8 @@ const FormSignIn = () => {
             />
             <Message error content={message.value} />
             <Message success content={message.value} />
-            <div style={{ textAlign: "center" }}>
-                <Button color="green" type="submit" disabled={loading}>
+            <div className="text-center">
+                <Button color="blue" type="submit" disabled={loading}>
                     Login
                 </Button>
             </div>

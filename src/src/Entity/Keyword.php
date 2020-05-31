@@ -18,13 +18,13 @@ class Keyword
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=140, unique=true)
+     * @ORM\Column(type="string", length=140)
      */
     private $name;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="keywords")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $user;
 
