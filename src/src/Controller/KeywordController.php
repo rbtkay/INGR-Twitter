@@ -295,9 +295,10 @@ class KeywordController extends AbstractController
 
 	/**
 	 * @Route("/api/keywords/{k_id}/scores/{s_id}", name="score", methods={"GET"})
-	 * @param $k_is
+	 * @param $k_id
 	 * @param $s_id
 	 * @param Request $request
+	 * @param KeywordRepository $k_repo
 	 * @param ScoreRepository $s_repo
 	 * @return JsonResponse
 	 */
@@ -332,6 +333,4 @@ class KeywordController extends AbstractController
 
 		return new JsonResponse(["score" => $return], Response::HTTP_OK);
 	}
-	// TODO : delete on cascade les scores quand on supprime un keyword
-
 }
