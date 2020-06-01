@@ -13,42 +13,44 @@ It's analytic plateform.
 
 
 ## Clone the project using the terminal :
-```
+```shell
 git clone git@github.com:rbtkay/INGR-Twitter.git
 ```
 
-## Modify environment variables
+## Launch INGR-Twitter on local machine
 
-Rename the **.env.sample** from docker/ to **.env**, and insert your values :
- - DATABASE_NAME
- - DATABASE_USER
- - DATABASE_PASSWORD
- - DATABASE_ROOT_PASSWORD
- - APP_SECRET
- - JWT_PASSPHRASE
- - TWITTER_KEY
+#### 1. Make sure you have ***docker*** installed on your machine ####
+#### 2. Modify environment variables #### 
+Rename the **.env.sample** from docker/ to **.env**, and insert your values:
+- DATABASE_NAME
+- DATABASE_USER
+- DATABASE_PASSWORD
+- DATABASE_ROOT_PASSWORD
+- APP_SECRET
+- JWT_PASSPHRASE
+- TWITTER_API_ACCESS_TOKEN
+- TWITTER_API_ACCESS_TOKEN_SECRET
+- CONSUMER_KEY
+- CONSUMER_SECRET
 
-## Launch docker
-`cd INGR-Twitter/docker/`
 
-First time : `docker-compose up -- build`
-
-Next time : `docker-compose up`
-
-## Generate Public/Private keys for JWT :
-
-Generate private key will ask you a passphrase. Set it to `JWT_PASSPHRASE`  env variable.
+#### 2. Navigate to the appropriate folder ####
+```shell
+cd INGR-Twitter/docker/
 ```
-docker exec -ti php /bin/sh
-openssl genrsa -out config/jwt/private.pem -aes256 4096
-openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
-chmod 644 config/jwt/private.pem
+#### 3. Run Project ####
 
-bin/console make:migration
-bin/console doctrine:migrations:migrate
-y
-exit
+If you've just clone the project execute
+```shell
+docker-compose up --build
 ```
+The server might take several minutes to be ready for connections, it needs to wait for the database to finish setting up. Be patient ;) 
+
+If on the other hand you're pulling and already have a set of data established you can execute 
+```shell
+docker-compose up
+```
+This last command will be faster since the database is already built
 
 ## Contributing
 INGR-Twitter is an Open Source project. Please review [source: [the guidelines for contributing]
