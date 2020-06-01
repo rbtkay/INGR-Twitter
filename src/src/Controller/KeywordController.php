@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\KeywordRepository;
+use App\Repository\ScoreRepository;
 use JsonException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -132,8 +133,8 @@ class KeywordController extends AbstractController
 		$user    = $this->getUser();
 		$keyword = $k_repo->findOneBy(
 			[
-				"user" =>$user,
-				"id" => $id
+				"user" => $user,
+				"id"   => $id
 			]
 		);
 		if (empty($keyword)) {
@@ -170,12 +171,11 @@ class KeywordController extends AbstractController
 	 */
 	public function deleteKeyword($id, Request $request, KeywordRepository $k_repo)
 	{
-
 		$user    = $this->getUser();
 		$keyword = $k_repo->findOneBy(
 			[
-				"user" =>$user,
-				"id" => $id
+				"user" => $user,
+				"id"   => $id
 			]
 		);
 
@@ -191,63 +191,74 @@ class KeywordController extends AbstractController
 		);
 	}
 
-//	/**
-//	 * @Route("/api/keywords/score", name="insert_score", methods={"POST"})
-//	 * @param Request $request
-//	 * @param KeywordRepository $k_repo
-//	 * @return JsonResponse
-//	 * @throws \Doctrine\ORM\ORMException
-//	 * @throws \Doctrine\ORM\OptimisticLockException
-//	 */
-//	public function addScore(Request $request, KeywordRepository $k_repo)
-//	{
-//		try {
-//			$data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
-//		} catch (JsonException $e) {
-//			return new JsonResponse(
-//				['error' => $e->getCode(), 'message' => $e->getMessage()],
-//				Response::HTTP_BAD_REQUEST
-//			);
-//		}
-//
-//		if (empty($data['name'])) {
-//			return new JsonResponse(['message' => 'Name is required'], Response::HTTP_BAD_REQUEST);
-//		}
-//		if (empty($data['score'])) {
-//			return new JsonResponse(['message' => 'Score is required'], Response::HTTP_BAD_REQUEST);
-//		}
-//		if (empty($data['date'])) {
-//			return new JsonResponse(['message' => 'Datetime is required'], Response::HTTP_BAD_REQUEST);
-//		}
-//		if (!empty($data['name']) && !empty($data['score']) && !empty($data['date'])) {
-//			$exists = $k_repo->findOneBy(
-//				[
-//					'name' => $data['name'],
-//					'score' => $data['score'],
-//					'date'	=> $data['date'],
-//					'user' => $this->getUser()
-//				]
-//			);
-//			if (!empty($exists)) {
-//				return new JsonResponse(
-//					['message' => 'Score\'s keyword for this datetime is already used'],
-//					Response::HTTP_INTERNAL_SERVER_ERROR
-//				);
-//			}
-//			$k_repo->insertScore($this->getUser(), $data);
-//
-//			return new JsonResponse(['message' => 'Score\'s keyword registered'], Response::HTTP_CREATED);
-//		}
-//		return new JsonResponse(['error' => 'Score\'s keyword incomplete'], Response::HTTP_BAD_REQUEST);
-//	}
+	/**
+	 * @Route("/api/keywords/{id}/scores", name="insert_score", methods={"POST"})
+	 * @param $id
+	 * @param Request $request
+	 * @param KeywordRepository $k_repo
+	 * @param ScoreRepository $s_repo
+	 * @return JsonResponse
+	 * @throws \Doctrine\ORM\ORMException
+	 * @throws \Doctrine\ORM\OptimisticLockException
+	 */
+	public function addScore($id, Request $request, KeywordRepository $k_repo, ScoreRepository $s_repo)
+	{
+		try {
+			$data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
+		} catch (JsonException $e) {
+			return new JsonResponse(
+				['error' => $e->getCode(), 'message' => $e->getMessage()],
+				Response::HTTP_BAD_REQUEST
+			);
+		}
 
-//	/**
-//	 * @Route("/api/keyyword/{id}/score", name="scores", methods={"GET"})
-//	 */
-//
-//	/**
-//	 * @Route("/api/keyyword/{id}/score/{id}", name="score", methods={"GET"})
-//	 */
+		$keyword = $k_repo->findOneBy(
+			[
+				"user" => $this->getUser(),
+				"id"   => $id
+			]
+		);
+		if (empty($keyword)) {
+			return new JsonResponse(['message' => 'Wrong id'], Response::HTTP_NOT_FOUND);
+		}
+		if (empty($data['number'])) {
+			return new JsonResponse(['message' => 'Score is required'], Response::HTTP_BAD_REQUEST);
+		}
+
+		// TODO : Score->getDate === current datetime ???
+		//		$exists = $s_repo->findOneBy(
+		//			[
+		//				'number' => $data['number'],
+		//				'keyword' => $id,
+		//			]
+		//		);
+		//		if (!empty($exists)) {
+		//			return new JsonResponse(
+		//				['message' => 'Score\'s keyword for this datetime is already used'],
+		//				Response::HTTP_INTERNAL_SERVER_ERROR
+		//			);
+		//		}
+		$score_result = $s_repo->insertScore($keyword, $data);
+		$return = [
+			'id'         => $score_result->getId(),
+			'number'     => $score_result->getNumber(),
+			'date'       => $score_result->getDate(),
+			'keyword_id' => $score_result->getKeyword()->getId(),
+			'user_id'    => $this->getUser()->getId()
+		];
+
+		return new JsonResponse(
+			['message' => 'Keyword score registered', 'score' => $return], Response::HTTP_CREATED
+		);
+	}
+
+	//	/**
+	//	 * @Route("/api/keyyword/{id}/scores", name="scores", methods={"GET"})
+	//	 */
+	//
+	//	/**
+	//	 * @Route("/api/keyyword/{id}/scores/{id}", name="score", methods={"GET"})
+	//	 */
 
 	// TODO : delete on cascade les scores quand on supprime un keyword
 

@@ -278,3 +278,32 @@ Response JSON :
     "message": "Keyword deleted"
 }
 ```
+
+###Add Keyword Score
+
+URI : `/api/keywords/{id}/scores`<br/>
+Method : `POST`<br/>
+Authorization: `Bearer Token`<br/>
+Body JSON :
+```ts
+{
+    "number": int
+}
+```
+Response JSON :
+```ts
+{
+    "message": "Keyword score registered",
+    "score": {
+        "id": int,
+        "number": int,
+        "date": {
+            "date": datetime,
+            "timezone_type": int,
+            "timezone": string
+        },
+        "keyword_id": int,
+        "user_id": int
+    }
+}
+```
