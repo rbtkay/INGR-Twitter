@@ -248,21 +248,18 @@ class KeywordController extends AbstractController
 			return new JsonResponse(['message' => 'Date is required'], Response::HTTP_BAD_REQUEST);
 		}
 
-		// TODO : check if score exists
-		//dd($data['date']);
-//		$exists = $s_repo->findBy(
-//			[
-//				// 'number'  => $data['number'],
-//				'date'    => $data['date'],
-//				'keyword' => $id,
-//			]
-//		);
-//		if (!empty($exists)) {
-//			return new JsonResponse(
-//				['message' => 'Score\'s keyword for this datetime is already used'],
-//				Response::HTTP_INTERNAL_SERVER_ERROR
-//			);
-//		}
+		$exists = $s_repo->findBy(
+			[
+				'date'    => new \Datetime($data['date']),
+				'keyword' => $id,
+			]
+		);
+		if (!empty($exists)) {
+			return new JsonResponse(
+				['message' => 'Score\'s keyword for this datetime is already used'],
+				Response::HTTP_INTERNAL_SERVER_ERROR
+			);
+		}
 
 		$score_result = $s_repo->insertScore($keyword, $data);
 		$return       = [
