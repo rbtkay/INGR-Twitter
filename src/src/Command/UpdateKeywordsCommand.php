@@ -41,42 +41,30 @@ class UpdateKeywordsCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $arg1 = $input->getArgument('arg1');
+        // $arg1 = $input->getArgument('arg1');
 
-        if ($arg1) {
-            $io->note(sprintf('You passed an argument: %s', $arg1));
-        }
+        // if ($arg1) {
+        //     $io->note(sprintf('You passed an argument: %s', $arg1));
+        // }
 
-        if ($input->getOption('option1')) {
-            // ...
-        }
+        // if ($input->getOption('option1')) {
+        //     // ...
+        // }
 
-        $users = $this->u_repo->findAll();
+        $users = $this->u_repo->findAll(); // TODO: handle error 
         $io->success($users[0]->getUsername());
 
-        $dotenv = new Dotenv();
-        $dotenv->load('/var/www/.env');
+        $url = "statuses/user_timeline"; 
+        $connection = new TwitterOAuth(getenv("CONSUMER_KEY"), getenv("CONSUMER_SECRET"), getenv("TWITTER_API_ACCESS_TOKEN"), getenv("TWITTER_API_ACCESS_TOKEN_SECRET"));
 
-//        $url = "https://api.twitter.com/1.1/statuses/user_timeline.json";
-        $url = "statuses/user_timeline";
-        $connection = new TwitterOAuth($_ENV["CONSUMER_KEY"], $_ENV["CONSUMER_SECRET"], $_ENV["TWITTER_API_ACCESS_TOKEN"], $_ENV["TWITTER_API_ACCESS_TOKEN_SECRET"]);
+        $keyword_in_tweets = $connection->get("search/tweets", ["q" => "#ipssi", "count" => "100"]); // TODO: make the hashtag dynamic by user
 
-        $keyword_in_tweets = $connection->get("search/tweets", ["q" => "#ingrproject"]);
-//        dd($keyword_in_tweets);
-        //keyword_in_tweets contains an array (statuses) of tweets with the specified word, and an object (search_metadata) representing the params sent
-//        foreach ($keyword_in_tweets->statuses as $status) {
-//            echo "item - ";
-//            dump(gettype($status));
-//            dump($status->entities->hashtags);
-//        }
-//        dd($keyword_in_tweets);
         $tweet_count = count($keyword_in_tweets->statuses);
-
         dd($tweet_count);
         foreach ($users as $user) {
             $tweets = $connection->get($url, ["screen_name" => $user->getTwitterName()]);
-            $this->addNewTweets($tweets, $user);
-            $this->deleteOldTweets($tweets, $user);
+            $this->addNewTweets($tweets, $user); //add new tweets in case they're not already stored
+            $this->deleteOldTweets($tweets, $user); //delete from the database tweets deleted from tweeter
         }
 
         $io->success('Command Completed');
