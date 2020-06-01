@@ -48,7 +48,7 @@ class KeywordController extends AbstractController
 				);
 			}
 			$keyword_result = $k_repo->insert($this->getUser(), $keyword['name']);
-			$return = [
+			$return         = [
 				'id'      => $keyword_result->getId(),
 				'name'    => $keyword_result->getName(),
 				'user_id' => $keyword_result->getUser()->getId()
@@ -142,7 +142,7 @@ class KeywordController extends AbstractController
 		}
 
 		$updated_rows = $k_repo->update($keyword, $data);
-		$k_return = [
+		$k_return     = [
 			'id'      => $keyword->getId(),
 			'name'    => $updated_rows['name'],
 			'user_id' => $keyword->getUser()->getId(),
@@ -239,7 +239,7 @@ class KeywordController extends AbstractController
 		//			);
 		//		}
 		$score_result = $s_repo->insertScore($keyword, $data);
-		$return = [
+		$return       = [
 			'id'         => $score_result->getId(),
 			'number'     => $score_result->getNumber(),
 			'date'       => $score_result->getDate(),
@@ -262,7 +262,7 @@ class KeywordController extends AbstractController
 	 */
 	public function getScores($id, Request $request, KeywordRepository $k_repo, ScoreRepository $s_repo)
 	{
-		$user     = $this->getUser();
+		$user    = $this->getUser();
 		$keyword = $k_repo->findOneBy(
 			[
 				"user" => $user,
@@ -279,21 +279,59 @@ class KeywordController extends AbstractController
 			return new JsonResponse(['message' => 'No score data'], Response::HTTP_NOT_FOUND);
 		}
 
-		$return   = [];
+		$return = [];
 		foreach ($scores as $score) {
 			$return[] = [
-				'id'   => $score->getId(),
+				'id'     => $score->getId(),
 				'number' => $score->getNumber(),
 			];
 		}
 
-		return new JsonResponse(["scores" => $return, "keyword_id" => $keyword->getId(), "user_id" => $user->getId()], Response::HTTP_OK);
+		return new JsonResponse(
+			["scores" => $return, "keyword_id" => $keyword->getId(), "user_id" => $user->getId()],
+			Response::HTTP_OK
+		);
 	}
 
-	//	/**
-	//	 * @Route("/api/keyyword/{id}/scores/{id}", name="score", methods={"GET"})
-	//	 */
+	/**
+	 * @Route("/api/keywords/{k_id}/scores/{s_id}", name="score", methods={"GET"})
+	 * @param $k_is
+	 * @param $s_id
+	 * @param Request $request
+	 * @param ScoreRepository $s_repo
+	 * @return JsonResponse
+	 */
+	public function getScoreById($k_id, $s_id, Request $request, KeywordRepository $k_repo, ScoreRepository $s_repo)
+	{
+		$user    = $this->getUser();
+		$keyword = $k_repo->findOneBy(
+			[
+				"id"   => $k_id,
+				"user" => $user,
+			]
+		);
+		if (empty($keyword)) {
+			return new JsonResponse(['message' => 'Wrong keyword id'], Response::HTTP_NOT_FOUND);
+		}
+		$score = $s_repo->findOneBy(
+			[
+				"id"      => $s_id,
+				"keyword" => $keyword,
+			]
+		);
+		if (empty($score)) {
+			return new JsonResponse(['message' => 'Wrong score id'], Response::HTTP_NOT_FOUND);
+		}
 
+		$return = [
+			'id'         => $score->getId(),
+			'number'     => $score->getNumber(),
+			'keyword_id' => $score->getKeyword()->getId(),
+			'user_id'    => $user->getId()
+		];
+
+		return new JsonResponse(["score" => $return], Response::HTTP_OK);
+	}
 	// TODO : delete on cascade les scores quand on supprime un keyword
 
 }

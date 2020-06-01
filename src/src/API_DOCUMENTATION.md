@@ -327,3 +327,20 @@ Response JSON :
     "user_id": int
 }
 ```
+
+###Get Keyword Score
+
+URI : `/api/keywords/{k_id}/scores/{s_id}`<br/>
+Method : `GET`<br/>
+Authorization: `Bearer Token`<br/>
+Response JSON :
+```ts
+{
+    "score": {
+        "id": int,
+        "number": int,
+        "keyword_id": int,
+        "user_id": int
+    }
+}
+```
