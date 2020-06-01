@@ -26,11 +26,13 @@ services:
       - APP_ENV=${APP_ENV}
       - APP_SECRET=${APP_SECRET}
       - JWT_PASSPHRASE=${JWT_PASSPHRASE}
+      - TWITTER_API_ACCESS_TOKEN=${TWITTER_API_ACCESS_TOKEN}
+      - TWITTER_API_ACCESS_TOKEN_SECRET=${TWITTER_API_ACCESS_TOKEN_SECRET}
+      - CONSUMER_KEY=${CONSUMER_KEY}
+      - CONSUMER_SECRET=${CONSUMER_SECRET}
       - DATABASE_URL=mysql://${DATABASE_USER}:${DATABASE_PASSWORD}@database:3306/${DATABASE_NAME}?serverVersion=5.7
     volumes:
       - ../src:/var/www
-      # - ./cron_tasks/minute/test.sh:/etc/periodic/minute/:ro
-      # - ./cron_tasks/startup/startup.sh:/usr/local/startup.sh:ro
 
   nginx:
     container_name: server
@@ -56,38 +58,6 @@ services:
       - ../client-app:/usr/src/app
     ports:
       - "3000:3000"
-
-  # tasker:
-  #   image: strm/tasker
-  #   volumes:
-  #     - "/var/run/docker.sock:/var/run/docker.sock"
-  #   environment:
-  #     configuration: |
-  #       schedule:
-  #         - every: minute
-  #           task: hello
-  #       tasks:
-  #         docker:
-  #           - name: hello
-  #             image: debian:jessie
-  #             script:
-  #               - ./testScript.sh
-
-  # tasker:
-  #   image: strm/tasker
-  #   volumes:
-  #     - "../src:/var/www"
-  #   environment:
-  #     configuration: |
-  #       schedule:
-  #         - every: minute
-  #           task: hello
-  #       tasks:
-  #         docker:
-  #           - name: hello
-  #             image: debian:jessie
-  #             script:
-  #               - ./testScript.sh
 
 
   # node:
