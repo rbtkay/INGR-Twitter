@@ -30,7 +30,7 @@ class KeywordRepository extends ServiceEntityRepository
 	 * @throws \Doctrine\ORM\ORMException
 	 * @throws \Doctrine\ORM\OptimisticLockException
 	 */
-	public function insert(string $name, User $user)
+	public function insert(User $user, string $name)
 	{
 		$keyword = new Keyword();
 		$keyword->setName($name);
