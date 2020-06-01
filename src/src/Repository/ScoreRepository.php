@@ -35,6 +35,7 @@ class ScoreRepository extends ServiceEntityRepository
 	{
 		$score = new Score();
 		$score->setNumber($data['number']);
+		$score->setDate(new \Datetime($data['date']));
 		$score->setKeyword($keyword);
 		$this->_em->persist($score);
 		$this->_em->flush();

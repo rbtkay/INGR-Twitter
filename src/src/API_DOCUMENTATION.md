@@ -220,11 +220,23 @@ Response JSON :
     "keywords": [
         {
             "id": int,
-            "name": string
+            "name": string,
+            "scores": [
+                {
+                    "id": int,
+                    "number": int,
+                    "date": {
+                        "date": string,
+                        "timezone_type": int,
+                        "timezone": string
+                    }
+                },
+                ...
+            ]
         },
         ...
     ],
-    "user_id: int
+    "user_id": int
 }
 ```
 
@@ -239,7 +251,18 @@ Response JSON :
     "keyword": {
         "id": int,
         "name": string,
-        "user_id": int
+        "user_id": int,
+        "scores": [
+            {
+                "id": int,
+                "number": int,
+                "date": {
+                    "date": string,
+                    "timezone_type": int,
+                    "timezone": string
+                }
+            }
+        ]
     }
 }
 ```
@@ -287,7 +310,8 @@ Authorization: `Bearer Token`<br/>
 Body JSON :
 ```ts
 {
-    "number": int
+    "number": int,
+    "date": string
 }
 ```
 Response JSON :

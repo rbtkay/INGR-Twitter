@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\ScoreRepository;
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -34,14 +33,6 @@ class Score
      */
     private $keyword;
 
-	/**
-	 * Score constructor.
-	 * @throws \Exception
-	 */
-	public function __construct()
-	{
-		$this->date = new DateTime();
-	}
 
 	/**
 	 * @return int|null

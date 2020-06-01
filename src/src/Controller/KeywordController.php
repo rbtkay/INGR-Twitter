@@ -71,9 +71,19 @@ class KeywordController extends AbstractController
 		$keywords = $k_repo->findBy(["user" => $user]);
 		$return   = [];
 		foreach ($keywords as $keyword) {
+			$scores = [];
+			foreach ($keyword->getScores() as $score) {
+				$scores[] = [
+					'id'     => $score->getId(),
+					'number' => $score->getNumber(),
+					'date'   => $score->getDate(),
+				];
+			}
+
 			$return[] = [
-				'id'   => $keyword->getId(),
-				'name' => $keyword->getName(),
+				'id'     => $keyword->getId(),
+				'name'   => $keyword->getName(),
+				'scores' => $scores
 			];
 		}
 
@@ -101,10 +111,20 @@ class KeywordController extends AbstractController
 			return new JsonResponse(['message' => 'Wrong id'], Response::HTTP_NOT_FOUND);
 		}
 
+		$scores = [];
+		foreach ($keyword->getScores() as $score) {
+			$scores[] = [
+				'id'     => $score->getId(),
+				'number' => $score->getNumber(),
+				'date'   => $score->getDate(),
+			];
+		}
+
 		$return = [
 			'id'      => $keyword->getId(),
 			'name'    => $keyword->getName(),
-			'user_id' => $user->getId()
+			'user_id' => $user->getId(),
+			'scores'  => $scores
 		];
 
 		return new JsonResponse(["keyword" => $return], Response::HTTP_OK);
@@ -224,20 +244,26 @@ class KeywordController extends AbstractController
 		if (empty($data['number'])) {
 			return new JsonResponse(['message' => 'Score is required'], Response::HTTP_BAD_REQUEST);
 		}
+		if (empty($data['date'])) {
+			return new JsonResponse(['message' => 'Date is required'], Response::HTTP_BAD_REQUEST);
+		}
 
-		// TODO : Score->getDate === current datetime ???
-		//		$exists = $s_repo->findOneBy(
-		//			[
-		//				'number' => $data['number'],
-		//				'keyword' => $id,
-		//			]
-		//		);
-		//		if (!empty($exists)) {
-		//			return new JsonResponse(
-		//				['message' => 'Score\'s keyword for this datetime is already used'],
-		//				Response::HTTP_INTERNAL_SERVER_ERROR
-		//			);
-		//		}
+		// TODO : check if score exists
+		//dd($data['date']);
+//		$exists = $s_repo->findBy(
+//			[
+//				// 'number'  => $data['number'],
+//				'date'    => $data['date'],
+//				'keyword' => $id,
+//			]
+//		);
+//		if (!empty($exists)) {
+//			return new JsonResponse(
+//				['message' => 'Score\'s keyword for this datetime is already used'],
+//				Response::HTTP_INTERNAL_SERVER_ERROR
+//			);
+//		}
+
 		$score_result = $s_repo->insertScore($keyword, $data);
 		$return       = [
 			'id'         => $score_result->getId(),
@@ -291,46 +317,5 @@ class KeywordController extends AbstractController
 			["scores" => $return, "keyword_id" => $keyword->getId(), "user_id" => $user->getId()],
 			Response::HTTP_OK
 		);
-	}
-
-	/**
-	 * @Route("/api/keywords/{k_id}/scores/{s_id}", name="score", methods={"GET"})
-	 * @param $k_id
-	 * @param $s_id
-	 * @param Request $request
-	 * @param KeywordRepository $k_repo
-	 * @param ScoreRepository $s_repo
-	 * @return JsonResponse
-	 */
-	public function getScoreById($k_id, $s_id, Request $request, KeywordRepository $k_repo, ScoreRepository $s_repo)
-	{
-		$user    = $this->getUser();
-		$keyword = $k_repo->findOneBy(
-			[
-				"id"   => $k_id,
-				"user" => $user,
-			]
-		);
-		if (empty($keyword)) {
-			return new JsonResponse(['message' => 'Wrong keyword id'], Response::HTTP_NOT_FOUND);
-		}
-		$score = $s_repo->findOneBy(
-			[
-				"id"      => $s_id,
-				"keyword" => $keyword,
-			]
-		);
-		if (empty($score)) {
-			return new JsonResponse(['message' => 'Wrong score id'], Response::HTTP_NOT_FOUND);
-		}
-
-		$return = [
-			'id'         => $score->getId(),
-			'number'     => $score->getNumber(),
-			'keyword_id' => $score->getKeyword()->getId(),
-			'user_id'    => $user->getId()
-		];
-
-		return new JsonResponse(["score" => $return], Response::HTTP_OK);
 	}
 }
