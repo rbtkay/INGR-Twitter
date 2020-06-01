@@ -47,7 +47,7 @@ class KeywordController extends AbstractController
 					Response::HTTP_INTERNAL_SERVER_ERROR
 				);
 			}
-			$keyword_result = $k_repo->insert($keyword['name'], $this->getUser());
+			$keyword_result = $k_repo->insert($this->getUser(), $keyword['name']);
 			$return = [
 				'id'      => $keyword_result->getId(),
 				'name'    => $keyword_result->getName(),
@@ -252,10 +252,44 @@ class KeywordController extends AbstractController
 		);
 	}
 
-	//	/**
-	//	 * @Route("/api/keyyword/{id}/scores", name="scores", methods={"GET"})
-	//	 */
-	//
+	/**
+	 * @Route("/api/keywords/{id}/scores", name="scores", methods={"GET"})
+	 * @param $id
+	 * @param Request $request
+	 * @param KeywordRepository $k_repo
+	 * @param ScoreRepository $s_repo
+	 * @return JsonResponse
+	 */
+	public function getScores($id, Request $request, KeywordRepository $k_repo, ScoreRepository $s_repo)
+	{
+		$user     = $this->getUser();
+		$keyword = $k_repo->findOneBy(
+			[
+				"user" => $user,
+				"id"   => $id
+			]
+		);
+		if (empty($keyword)) {
+			return new JsonResponse(['message' => 'Wrong keyword id'], Response::HTTP_NOT_FOUND);
+		}
+
+		$scores = $s_repo->findBy(["keyword" => $keyword]);
+
+		if (!count($scores)) {
+			return new JsonResponse(['message' => 'No score data'], Response::HTTP_NOT_FOUND);
+		}
+
+		$return   = [];
+		foreach ($scores as $score) {
+			$return[] = [
+				'id'   => $score->getId(),
+				'number' => $score->getNumber(),
+			];
+		}
+
+		return new JsonResponse(["scores" => $return, "keyword_id" => $keyword->getId(), "user_id" => $user->getId()], Response::HTTP_OK);
+	}
+
 	//	/**
 	//	 * @Route("/api/keyyword/{id}/scores/{id}", name="score", methods={"GET"})
 	//	 */
