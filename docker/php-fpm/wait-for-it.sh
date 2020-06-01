@@ -1,5 +1,5 @@
 #!/bin/sh
-TIMEOUT=15
+TIMEOUT=600
 QUIET=0
 echoerr() {
   if [ "$QUIET" -ne 1 ]; then printf "%s\n" "$*" 1>&2; fi
