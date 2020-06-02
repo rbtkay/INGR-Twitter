@@ -42,14 +42,14 @@ class User implements UserInterface
 	private $email;
 
 	/**
-	 * @ORM\OneToMany(targetEntity=Keyword::class, mappedBy="user")
-	 */
-	private $keywords;
-
-	/**
 	 * @ORM\Column(type="string", length=25, nullable=true)
 	 */
 	private $twitter_name;
+
+	/**
+	 * @ORM\OneToMany(targetEntity=Keyword::class, mappedBy="user")
+	 */
+	private $keywords;
 
 	/**
      * @ORM\OneToMany(targetEntity=Tweet::class, mappedBy="user", orphanRemoval=true)
@@ -166,28 +166,28 @@ class User implements UserInterface
 	 * @return User
 	 */
 	public function setEmail(string $email) : self
-               	{
-               		$this->email = $email;
-               
-               		return $this;
-               	}
-	
+	{
+		$this->email = $email;
+
+		return $this;
+	}
+
 	/**
 	 * @return string|null
 	 */
-	public function getTwitterName(): ?string
-               	{
-               		return $this->twitter_name;
-               	}
+	public function getTwitterName() : ?string
+	{
+		return $this->twitter_name;
+	}
 
- 	/**
+	/**
 	 * @param string $twitter_name
 	 * @return User
 	 */
- 	public function setTwitterName(?string $twitter_name): self
+	public function setTwitterName(?string $twitter_name) : self
 	{
 		$this->twitter_name = $twitter_name;
-		
+
 		return $this;
 	}
 
@@ -238,7 +238,11 @@ class User implements UserInterface
         return $this->tweets;
     }
 
-    public function addTweet(Tweet $tweet): self
+	/**
+	 * @param Tweet $tweet
+	 * @return User
+	 */
+	public function addTweet(Tweet $tweet): self
     {
         if (!$this->tweets->contains($tweet)) {
             $this->tweets[] = $tweet;
@@ -248,7 +252,11 @@ class User implements UserInterface
         return $this;
     }
 
-    public function removeTweet(Tweet $tweet): self
+	/**
+	 * @param Tweet $tweet
+	 * @return User
+	 */
+	public function removeTweet(Tweet $tweet): self
     {
         if ($this->tweets->contains($tweet)) {
             $this->tweets->removeElement($tweet);

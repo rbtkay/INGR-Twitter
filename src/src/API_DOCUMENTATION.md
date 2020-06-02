@@ -220,11 +220,23 @@ Response JSON :
     "keywords": [
         {
             "id": int,
-            "name": string
+            "name": string,
+            "scores": [
+                {
+                    "id": int,
+                    "number": int,
+                    "date": {
+                        "date": string,
+                        "timezone_type": int,
+                        "timezone": string
+                    }
+                },
+                ...
+            ]
         },
         ...
     ],
-    "user_id: int
+    "user_id": int
 }
 ```
 
@@ -239,7 +251,18 @@ Response JSON :
     "keyword": {
         "id": int,
         "name": string,
-        "user_id": int
+        "user_id": int,
+        "scores": [
+            {
+                "id": int,
+                "number": int,
+                "date": {
+                    "date": string,
+                    "timezone_type": int,
+                    "timezone": string
+                }
+            }
+        ]
     }
 }
 ```
@@ -276,5 +299,55 @@ Response JSON :
 ```ts
 {
     "message": "Keyword deleted"
+}
+```
+
+###Add Keyword Score
+
+URI : `/api/keywords/{id}/scores`<br/>
+Method : `POST`<br/>
+Authorization: `Bearer Token`<br/>
+Body JSON :
+```ts
+{
+    "number": int,
+    "date": string
+}
+```
+Response JSON :
+```ts
+{
+    "message": "Keyword score registered",
+    "score": {
+        "id": int,
+        "number": int,
+        "date": {
+            "date": datetime,
+            "timezone_type": int,
+            "timezone": string
+        },
+        "keyword_id": int,
+        "user_id": int
+    }
+}
+```
+
+###Get Keyword Scores
+
+URI : `/api/keywords/{id}/scores`<br/>
+Method : `GET`<br/>
+Authorization: `Bearer Token`<br/>
+Response JSON :
+```ts
+{
+    "scores": [
+        {
+            "id": int,
+            "number": int
+        },
+        ...
+    ],
+    "keyword_id": int,
+    "user_id": int
 }
 ```
