@@ -25,7 +25,7 @@ const App = () => {
             clearTimeout(timer);
         }
         // Refreshs token in 30 min
-        setTimer(setTimeout(refreshToken(token), 1800000));
+        setTimer(setTimeout(() => refreshToken(token), 108000000));
     };
 
     // Get Token from local storage
@@ -75,7 +75,7 @@ const App = () => {
     // Update Token
     useEffect(() => {
         if (token) {
-            setTimerToRefreshToken(token);
+            setTimerToRefreshToken();
             localStorage.setItem(STORAGE_KEY, token);
         }
     }, [token]);
