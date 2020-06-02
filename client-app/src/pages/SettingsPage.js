@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Header, Segment, Grid, Container, Button, Divider } from "semantic-ui-react";
-import { setToken } from "../actions";
+import { setToken, setUserName, setEmail, setTwitterName } from "../actions";
 import FormPassword from "../components/forms/FormPassword";
 import MiniForm from "../components/forms/MiniForm";
 
@@ -22,7 +22,10 @@ const SettingsPage = () => {
                                 label="Change Username"
                                 placeholder={user.username}
                                 method="PUT"
-                                callback={(token) => dispatch(setToken(token))}
+                                callback={(result) => {
+                                    dispatch(setToken(result.response.token));
+                                    dispatch(setUserName(result.value));
+                                }}
                             />
                             <MiniForm
                                 url="email"
@@ -30,6 +33,7 @@ const SettingsPage = () => {
                                 label="Change Email Address"
                                 placeholder={user.email}
                                 method="PUT"
+                                callback={(result) => dispatch(setEmail(result.value))}
                             />
                             <MiniForm
                                 url="twitter_name"
@@ -37,6 +41,9 @@ const SettingsPage = () => {
                                 label="Change registered Twitter login"
                                 placeholder={user.twitter_name}
                                 method="PUT"
+                                callback={(result) =>
+                                    dispatch(setTwitterName(result.value))
+                                }
                             />
                         </Grid.Column>
                         <Grid.Column>

@@ -71,7 +71,12 @@ const HomePage = () => {
         <main className="home">
             <Container fluid>
                 <Grid columns={2}>
-                    <GridColumn largeScreen={12} mobile={16} textAlign={"center"}>
+                    <GridColumn
+                        largeScreen={12}
+                        computer={12}
+                        mobile={16}
+                        textAlign={"center"}
+                    >
                         <Header as="h1">Dashboard</Header>
                         <MiniForm
                             url="keywords"
@@ -104,7 +109,7 @@ const HomePage = () => {
                             </Fragment>
                         )}
                     </GridColumn>
-                    <GridColumn largeScreen={3} mobile={16}>
+                    <GridColumn mobile={16} largeScreen={3} computer={3}>
                         <Segment>
                             <Header as="h3">The Recent Tweets</Header>
                             <Tweets tweets={[1, 2, 3, 4]} />

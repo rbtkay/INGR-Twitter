@@ -32,6 +32,13 @@ const reducer = (state = {}, action) => {
             };
             return nextState || state;
 
+        case types.SET_TWITTER_NAME:
+            nextState = {
+                ...state,
+                twitter_name: action.twitter_name,
+            };
+            return nextState || state;
+
         case types.REMOVE_USER:
             return {};
 

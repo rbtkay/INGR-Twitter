@@ -23,3 +23,8 @@ export const setEmail = (email) => ({
     type: types.SET_EMAIl,
     email,
 });
+
+export const setTwitterName = (twitter_name) => ({
+    type: types.SET_TWITTER_NAME,
+    twitter_name,
+});

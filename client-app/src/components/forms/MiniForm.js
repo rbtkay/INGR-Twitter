@@ -27,7 +27,7 @@ const FormPassword = (props) => {
                     value: result.message,
                 });
                 if (props.callback) {
-                    props.callback(result);
+                    props.callback({ value, response: result });
                 }
             } else {
                 setMessage({
