@@ -5,7 +5,6 @@ if ! test -f "config/jwt/private.pem" || ! test -f "config/jwt/public.pem"; then
     openssl rsa -passin pass:$JWT_PASSPHRASE -pubout -in config/jwt/private.pem -out config/jwt/public.pem
     chmod 644 config/jwt/private.pem
 fi
-
 composer install
 crond
 php-fpm
