@@ -22,6 +22,6 @@ COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 
-CMD /usr/bin/wait-for-it database:3306 -- ./bin/console doctrine:migrations:migrate; /entrypoint;
+CMD /usr/bin/wait-for-it database:3306 -- ./bin/console make:migration; ./bin/console doctrine:migrations:migrate; /entrypoint;
 
 EXPOSE 9000
