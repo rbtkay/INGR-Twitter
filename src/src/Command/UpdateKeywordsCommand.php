@@ -47,6 +47,7 @@ class UpdateKeywordsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        // echo "from the command --> " $(date)  >> /var/www/test-result/result.txt
         $io = new SymfonyStyle($input, $output);
         // $arg1 = $input->getArgument('arg1');
 

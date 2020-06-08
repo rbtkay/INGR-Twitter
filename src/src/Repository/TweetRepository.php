@@ -38,7 +38,6 @@ class TweetRepository extends ServiceEntityRepository
         $this->_em->flush();
     }
 
-
     public function delete(Tweet $tweet)
     {
         $this->_em->remove($tweet);
