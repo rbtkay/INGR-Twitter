@@ -38,32 +38,6 @@ class TweetRepository extends ServiceEntityRepository
         $this->_em->flush();
     }
 
-    /**
-     * @return Tweet[] Returns an array of Tweet objects for a specific user
-     */
-    public function findTweetsByUser(int $user_id)
-    {
-        return $this->createQueryBuilder('tweet')
-            ->andWhere('tweet.user = :val')
-            ->setParameter('val', $user_id)
-            ->orderBy('tweet.id', 'ASC')
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
-     * @return Tweet Returns a tweet object
-     */
-    public function findOneById($id): ?Tweet
-    {
-        return $this->createQueryBuilder('tweet')
-            ->andWhere('tweet.twitter_id = :val')
-            ->setMaxResults(1)
-            ->setParameter('val', $id)
-            ->getQuery()
-            ->getOneOrNullResult();
-    }
-
     public function delete(Tweet $tweet)
     {
         $this->_em->remove($tweet);

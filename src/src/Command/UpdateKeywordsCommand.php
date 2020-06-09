@@ -2,10 +2,14 @@
 
 namespace App\Command;
 
+use App\Entity\Score;
 use App\Entity\Tweet;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Repository\TweetRepository;
+use App\Repository\KeywordRepository;
+use App\Repository\ScoreRepository;
+
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,12 +25,15 @@ class UpdateKeywordsCommand extends Command
 
     private $u_repo;
     private $t_repo;
+    private $k_repo;
+    private $s_repo;
 
-    public function __construct(UserRepository $u_repo, TweetRepository $t_repo)
+    public function __construct(UserRepository $u_repo, TweetRepository $t_repo, KeywordRepository $k_repo, ScoreRepository $s_repo)
     {
         $this->u_repo = $u_repo;
         $this->t_repo = $t_repo;
-
+        $this->k_repo = $k_repo;
+        $this->s_repo = $s_repo;
         parent::__construct();
     }
 
@@ -40,6 +47,7 @@ class UpdateKeywordsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        // echo "from the command --> " $(date)  >> /var/www/test-result/result.txt
         $io = new SymfonyStyle($input, $output);
         // $arg1 = $input->getArgument('arg1');
 
@@ -50,44 +58,61 @@ class UpdateKeywordsCommand extends Command
         // if ($input->getOption('option1')) {
         //     // ...
         // }
-
-        $users = $this->u_repo->findAll(); // TODO: handle error 
+        $users = $this->u_repo->findAll(); // TODO: handle error
         $io->success($users[0]->getUsername());
 
         $url = "statuses/user_timeline"; 
         $connection = new TwitterOAuth(getenv("CONSUMER_KEY"), getenv("CONSUMER_SECRET"), getenv("TWITTER_API_ACCESS_TOKEN"), getenv("TWITTER_API_ACCESS_TOKEN_SECRET"));
-
-        $keyword_in_tweets = $connection->get("search/tweets", ["q" => "#ipssi", "count" => "100"]); // TODO: make the hashtag dynamic by user
-
-        $tweet_count = count($keyword_in_tweets->statuses);
-        dd($tweet_count);
         foreach ($users as $user) {
+            $keywords = $this->k_repo->findBy(["user"=> $user->getId()]);
+
+            $this->getCountTweetsWithKeyword($keywords, $connection);
+
             $tweets = $connection->get($url, ["screen_name" => $user->getTwitterName()]);
+
             $this->addNewTweets($tweets, $user); //add new tweets in case they're not already stored
             $this->deleteOldTweets($tweets, $user); //delete from the database tweets deleted from tweeter
+
+            $io->success("Managing tweets of" . $user->getId());
         }
 
-        $io->success('Command Completed');
+        $io->success("Command Completed !");
         return 0;
+    }
+
+    private function getCountTweetsWithKeyword(array $keywords, TwitterOAuth $connection){
+        foreach ($keywords as $keyword){
+            $keyword_in_tweets = $connection->get("search/tweets", ["q" => $keyword->getName(), "count" => "100"]);
+            $tweet_count = count($keyword_in_tweets->statuses);
+
+            $data = [
+                "number" => $tweet_count,
+                "date"=> date("Y-m-d H:i:s")
+            ];
+
+            $this->s_repo->insertScore($keyword, $data);
+        }
     }
 
 
     private function addNewTweets(array $tweets, User $user)
     {
         foreach ($tweets as $tweet) {
-            $tweet_result = $this->t_repo->findOneById($tweet->id);
+            $tweet_result = $this->t_repo->findOneBy(["twitter_id"=> $tweet->id]);
             if (is_null($tweet_result)) {
                 $this->t_repo->insert($tweet->id, $tweet->text, $tweet->created_at, $user->getTwitterName(), $user);
             }
         }
+
     }
 
     private function deleteOldTweets(array $tweets, User $user)
     {
-        $user_tweets = $this->t_repo->findTweetsByUser($user->getId());
+        $user_tweets = $this->t_repo->findBy(["user" => $user->getId()]);
         $tweets_ids = array_map(function ($tweet) {
             return $tweet->id;
         }, $tweets);
+
         for ($i = 0; $i < count($user_tweets); $i++) {
             $user_tweet_id = $user_tweets[$i]->getTwitterId();
             if (!in_array($user_tweet_id, $tweets_ids)) {
