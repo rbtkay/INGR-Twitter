@@ -31,9 +31,7 @@ class ScoreRepository extends ServiceEntityRepository
 	private function countScores($id)
 	{
 		$scores = $this->findBy(
-			[
-				"keyword" => $id
-			]
+			["keyword" => $id]
 		);
 		return count($scores);
 	}
@@ -57,10 +55,8 @@ class ScoreRepository extends ServiceEntityRepository
 	private function deleteScore($id)
 	{
 		$score = $this->findBy(
-			[
-				"keyword" => $id
-			],
-			['date' => 'asc'],
+			["keyword" => $id],
+			["date" => "asc"],
 			1
 		);
 
@@ -83,8 +79,7 @@ class ScoreRepository extends ServiceEntityRepository
 		$this->_em->persist($score);
 		$this->_em->flush();
 
-		if ($this->countScores($keyword->getId()) > 10)
-		{
+		if ($this->countScores($keyword->getId()) > 10) {
 			$this->deleteScore($keyword->getId());
 		}
 		return $score;
