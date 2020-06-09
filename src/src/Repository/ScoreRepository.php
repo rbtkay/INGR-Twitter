@@ -25,6 +25,49 @@ class ScoreRepository extends ServiceEntityRepository
 	}
 
 	/**
+	 * @param $id
+	 * @return int
+	 */
+	private function countScores($id)
+	{
+		$scores = $this->findBy(
+			[
+				"keyword" => $id
+			]
+		);
+		return count($scores);
+	}
+
+	/**
+	 * @param Score $score
+	 * @throws \Doctrine\ORM\ORMException
+	 * @throws \Doctrine\ORM\OptimisticLockException
+	 */
+	private function delete(Score $score)
+	{
+		$this->_em->remove($score);
+		$this->_em->flush();
+	}
+
+	/**
+	 * @param $id
+	 * @throws \Doctrine\ORM\ORMException
+	 * @throws \Doctrine\ORM\OptimisticLockException
+	 */
+	private function deleteScore($id)
+	{
+		$score = $this->findBy(
+			[
+				"keyword" => $id
+			],
+			['date' => 'asc'],
+			1
+		);
+
+		$this->delete($score[0]);
+	}
+
+	/**
 	 * @param Keyword $keyword
 	 * @param array $data
 	 * @return Score
@@ -39,6 +82,11 @@ class ScoreRepository extends ServiceEntityRepository
 		$score->setKeyword($keyword);
 		$this->_em->persist($score);
 		$this->_em->flush();
+
+		if ($this->countScores($keyword->getId()) > 10)
+		{
+			$this->deleteScore($keyword->getId());
+		}
 		return $score;
 	}
 }
