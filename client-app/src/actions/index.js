@@ -20,7 +20,7 @@ export const setUserName = (username) => ({
 });
 
 export const setEmail = (email) => ({
-    type: types.SET_EMAIl,
+    type: types.SET_EMAIL,
     email,
 });
 

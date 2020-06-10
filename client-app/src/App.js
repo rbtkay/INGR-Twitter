@@ -12,7 +12,7 @@ import SettingsPage from "./pages/SettingsPage";
 const App = () => {
     const mounted = useRef();
     const dispatch = useDispatch();
-    let history = useHistory();
+    const history = useHistory();
     const token = useSelector((state) => state.token);
     const [loading, setLoading] = useState(true);
     const [timer, setTimer] = useState(null);
