@@ -1,6 +1,15 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Header, Segment, Grid, Container, Button, Divider } from "semantic-ui-react";
+import {
+    Header,
+    Segment,
+    Grid,
+    Container,
+    Button,
+    Divider,
+    Icon,
+} from "semantic-ui-react";
+import { Link } from "react-router-dom";
 import { setToken, setUserName, setEmail, setTwitterName } from "../actions";
 import FormPassword from "../components/forms/FormPassword";
 import MiniForm from "../components/forms/MiniForm";
@@ -12,6 +21,9 @@ const SettingsPage = () => {
     return (
         <main className="settings">
             <Container>
+                <Link to="/home" className="go-back-btn" title="Go back">
+                    <Icon name="share" size="large" />
+                </Link>
                 <Segment>
                     <Grid columns={2} relaxed="very">
                         <Grid.Column textAlign={"center"}>

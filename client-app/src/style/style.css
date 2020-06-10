@@ -53,6 +53,19 @@ h3.ui.header {
   color: #db2828;
 }
 
+.ui.segment {
+  margin-top: 0;
+}
+
+.go-back-btn {
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+  -webkit-transform: translate(-7px, 16px);
+          transform: translate(-7px, 16px);
+  font-size: 18px;
+}
+
 .landing {
   padding-top: 30px;
 }

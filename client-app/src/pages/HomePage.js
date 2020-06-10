@@ -34,19 +34,12 @@ const HomePage = () => {
         }
     }, [resultGet]);
 
-    useEffect(() => {
-        if (resultDelete) {
-            console.log(resultDelete);
-        }
-    }, [resultDelete]);
-
-    const addKeyword = (result) => {
-        const keyword = {
-            name: result.keyword.name,
-            selected: true,
-        };
+    const addKeyword = (name) => {
         const cp_keywords = keywords.slice();
-        cp_keywords.push(keyword);
+        cp_keywords.push({
+            name,
+            selected: true,
+        });
         setKeywords(cp_keywords);
     };
 
@@ -60,13 +53,21 @@ const HomePage = () => {
     };
 
     const deleteKeyword = (index) => {
-        console.log(keywords[index].id);
         deleteKeywordFromAPI(token, null, keywords[index].id);
         const cp_keywords = keywords.slice();
         delete cp_keywords[index];
         setKeywords(cp_keywords);
     };
 
+    const series = keywords
+        .filter((keyword) => keyword.selected)
+        .map((keyword) => ({
+            name: keyword.name,
+            data: keyword.scores
+                ? keyword.scores.map((score) => [score.date, score.number])
+                : [],
+        }));
+        
     return (
         <main className="home">
             <Container fluid>
@@ -84,7 +85,7 @@ const HomePage = () => {
                             label="Add a new keyword"
                             placeholder={"#"}
                             submitLabel={"+"}
-                            callback={(result) => addKeyword(result)}
+                            callback={(result) => addKeyword(result.value)}
                         />
                         {!!keywords.length && (
                             <Fragment>
@@ -101,10 +102,10 @@ const HomePage = () => {
                                 </div>
                                 <GraphLines
                                     id="graph-keyword-usation"
-                                    series={keywords.filter(
-                                        (keyword) => keyword.selected
-                                    )}
+                                    series={series}
                                     title={"Hashtag usation every 10 minutes"}
+                                    xLabel="time"
+                                    yLabel="number of Tweets"
                                 />
                             </Fragment>
                         )}
