@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
 	/**
-	 * @Route("/api/refresh-token", name="refresh-token", methods={"GET"})
+	 * @Route("/refresh-token", name="refresh-token", methods={"GET"})
 	 */
 	public function refreshToken(Request $request, JWTTokenManagerInterface $JWTManager)
 	{
@@ -25,7 +25,7 @@ class UserController extends AbstractController
 	}
 
 	/**
-	 * @Route("/api/users", name="register", methods={"POST"})
+	 * @Route("/users", name="register", methods={"POST"})
 	 */
 	public function register(Request $request, UserRepository $u_repo, JWTTokenManagerInterface $JWTManager)
 	{
@@ -83,7 +83,7 @@ class UserController extends AbstractController
 	}
 
 	/**
-	 * @Route("/api/users", name="users", methods={"GET"})
+	 * @Route("/users", name="users", methods={"GET"})
 	 */
 	public function getUsers(Request $request, UserRepository $u_repo)
 	{
@@ -101,7 +101,7 @@ class UserController extends AbstractController
 	}
 
 	/**
-	 * @Route("/api/users/{id}", name="user", methods={"GET"})
+	 * @Route("/users/{id}", name="user", methods={"GET"})
 	 */
 	public function getUserById($id, Request $request, UserRepository $u_repo)
 	{
@@ -121,7 +121,7 @@ class UserController extends AbstractController
 	}
 
 	/**
-	 * @Route("/api/user", name="own_user", methods={"GET"})
+	 * @Route("/user", name="own_user", methods={"GET"})
 	 */
 	public function getOwnUser(Request $request, UserRepository $u_repo)
 	{
@@ -136,7 +136,7 @@ class UserController extends AbstractController
 	}
 
 	/**
-	 * @Route("/api/user", name="delete_own_user", methods={"DELETE"})
+	 * @Route("/user", name="delete_own_user", methods={"DELETE"})
 	 */
 	public function deleteOwnUser(Request $request, UserRepository $u_repo)
 	{
@@ -150,7 +150,7 @@ class UserController extends AbstractController
 	// This is the code for deleting a user from id but we don't have an admin connection.
 	// So we can only, our own user
 	// /**
-	//  * @Route("/api/users/{id}", name="delete_user", methods={"DELETE"})
+	//  * @Route("/users/{id}", name="delete_user", methods={"DELETE"})
 	//  */
 	// public function deleteUser($id, Request $request, UserRepository $u_repo)
 	// {
@@ -169,7 +169,7 @@ class UserController extends AbstractController
 	// }
 
 	/**
-	 * @Route("/api/username", name="update_username", methods={"PUT"})
+	 * @Route("/username", name="update_username", methods={"PUT"})
 	 */
 	public function updateUsername(Request $request, UserRepository $u_repo, JWTTokenManagerInterface $JWTManager)
 	{
@@ -203,7 +203,7 @@ class UserController extends AbstractController
 	}
 
 	/**
-	 * @Route("/api/email", name="update_email", methods={"PUT"})
+	 * @Route("/email", name="update_email", methods={"PUT"})
 	 */
 	public function updateEmail(Request $request, UserRepository $u_repo)
 	{
@@ -236,7 +236,7 @@ class UserController extends AbstractController
 	}
 
 	/**
-	 * @Route("/api/password", name="update_password", methods={"PUT"})
+	 * @Route("/password", name="update_password", methods={"PUT"})
 	 */
 	public function updatePassword(Request $request, UserRepository $u_repo, JWTTokenManagerInterface $JWTManager)
 	{
@@ -272,7 +272,7 @@ class UserController extends AbstractController
 	}
 
 	/**
-	 * @Route("/api/twitter_name", name="update_twitter_name", methods={"PUT"})
+	 * @Route("/twitter_name", name="update_twitter_name", methods={"PUT"})
 	 */
 	public function updateTwitterName(Request $request, UserRepository $u_repo)
 	{

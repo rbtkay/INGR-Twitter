@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class TweetController extends AbstractController
 {
     /**
-     * @Route("/api/tweets/{user_id}", name="tweets", methods={"GET"})
+     * @Route("/tweets/{user_id}", name="tweets", methods={"GET"})
      * @param Request $request
      * @param TweetRepository $t_repo
      * @return JsonResponse
