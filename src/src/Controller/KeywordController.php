@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class KeywordController extends AbstractController
 {
 	/**
-	 * @Route("/api/keywords", name="create_keyword", methods={"POST"})
+	 * @Route("/keywords", name="create_keyword", methods={"POST"})
 	 * @param Request $request
 	 * @param KeywordRepository $k_repo
 	 * @return JsonResponse
@@ -60,7 +60,7 @@ class KeywordController extends AbstractController
 	}
 
 	/**
-	 * @Route("/api/keywords", name="keywords", methods={"GET"})
+	 * @Route("/keywords", name="keywords", methods={"GET"})
 	 * @param Request $request
 	 * @param KeywordRepository $k_repo
 	 * @return JsonResponse
@@ -91,7 +91,7 @@ class KeywordController extends AbstractController
 	}
 
 	/**
-	 * @Route("/api/keywords/{id}", name="keyword", methods={"GET"})
+	 * @Route("/keywords/{id}", name="keyword", methods={"GET"})
 	 * @param $id
 	 * @param Request $request
 	 * @param KeywordRepository $k_repo
@@ -131,7 +131,7 @@ class KeywordController extends AbstractController
 	}
 
 	/**
-	 * @Route("/api/keywords/{id}", name="update_keyword", methods={"PUT"})
+	 * @Route("/keywords/{id}", name="update_keyword", methods={"PUT"})
 	 * @param $id
 	 * @param Request $request
 	 * @param KeywordRepository $k_repo
@@ -181,7 +181,7 @@ class KeywordController extends AbstractController
 	}
 
 	/**
-	 * @Route("/api/keywords/{id}", name="delete_keyword", methods={"DELETE"})
+	 * @Route("/keywords/{id}", name="delete_keyword", methods={"DELETE"})
 	 * @param $id
 	 * @param Request $request
 	 * @param KeywordRepository $k_repo
@@ -212,7 +212,7 @@ class KeywordController extends AbstractController
 	}
 
 	/**
-	 * @Route("/api/keywords/{id}/scores", name="insert_score", methods={"POST"})
+	 * @Route("/keywords/{id}/scores", name="insert_score", methods={"POST"})
 	 * @param $id
 	 * @param Request $request
 	 * @param KeywordRepository $k_repo
@@ -276,7 +276,7 @@ class KeywordController extends AbstractController
 	}
 
 	/**
-	 * @Route("/api/keywords/{id}/scores", name="scores", methods={"GET"})
+	 * @Route("/keywords/{id}/scores", name="scores", methods={"GET"})
 	 * @param $id
 	 * @param Request $request
 	 * @param KeywordRepository $k_repo
