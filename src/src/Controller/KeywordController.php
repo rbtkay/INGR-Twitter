@@ -47,11 +47,22 @@ class KeywordController extends AbstractController
 					Response::HTTP_INTERNAL_SERVER_ERROR
 				);
 			}
+
 			$keyword_result = $k_repo->insert($this->getUser(), $keyword['name']);
-			$return         = [
+
+			$scores = [];
+			foreach ($keyword_result->getScores() as $score) {
+				$scores[] = [
+					'id'     => $score->getId(),
+					'number' => $score->getNumber(),
+					'date'   => $score->getDate()->format('d/m/Y H:i'),
+				];
+			}
+			$return = [
 				'id'      => $keyword_result->getId(),
 				'name'    => $keyword_result->getName(),
-				'user_id' => $keyword_result->getUser()->getId()
+				'user_id' => $keyword_result->getUser()->getId(),
+				'scores'  => $scores
 			];
 
 			return new JsonResponse(['message' => 'Keyword registered', "keyword" => $return], Response::HTTP_CREATED);
@@ -76,7 +87,7 @@ class KeywordController extends AbstractController
 				$scores[] = [
 					'id'     => $score->getId(),
 					'number' => $score->getNumber(),
-					'date'   => $score->getDate(),
+					'date'   => $score->getDate()->format('d/m/Y H:i'),
 				];
 			}
 
@@ -116,7 +127,7 @@ class KeywordController extends AbstractController
 			$scores[] = [
 				'id'     => $score->getId(),
 				'number' => $score->getNumber(),
-				'date'   => $score->getDate(),
+				'date'   => $score->getDate()->format('d/m/Y H:i'),
 			];
 		}
 
@@ -265,7 +276,7 @@ class KeywordController extends AbstractController
 		$return       = [
 			'id'         => $score_result->getId(),
 			'number'     => $score_result->getNumber(),
-			'date'       => $score_result->getDate(),
+			'date'       => $score_result->getDate()->format('d/m/Y H:i'),
 			'keyword_id' => $score_result->getKeyword()->getId(),
 			'user_id'    => $this->getUser()->getId()
 		];
@@ -296,17 +307,12 @@ class KeywordController extends AbstractController
 			return new JsonResponse(['message' => 'Wrong keyword id'], Response::HTTP_NOT_FOUND);
 		}
 
-		$scores = $s_repo->findBy(["keyword" => $keyword]);
-
-		if (!count($scores)) {
-			return new JsonResponse(['message' => 'No score data'], Response::HTTP_NOT_FOUND);
-		}
-
 		$return = [];
-		foreach ($scores as $score) {
+		foreach ($keyword->getScores() as $score) {
 			$return[] = [
 				'id'     => $score->getId(),
 				'number' => $score->getNumber(),
+				'date'   => $score->getDate()->format('d/m/Y H:i'),
 			];
 		}
 
