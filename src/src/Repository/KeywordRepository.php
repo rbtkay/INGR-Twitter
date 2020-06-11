@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Keyword;
+use App\Entity\Score;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -35,6 +36,13 @@ class KeywordRepository extends ServiceEntityRepository
 		$keyword = new Keyword();
 		$keyword->setName($name);
 		$keyword->setUser($user);
+
+		// TODO : request twitter API for getting scores
+//		$score = new Score();
+//		$score->setNumber();
+//		$score->setDate(new \DateTime());
+//		$keyword->addScore($score);
+
 		$this->_em->persist($keyword);
 		$this->_em->flush();
 		return $keyword;
