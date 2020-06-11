@@ -10,92 +10,92 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Score
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+	/**
+	 * @ORM\Id()
+	 * @ORM\GeneratedValue()
+	 * @ORM\Column(type="integer")
+	 */
+	private $id;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $number;
+	/**
+	 * @ORM\Column(type="integer")
+	 */
+	private $number;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $date;
+	/**
+	 * @ORM\Column(type="datetime")
+	 */
+	private $date;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Keyword::class, inversedBy="scores")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
-    private $keyword;
+	/**
+	 * @ORM\ManyToOne(targetEntity=Keyword::class, inversedBy="scores")
+	 * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+	 */
+	private $keyword;
 
 
 	/**
 	 * @return int|null
 	 */
 	public function getId() : ?int
-    {
-        return $this->id;
-    }
+	{
+		return $this->id;
+	}
 
 	/**
 	 * @return int|null
 	 */
 	public function getNumber() : ?int
-    {
-        return $this->number;
-    }
+	{
+		return $this->number;
+	}
 
 	/**
 	 * @param int $number
 	 * @return Score
 	 */
 	public function setNumber(int $number) : self
-    {
-        $this->number = $number;
+	{
+		$this->number = $number;
 
-        return $this;
-    }
+		return $this;
+	}
 
 	/**
 	 * @return \DateTimeInterface|null
 	 */
 	public function getDate() : ?\DateTimeInterface
-    {
-        return $this->date;
-    }
+	{
+		return $this->date;
+	}
 
 	/**
 	 * @param \DateTimeInterface $date
 	 * @return Score
 	 */
 	public function setDate(\DateTimeInterface $date) : self
-    {
-        $this->date = $date;
+	{
+		$this->date = $date;
 
-        return $this;
-    }
+		return $this;
+	}
 
 	/**
 	 * @return Keyword|null
 	 */
 	public function getKeyword() : ?Keyword
-    {
-        return $this->keyword;
-    }
+	{
+		return $this->keyword;
+	}
 
 	/**
 	 * @param Keyword|null $keyword
 	 * @return Score
 	 */
 	public function setKeyword(?Keyword $keyword) : self
-    {
-        $this->keyword = $keyword;
+	{
+		$this->keyword = $keyword;
 
-        return $this;
-    }
+		return $this;
+	}
 }
