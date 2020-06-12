@@ -204,7 +204,8 @@ Response JSON :
     "keyword": {
         "id": int,
         "name": string,
-        "user_id": int
+        "user_id": int,
+        "scores": []
     }
 }
 ```
@@ -225,11 +226,7 @@ Response JSON :
                 {
                     "id": int,
                     "number": int,
-                    "date": {
-                        "date": string,
-                        "timezone_type": int,
-                        "timezone": string
-                    }
+                    "date": string
                 },
                 ...
             ]
@@ -256,11 +253,7 @@ Response JSON :
             {
                 "id": int,
                 "number": int,
-                "date": {
-                    "date": string,
-                    "timezone_type": int,
-                    "timezone": string
-                }
+                "date": string
             }
         ]
     }
@@ -321,11 +314,7 @@ Response JSON :
     "score": {
         "id": int,
         "number": int,
-        "date": {
-            "date": datetime,
-            "timezone_type": int,
-            "timezone": string
-        },
+        "date": string,
         "keyword_id": int,
         "user_id": int
     }
@@ -343,7 +332,8 @@ Response JSON :
     "scores": [
         {
             "id": int,
-            "number": int
+            "number": int,
+            "date": string
         },
         ...
     ],
