@@ -10,102 +10,141 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Tweet
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+	/**
+	 * @ORM\Id()
+	 * @ORM\GeneratedValue()
+	 * @ORM\Column(type="integer")
+	 */
+	private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $twitter_id;
+	/**
+	 * @ORM\Column(type="string", length=255)
+	 */
+	private $twitter_id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $tweet_content;
+	/**
+	 * @ORM\Column(type="string", length=255)
+	 */
+	private $tweet_content;
 
-    /**
-     * @ORM\Column(type="string", length=50)
-     */
-    private $twitter_name;
+	/**
+	 * @ORM\Column(type="string", length=50)
+	 */
+	private $twitter_name;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tweets")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $user;
-  
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $tweet_date;
+	/**
+	 * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tweets")
+	 * @ORM\JoinColumn(nullable=false)
+	 */
+	private $user;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+	/**
+	 * @ORM\Column(type="datetime")
+	 */
+	private $tweet_date;
 
-    public function getTwitterId(): ?int
-    {
-        return $this->twitter_id;
-    }
 
-    public function setTwitterId(int $twitter_id): self
-    {
-        $this->twitter_id = $twitter_id;
+	/**
+	 * @return int|null
+	 */
+	public function getId() : ?int
+	{
+		return $this->id;
+	}
 
-        return $this;
-    }
+	/**
+	 * @return int|null
+	 */
+	public function getTwitterId() : ?int
+	{
+		return $this->twitter_id;
+	}
 
-    public function getTweetContent(): ?string
-    {
-        return $this->tweet_content;
-    }
+	/**
+	 * @param int $twitter_id
+	 * @return Tweet
+	 */
+	public function setTwitterId(int $twitter_id) : self
+	{
+		$this->twitter_id = $twitter_id;
 
-    public function setTweetContent(string $tweet_content): self
-    {
-        $this->tweet_content = $tweet_content;
+		return $this;
+	}
 
-        return $this;
-    }
+	/**
+	 * @return string|null
+	 */
+	public function getTweetContent() : ?string
+	{
+		return $this->tweet_content;
+	}
 
-    public function getTwitterName(): ?string
-    {
-        return $this->twitter_name;
-    }
+	/**
+	 * @param string $tweet_content
+	 * @return Tweet
+	 */
+	public function setTweetContent(string $tweet_content) : self
+	{
+		$this->tweet_content = $tweet_content;
 
-    public function setTwitterName(string $twitter_name): self
-    {
-        $this->twitter_name = $twitter_name;
+		return $this;
+	}
 
-        return $this;
-    }
+	/**
+	 * @return string|null
+	 */
+	public function getTwitterName() : ?string
+	{
+		return $this->twitter_name;
+	}
 
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
+	/**
+	 * @param string $twitter_name
+	 * @return Tweet
+	 */
+	public function setTwitterName(string $twitter_name) : self
+	{
+		$this->twitter_name = $twitter_name;
 
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
+		return $this;
+	}
 
-        return $this;
-    }
+	/**
+	 * @return User|null
+	 */
+	public function getUser() : ?User
+	{
+		return $this->user;
+	}
 
-    public function getTweetDate(): ?\DateTimeInterface
-    {
-        return $this->tweet_date;
-    }
+	/**
+	 * @param User|null $user
+	 * @return Tweet
+	 */
+	public function setUser(?User $user) : self
+	{
+		$this->user = $user;
 
-    public function setTweetDate(\DateTimeInterface $tweet_date): self
-    {
-        $this->tweet_date = $tweet_date;
+		return $this;
+	}
 
-        return $this;
-    }
+	/**
+	 * @return \DateTimeInterface|null
+	 */
+	public function getTweetDate() : ?\DateTimeInterface
+	{
+		return $this->tweet_date;
+	}
+
+	/**
+	 * @param \DateTimeInterface $tweet_date
+	 * @return Tweet
+	 */
+	public function setTweetDate(\DateTimeInterface $tweet_date) : self
+	{
+		$this->tweet_date = $tweet_date;
+
+		return $this;
+	}
 }
 
