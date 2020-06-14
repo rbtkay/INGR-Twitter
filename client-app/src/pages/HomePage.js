@@ -1,11 +1,11 @@
 import React, { Fragment, useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-import { Header, Grid, GridColumn, Segment, Container } from "semantic-ui-react";
+import { Header, Grid, GridColumn, Container } from "semantic-ui-react";
 import useFetch from "../hooks/fetch";
 import MiniForm from "../components/forms/MiniForm";
 import GraphLines from "../components/graph/GraphLines";
-import Tweets from "../components/Tweets";
 import Keywords from "../components/Keywords";
+import TweetPanel from "../components/TweetPanel";
 
 const HomePage = () => {
     const mounted = useRef();
@@ -35,15 +35,17 @@ const HomePage = () => {
         }
     }, [resultGet]);
 
-    const addKeyword = (name) => {
-        const cp_keywords = keywords.slice();
-        if (name[0] !== "#") {
-            name = `#${name}`;
+    useEffect(() => {
+        if (resultDelete) {
+            if (resultDelete.success) {
+            }
+            console.log(resultDelete);
         }
-        cp_keywords.push({
-            name,
-            selected: true,
-        });
+    }, [resultDelete]);
+
+    const addKeyword = (result) => {
+        const cp_keywords = keywords.slice();
+        cp_keywords.push(result.keyword);
         setKeywords(cp_keywords);
     };
 
@@ -64,7 +66,7 @@ const HomePage = () => {
     };
 
     const series = keywords
-        .filter((keyword) => keyword.selected)
+        .filter((keyword) => true)
         .map((keyword) => ({
             name: keyword.name,
             data: keyword.scores
@@ -77,8 +79,8 @@ const HomePage = () => {
             <Container fluid>
                 <Grid columns={2}>
                     <GridColumn
-                        largeScreen={12}
-                        computer={12}
+                        largeScreen={11}
+                        computer={11}
                         mobile={16}
                         textAlign={"center"}
                     >
@@ -89,7 +91,7 @@ const HomePage = () => {
                             label="Add a new keyword"
                             placeholder={"#"}
                             submitLabel={"+"}
-                            callback={(result) => addKeyword(result.value)}
+                            callback={(result) => addKeyword(result.response)}
                         />
                         {!!keywords.length && (
                             <Fragment>
@@ -101,6 +103,7 @@ const HomePage = () => {
                                     <Keywords
                                         keywords={keywords}
                                         callback={(index) => selectKeyword(index)}
+                                        // callback={(index) => deleteKeyword(index)}
                                         deleteIt={(index) => deleteKeyword(index)}
                                     />
                                 </div>
@@ -114,11 +117,8 @@ const HomePage = () => {
                             </Fragment>
                         )}
                     </GridColumn>
-                    <GridColumn mobile={16} largeScreen={3} computer={3}>
-                        <Segment>
-                            <Header as="h3">The Recent Tweets</Header>
-                            <Tweets tweets={[1, 2, 3, 4]} />
-                        </Segment>
+                    <GridColumn mobile={16} largeScreen={5} computer={5}>
+                        <TweetPanel />
                     </GridColumn>
                 </Grid>
             </Container>

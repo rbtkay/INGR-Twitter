@@ -53,6 +53,14 @@ h3.ui.header {
   color: #db2828;
 }
 
+.text-blue {
+  color: #2185d0;
+}
+
+.text-blue:hover, .text-blue:focus, .text-blue:active {
+  color: #2185d0;
+}
+
 .ui.segment {
   margin-top: 0;
 }
@@ -171,5 +179,42 @@ h3.ui.header {
 .settings .delete-account.ui.button .icon.delete {
   margin-left: 10px;
   margin-right: 0;
+}
+
+.home .icon.twitter {
+  display: inline-block;
+}
+
+.home .ui.list.relaxed .item.tweet {
+  padding: 10px 0;
+  position: relative;
+}
+
+.home .ui.list.relaxed .item.tweet:first-child {
+  padding-top: 0;
+}
+
+.home .ui.list.relaxed .item.tweet:last-child {
+  padding-bottom: 0;
+}
+
+.home .ui.list.relaxed .item.tweet .header {
+  padding-bottom: 5px;
+}
+
+.home .ui.list.relaxed .item.tweet a.description:hover,
+.home .ui.list.relaxed .item.tweet a.description:focus,
+.home .ui.list.relaxed .item.tweet a.description:active {
+  color: #2185d0;
+}
+
+.home .ui.list.relaxed .item.tweet a.description::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 /*# sourceMappingURL=style.css.map */

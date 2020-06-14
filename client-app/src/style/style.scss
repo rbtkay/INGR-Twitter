@@ -61,6 +61,16 @@ h3.ui.header {
     }
 }
 
+.text-blue {
+    color: $blue;
+
+    &:hover,
+    &:focus,
+    &:active {
+        color: $blue;
+    }
+}
+
 .ui.segment {
     margin-top: 0;
 }
@@ -184,4 +194,43 @@ h3.ui.header {
 .settings .delete-account.ui.button .icon.delete {
     margin-left: 10px;
     margin-right: 0;
+}
+
+.home {
+    .icon.twitter {
+        display: inline-block;
+    }
+
+    .ui.list.relaxed .item.tweet {
+        padding: 10px 0;
+        position: relative;
+
+        &:first-child {
+            padding-top: 0;
+        }
+
+        &:last-child {
+            padding-bottom: 0;
+        }
+
+        .header {
+            padding-bottom: 5px;
+        }
+
+        a.description:hover,
+        a.description:focus,
+        a.description:active {
+            color: $blue;
+        }
+
+        a.description::before {
+            content: '';
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+    }
 }

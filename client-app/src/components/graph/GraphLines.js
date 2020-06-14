@@ -3,7 +3,9 @@ import React, { useEffect } from "react";
 import Highcharts from "highcharts";
 
 const GraphLines = ({ id, series, title, xLabel, yLabel }) => {
+    console.log("1", series);
     useEffect(() => {
+        console.log("2", series);
         Highcharts.chart(id, {
             chart: {
                 type: "line",
@@ -21,7 +23,7 @@ const GraphLines = ({ id, series, title, xLabel, yLabel }) => {
                 enabled: false,
             },
         });
-    }, [series, id, title]);
+    }, [series, id, title, xLabel, yLabel]);
 
     return <div id={id} className="graph"></div>;
 };

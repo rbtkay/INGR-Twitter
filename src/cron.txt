@@ -1,1 +1,0 @@
-* * * * * echo "This is what im talking about" >> /var/www/result.txt
