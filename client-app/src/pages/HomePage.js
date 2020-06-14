@@ -21,6 +21,7 @@ const HomePage = () => {
         if (!mounted.current) {
             // Component will mount
             getKeywords(token);
+            setInterval(() => getKeywords(token), 600000);
             mounted.current = true;
         }
     });
@@ -36,6 +37,9 @@ const HomePage = () => {
 
     const addKeyword = (name) => {
         const cp_keywords = keywords.slice();
+        if (name[0] !== "#") {
+            name = `#${name}`;
+        }
         cp_keywords.push({
             name,
             selected: true,
@@ -67,7 +71,7 @@ const HomePage = () => {
                 ? keyword.scores.map((score) => [score.date, score.number])
                 : [],
         }));
-        
+
     return (
         <main className="home">
             <Container fluid>
