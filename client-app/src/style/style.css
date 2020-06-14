@@ -29,7 +29,18 @@ main {
 }
 
 .container.fluid {
-  padding: 0 15px;
+  padding: 0 30px;
+}
+
+@media (max-width: 991px) {
+  .container.fluid {
+    padding: 0 15px;
+  }
+}
+
+.column > .ui.segment {
+  height: 100%;
+  padding-top: 25px;
 }
 
 h1.ui.header {
@@ -109,66 +120,8 @@ h3.ui.header {
   margin-bottom: 25px;
 }
 
-/* Keywords */
-.keyword-menu {
-  padding: 15px 0;
-}
-
-.keyword {
-  display: inline;
-}
-
-.keyword:first-child {
-  margin-left: 0;
-}
-
-.keyword:last-child {
-  margin-right: 0;
-}
-
-.keyword:hover .ui.label.keyword-label, .keyword:focus .ui.label.keyword-label, .keyword:active .ui.label.keyword-label {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-.keyword:hover .ui.label.delete, .keyword:focus .ui.label.delete, .keyword:active .ui.label.delete {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  -webkit-transform: translateX(0);
-          transform: translateX(0);
-  margin-right: 3px;
-}
-
-.keyword .ui.label {
-  cursor: pointer;
-  -webkit-transition: all 0.3s;
-  transition: all 0.3s;
-}
-
-.keyword .ui.label.keyword-label {
-  margin-left: 3px;
-  margin-right: 0;
-  position: relative;
-  z-index: 1;
-}
-
-.keyword .ui.label.keyword-label.grey:hover, .keyword .ui.label.keyword-label.grey:focus, .keyword .ui.label.keyword-label.grey:active {
-  background-color: #2185d0 !important;
-}
-
-.keyword .ui.label.keyword-label.blue:hover, .keyword .ui.label.keyword-label.blue:focus, .keyword .ui.label.keyword-label.blue:active {
-  background-color: #767676 !important;
-}
-
-.keyword .ui.label.delete {
-  margin-left: 0;
-  margin-right: -27px;
-  -webkit-transform: translateX(-100%);
-          transform: translateX(-100%);
-}
-
-.keyword .ui.label.delete .icon.delete {
-  margin: 0;
+.ui.form.mini-form .inline.field {
+  margin-bottom: 0;
 }
 
 /* Pages */
@@ -179,6 +132,38 @@ h3.ui.header {
 .settings .delete-account.ui.button .icon.delete {
   margin-left: 10px;
   margin-right: 0;
+}
+
+.home {
+  /* Keywords */
+  /* Tweets */
+}
+
+.home .keyword-menu {
+  padding-bottom: 15px;
+}
+
+.home .keyword.ui.label {
+  cursor: pointer;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.home .keyword.ui.label:hover, .home .keyword.ui.label:focus, .home .keyword.ui.label:active {
+  background-color: #db2828 !important;
+}
+
+.home .keyword.ui.label:hover .icon.delete, .home .keyword.ui.label:focus .icon.delete, .home .keyword.ui.label:active .icon.delete {
+  margin-left: 5px;
+  font-size: 1em;
+}
+
+.home .keyword.ui.label .icon.delete {
+  margin-left: 0;
+  font-size: 0;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  opacity: 1;
 }
 
 .home .icon.twitter {
@@ -216,5 +201,11 @@ h3.ui.header {
   left: 0;
   right: 0;
   bottom: 0;
+}
+
+/* Graph */
+#graph-keyword-usation tspan,
+#graph-keyword-usation text {
+  font-family: "Lato", "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 /*# sourceMappingURL=style.css.map */
