@@ -12,25 +12,28 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TweetController extends AbstractController
 {
-    /**
-     * @Route("/tweets/{user_id}", name="tweets", methods={"GET"})
-     * @param Request $request
-     * @param TweetRepository $t_repo
-     * @return JsonResponse
-     */
-    public function getTweets($user_id, Request $request, TweetRepository $t_repo)
-    {
-        $tweets = $t_repo->findBy(["user" => $user_id]);
+	/**
+	 * @Route("/tweets", name="tweets", methods={"GET"})
+	 * @param Request $request
+	 * @param TweetRepository $t_repo
+	 * @return JsonResponse
+	 */
+	public function getTweets(Request $request, TweetRepository $t_repo)
+	{
+		$user   = $this->getUser();
+		$tweets = $t_repo->findBy(["user" => $user]);
 
-        $return   = [];
-        foreach ($tweets as $tweet) {
-            $return[] = [
-                'id'     => $tweet->getId(),
-                'twitter_name'   => $tweet->getTwitterName(),
-                'content'   => $tweet->getTweetContent()
-            ];
-        }
+		$return = [];
+		foreach ($tweets as $tweet) {
+			$return[] = [
+				'id'            => $tweet->getId(),
+				'twitter_id'    => $tweet->getTwitterId(),
+				'twitter_name'  => $tweet->getTwitterName(),
+				'tweet_content' => $tweet->getTweetContent(),
+				'tweet_date'    => $tweet->getTweetDate()->format('d/m/Y H:i')
+			];
+		}
 
-        return new JsonResponse(["tweets" => $return], Response::HTTP_OK);
-    }
+		return new JsonResponse(["tweets" => $return, "user_id" => $user->getId()], Response::HTTP_OK);
+	}
 }

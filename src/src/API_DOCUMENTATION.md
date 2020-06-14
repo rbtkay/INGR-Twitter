@@ -24,6 +24,7 @@ Response JSON :
 {
     "message": "User registered",
     "user": {
+        "id": int,
         "username": string,
         "email": string,
         "twitter_name": string,
@@ -338,6 +339,31 @@ Response JSON :
         ...
     ],
     "keyword_id": int,
+    "user_id": int
+}
+```
+
+
+##Tweet
+
+###Get Tweets
+
+URI : `/api/tweets`<br/>
+Method : `GET`<br/>
+Authorization: `Bearer Token`<br/>
+Response JSON :
+```ts
+{
+    "tweets": [
+        {
+            "id": int,
+            "twitter_id": string,
+            "twitter_name": string,
+            "tweet_content": string,
+            "tweet_date": datetime
+        },
+        ...
+    ],
     "user_id": int
 }
 ```
