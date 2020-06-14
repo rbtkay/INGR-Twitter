@@ -1,22 +1,12 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { Dropdown, Menu } from "semantic-ui-react";
-import { removeUser } from "../actions";
-import { STORAGE_KEY } from "../constants";
+import useLogout from "../hooks/logout";
 
 const UserPanel = () => {
-    const dispatch = useDispatch();
     const user = useSelector((state) => state);
-    let history = useHistory();
-
-    const destroySession = () => {
-        //we will remove the token from the browser on logout.
-        localStorage.removeItem(STORAGE_KEY);
-        localStorage.clear();
-        dispatch(removeUser());
-        history.push("/"); //redirection to landing page
-    };
+    const { logout } = useLogout();
 
     return (
         <Menu.Menu position={"right"}>
@@ -27,7 +17,7 @@ const UserPanel = () => {
                             <Link to={"/settings"}>Settings</Link>
                         </Dropdown.Item>
                         <Dropdown.Item>
-                            <Link to={"/"} className="text-red" onClick={destroySession}>
+                            <Link to={"/"} className="text-red" onClick={logout}>
                                 Sign out
                             </Link>
                         </Dropdown.Item>

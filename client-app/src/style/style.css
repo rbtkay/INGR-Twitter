@@ -66,10 +66,6 @@ h3.ui.header {
   font-size: 18px;
 }
 
-.landing {
-  padding-top: 30px;
-}
-
 /* Form */
 .ui.form {
   width: -webkit-max-content;
@@ -165,5 +161,15 @@ h3.ui.header {
 
 .keyword .ui.label.delete .icon.delete {
   margin: 0;
+}
+
+/* Pages */
+.landing {
+  padding-top: 30px;
+}
+
+.settings .delete-account.ui.button .icon.delete {
+  margin-left: 10px;
+  margin-right: 0;
 }
 /*# sourceMappingURL=style.css.map */
