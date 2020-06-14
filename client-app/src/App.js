@@ -25,7 +25,7 @@ const App = () => {
             clearTimeout(timer);
         }
         // Refreshs token in 30 min
-        setTimer(setTimeout(() => refreshToken(token), 108000000));
+        setTimer(setTimeout(() => refreshToken(token), 1800000));
     };
 
     // Get Token from local storage
