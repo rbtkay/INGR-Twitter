@@ -21,7 +21,7 @@ const GraphLines = ({ id, series, title, xLabel, yLabel }) => {
                 enabled: false,
             },
         });
-    }, [series, id, title]);
+    }, [series, id, title, xLabel, yLabel]);
 
     return <div id={id} className="graph"></div>;
 };

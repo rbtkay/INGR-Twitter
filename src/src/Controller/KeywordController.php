@@ -65,7 +65,10 @@ class KeywordController extends AbstractController
 				'scores'  => $scores
 			];
 
-			return new JsonResponse(['message' => 'Keyword registered', "keyword" => $return], Response::HTTP_CREATED);
+			return new JsonResponse(
+				['message' => 'Keyword registered', "keyword" => $return],
+				Response::HTTP_CREATED
+			);
 		}
 		return new JsonResponse(['error' => 'Keyword incomplete'], Response::HTTP_BAD_REQUEST);
 	}
@@ -98,7 +101,10 @@ class KeywordController extends AbstractController
 			];
 		}
 
-		return new JsonResponse(["keywords" => $return, "user_id" => $user->getId()], Response::HTTP_OK);
+		return new JsonResponse(
+			["keywords" => $return, "user_id" => $user->getId()],
+			Response::HTTP_OK
+		);
 	}
 
 	/**
@@ -217,7 +223,7 @@ class KeywordController extends AbstractController
 		$k_repo->delete($keyword);
 
 		return new JsonResponse(
-			['message' => "Keyword $id deleted"],
+			['message' => "Keyword $id deleted", 'id' => $id],
 			Response::HTTP_OK
 		);
 	}
@@ -232,8 +238,12 @@ class KeywordController extends AbstractController
 	 * @throws \Doctrine\ORM\ORMException
 	 * @throws \Doctrine\ORM\OptimisticLockException
 	 */
-	public function addScore($id, Request $request, KeywordRepository $k_repo, ScoreRepository $s_repo)
-	{
+	public function addScore(
+		$id,
+		Request $request,
+		KeywordRepository $k_repo,
+		ScoreRepository $s_repo
+	) {
 		try {
 			$data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
 		} catch (JsonException $e) {
@@ -294,8 +304,12 @@ class KeywordController extends AbstractController
 	 * @param ScoreRepository $s_repo
 	 * @return JsonResponse
 	 */
-	public function getScores($id, Request $request, KeywordRepository $k_repo, ScoreRepository $s_repo)
-	{
+	public function getScores(
+		$id,
+		Request $request,
+		KeywordRepository $k_repo,
+		ScoreRepository $s_repo
+	) {
 		$user    = $this->getUser();
 		$keyword = $k_repo->findOneBy(
 			[
