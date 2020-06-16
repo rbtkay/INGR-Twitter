@@ -82,7 +82,7 @@ class KeywordController extends AbstractController
 	public function getKeywords(Request $request, KeywordRepository $k_repo)
 	{
 		$user     = $this->getUser();
-		$keywords = $k_repo->findBy(["user" => $user]);
+		$keywords = $k_repo->selectByUserOrderByScore($user);
 		$return   = [];
 		foreach ($keywords as $keyword) {
 			$scores = [];
@@ -292,7 +292,8 @@ class KeywordController extends AbstractController
 		];
 
 		return new JsonResponse(
-			['message' => 'Keyword score registered', 'score' => $return], Response::HTTP_CREATED
+			['message' => 'Keyword score registered', 'score' => $return],
+			Response::HTTP_CREATED
 		);
 	}
 
