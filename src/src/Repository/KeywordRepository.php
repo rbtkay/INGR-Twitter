@@ -25,6 +25,16 @@ class KeywordRepository extends ServiceEntityRepository
 		parent::__construct($registry, Keyword::class);
 	}
 
+	public function selectByUserOrderByScore(User $user){
+		return $this->createQueryBuilder('k')
+		->innerJoin('k.scores', 's')
+		->where('k.user = :user')
+		->setParameter('user', $user)
+		->orderBy('s.date', 'ASC')
+		->getQuery()
+		->getResult();
+	}
+
 	/**
 	 * @param string $name
 	 * @return Keyword

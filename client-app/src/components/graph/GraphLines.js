@@ -17,6 +17,13 @@ const GraphLines = ({ id, series, title, xLabel, yLabel }) => {
             yAxis: {
                 title: { text: yLabel },
             },
+            plotOptions: {
+                series: {
+                    marker: {
+                        enabled: true,
+                    },
+                },
+            },
             credits: {
                 enabled: false,
             },
