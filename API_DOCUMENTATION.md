@@ -292,7 +292,8 @@ Authorization: `Bearer Token`<br/>
 Response JSON :
 ```ts
 {
-    "message": "Keyword deleted"
+    "message": "Keyword deleted",
+    "id": int
 }
 ```
 
