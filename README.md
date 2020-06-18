@@ -1,8 +1,9 @@
 ﻿*IPSSI EISI-IT 21.1AW - Ines Jebli, Nolwenn Poilleux, Geoffrey Dazelle & Robert Khayat*
 
-# INGR-Twitter
+# Welcome on INGR-Twitter ! 😃
 
-*This project is licensed under the terms of the MIT license.*
+This project is licensed under the terms of the MIT license. <br/>
+It uses Twitter API, Javascript library called ReactJS, Highcharts JS API and Symfony framework.
 
 ## Topic :
 It's analytic plateform.
@@ -10,6 +11,25 @@ It's analytic plateform.
 * Setup its Twitter account
 * Then view all of its posted tweets
 * And using keywords in the form of dashboard.
+
+## User journey:
+1. Connect to the Internet adress : http://localhost:3000/ <br/>
+   Welcome on the plateform ! 🎉
+2. If you don't already do so, you need to register. <br/>
+   Select the Sign Up tab and please complete the next form.
+3. Congratulations, it's your first connection ! <br/>
+   You can see the dashboard.
+4. Now, add one or many keywords.
+5. See their chart. <br/>
+   Choose your curve by clicking on the keyword. <br/>
+   Hover the mouse cursor over the curve and read number of tweets using this keyword at a given date.
+6. Delete keyword with the cross on hover event.
+7. Look your last tweets on the right side.
+8. At the top right, you can access to settings or disconnect. <br/>
+   Click on settings. Modify your username, email address and Twitter login. <br/>
+   Then, change your password.
+9. Log out and login with your new username and password.
+10. Return to the settings page and delete your account.
 
 
 ## Clone the project using the terminal :
