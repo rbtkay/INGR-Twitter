@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class KeywordController extends AbstractController
 {
 	/**
-	 * @Route("/api/keywords", name="create_keyword", methods={"POST"})
+	 * @Route("/keywords", name="create_keyword", methods={"POST"})
 	 * @param Request $request
 	 * @param KeywordRepository $k_repo
 	 * @return JsonResponse
@@ -48,29 +48,34 @@ class KeywordController extends AbstractController
 					Response::HTTP_INTERNAL_SERVER_ERROR
 				);
 			}
+
 			$keyword_result = $k_repo->insert($this->getUser(), $keyword['name']);
 
-//            $kernel = $this->get('kernel');
-//            $application = new Application($kernel);
-//            $application->setAutoExit(false);
-//
-//            $input = new ArrayInput(array(
-//                'command' => 'update:keywords',
-//            ));
-
-            $return         = [
+			$scores = [];
+			foreach ($keyword_result->getScores() as $score) {
+				$scores[] = [
+					'id'     => $score->getId(),
+					'number' => $score->getNumber(),
+					'date'   => $score->getDate()->format('d/m/Y H:i'),
+				];
+			}
+			$return = [
 				'id'      => $keyword_result->getId(),
 				'name'    => $keyword_result->getName(),
-				'user_id' => $keyword_result->getUser()->getId()
+				'user_id' => $keyword_result->getUser()->getId(),
+				'scores'  => $scores
 			];
 
-			return new JsonResponse(['message' => 'Keyword registered', "keyword" => $return], Response::HTTP_CREATED);
+			return new JsonResponse(
+				['message' => 'Keyword registered', "keyword" => $return],
+				Response::HTTP_CREATED
+			);
 		}
 		return new JsonResponse(['error' => 'Keyword incomplete'], Response::HTTP_BAD_REQUEST);
 	}
 
 	/**
-	 * @Route("/api/keywords", name="keywords", methods={"GET"})
+	 * @Route("/keywords", name="keywords", methods={"GET"})
 	 * @param Request $request
 	 * @param KeywordRepository $k_repo
 	 * @return JsonResponse
@@ -78,7 +83,7 @@ class KeywordController extends AbstractController
 	public function getKeywords(Request $request, KeywordRepository $k_repo)
 	{
 		$user     = $this->getUser();
-		$keywords = $k_repo->findBy(["user" => $user]);
+		$keywords = $k_repo->selectByUserOrderByScore($user);
 		$return   = [];
 		foreach ($keywords as $keyword) {
 			$scores = [];
@@ -86,7 +91,7 @@ class KeywordController extends AbstractController
 				$scores[] = [
 					'id'     => $score->getId(),
 					'number' => $score->getNumber(),
-					'date'   => $score->getDate(),
+					'date'   => $score->getDate()->format('d/m/Y H:i'),
 				];
 			}
 
@@ -97,11 +102,14 @@ class KeywordController extends AbstractController
 			];
 		}
 
-		return new JsonResponse(["keywords" => $return, "user_id" => $user->getId()], Response::HTTP_OK);
+		return new JsonResponse(
+			["keywords" => $return, "user_id" => $user->getId()],
+			Response::HTTP_OK
+		);
 	}
 
 	/**
-	 * @Route("/api/keywords/{id}", name="keyword", methods={"GET"})
+	 * @Route("/keywords/{id}", name="keyword", methods={"GET"})
 	 * @param $id
 	 * @param Request $request
 	 * @param KeywordRepository $k_repo
@@ -126,7 +134,7 @@ class KeywordController extends AbstractController
 			$scores[] = [
 				'id'     => $score->getId(),
 				'number' => $score->getNumber(),
-				'date'   => $score->getDate(),
+				'date'   => $score->getDate()->format('d/m/Y H:i'),
 			];
 		}
 
@@ -141,7 +149,7 @@ class KeywordController extends AbstractController
 	}
 
 	/**
-	 * @Route("/api/keywords/{id}", name="update_keyword", methods={"PUT"})
+	 * @Route("/keywords/{id}", name="update_keyword", methods={"PUT"})
 	 * @param $id
 	 * @param Request $request
 	 * @param KeywordRepository $k_repo
@@ -191,7 +199,7 @@ class KeywordController extends AbstractController
 	}
 
 	/**
-	 * @Route("/api/keywords/{id}", name="delete_keyword", methods={"DELETE"})
+	 * @Route("/keywords/{id}", name="delete_keyword", methods={"DELETE"})
 	 * @param $id
 	 * @param Request $request
 	 * @param KeywordRepository $k_repo
@@ -216,13 +224,13 @@ class KeywordController extends AbstractController
 		$k_repo->delete($keyword);
 
 		return new JsonResponse(
-			['message' => "Keyword $id deleted"],
+			['message' => "Keyword $id deleted", 'id' => $id],
 			Response::HTTP_OK
 		);
 	}
 
 	/**
-	 * @Route("/api/keywords/{id}/scores", name="insert_score", methods={"POST"})
+	 * @Route("/keywords/{id}/scores", name="insert_score", methods={"POST"})
 	 * @param $id
 	 * @param Request $request
 	 * @param KeywordRepository $k_repo
@@ -231,8 +239,12 @@ class KeywordController extends AbstractController
 	 * @throws \Doctrine\ORM\ORMException
 	 * @throws \Doctrine\ORM\OptimisticLockException
 	 */
-	public function addScore($id, Request $request, KeywordRepository $k_repo, ScoreRepository $s_repo)
-	{
+	public function addScore(
+		$id,
+		Request $request,
+		KeywordRepository $k_repo,
+		ScoreRepository $s_repo
+	) {
 		try {
 			$data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
 		} catch (JsonException $e) {
@@ -275,26 +287,31 @@ class KeywordController extends AbstractController
 		$return       = [
 			'id'         => $score_result->getId(),
 			'number'     => $score_result->getNumber(),
-			'date'       => $score_result->getDate(),
+			'date'       => $score_result->getDate()->format('d/m/Y H:i'),
 			'keyword_id' => $score_result->getKeyword()->getId(),
 			'user_id'    => $this->getUser()->getId()
 		];
 
 		return new JsonResponse(
-			['message' => 'Keyword score registered', 'score' => $return], Response::HTTP_CREATED
+			['message' => 'Keyword score registered', 'score' => $return],
+			Response::HTTP_CREATED
 		);
 	}
 
 	/**
-	 * @Route("/api/keywords/{id}/scores", name="scores", methods={"GET"})
+	 * @Route("/keywords/{id}/scores", name="scores", methods={"GET"})
 	 * @param $id
 	 * @param Request $request
 	 * @param KeywordRepository $k_repo
 	 * @param ScoreRepository $s_repo
 	 * @return JsonResponse
 	 */
-	public function getScores($id, Request $request, KeywordRepository $k_repo, ScoreRepository $s_repo)
-	{
+	public function getScores(
+		$id,
+		Request $request,
+		KeywordRepository $k_repo,
+		ScoreRepository $s_repo
+	) {
 		$user    = $this->getUser();
 		$keyword = $k_repo->findOneBy(
 			[
@@ -306,17 +323,12 @@ class KeywordController extends AbstractController
 			return new JsonResponse(['message' => 'Wrong keyword id'], Response::HTTP_NOT_FOUND);
 		}
 
-		$scores = $s_repo->findBy(["keyword" => $keyword]);
-
-		if (!count($scores)) {
-			return new JsonResponse(['message' => 'No score data'], Response::HTTP_NOT_FOUND);
-		}
-
 		$return = [];
-		foreach ($scores as $score) {
+		foreach ($keyword->getScores() as $score) {
 			$return[] = [
 				'id'     => $score->getId(),
 				'number' => $score->getNumber(),
+				'date'   => $score->getDate()->format('d/m/Y H:i'),
 			];
 		}
 

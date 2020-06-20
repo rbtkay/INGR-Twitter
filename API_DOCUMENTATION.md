@@ -24,6 +24,7 @@ Response JSON :
 {
     "message": "User registered",
     "user": {
+        "id": int,
         "username": string,
         "email": string,
         "twitter_name": string,
@@ -204,7 +205,8 @@ Response JSON :
     "keyword": {
         "id": int,
         "name": string,
-        "user_id": int
+        "user_id": int,
+        "scores": []
     }
 }
 ```
@@ -225,11 +227,7 @@ Response JSON :
                 {
                     "id": int,
                     "number": int,
-                    "date": {
-                        "date": string,
-                        "timezone_type": int,
-                        "timezone": string
-                    }
+                    "date": string
                 },
                 ...
             ]
@@ -256,11 +254,7 @@ Response JSON :
             {
                 "id": int,
                 "number": int,
-                "date": {
-                    "date": string,
-                    "timezone_type": int,
-                    "timezone": string
-                }
+                "date": string
             }
         ]
     }
@@ -298,7 +292,8 @@ Authorization: `Bearer Token`<br/>
 Response JSON :
 ```ts
 {
-    "message": "Keyword deleted"
+    "message": "Keyword deleted",
+    "id": int
 }
 ```
 
@@ -321,11 +316,7 @@ Response JSON :
     "score": {
         "id": int,
         "number": int,
-        "date": {
-            "date": datetime,
-            "timezone_type": int,
-            "timezone": string
-        },
+        "date": string,
         "keyword_id": int,
         "user_id": int
     }
@@ -343,11 +334,37 @@ Response JSON :
     "scores": [
         {
             "id": int,
-            "number": int
+            "number": int,
+            "date": string
         },
         ...
     ],
     "keyword_id": int,
+    "user_id": int
+}
+```
+
+
+##Tweet
+
+###Get Tweets
+
+URI : `/api/tweets`<br/>
+Method : `GET`<br/>
+Authorization: `Bearer Token`<br/>
+Response JSON :
+```ts
+{
+    "tweets": [
+        {
+            "id": int,
+            "twitter_id": string,
+            "twitter_name": string,
+            "tweet_content": string,
+            "tweet_date": datetime
+        },
+        ...
+    ],
     "user_id": int
 }
 ```

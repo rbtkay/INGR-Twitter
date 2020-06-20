@@ -3,6 +3,11 @@
 $blue: #2185d0;
 $grey: #767676;
 $red: #db2828;
+$ui-font: "Lato",
+'Helvetica Neue',
+Arial,
+Helvetica,
+sans-serif;
 
 /* Menu */
 .menu .item {
@@ -35,7 +40,16 @@ main {
 }
 
 .container.fluid {
-    padding: 0 15px;
+    padding: 0 30px;
+
+    @media (max-width: 991px) {
+        padding: 0 15px;
+    }
+}
+
+.column>.ui.segment {
+    height: 100%;
+    padding-top: 25px;
 }
 
 h1.ui.header {
@@ -61,8 +75,26 @@ h3.ui.header {
     }
 }
 
-.landing {
-    padding-top: 30px;
+.text-blue {
+    color: $blue;
+
+    &:hover,
+    &:focus,
+    &:active {
+        color: $blue;
+    }
+}
+
+.ui.segment {
+    margin-top: 0;
+}
+
+.go-back-btn {
+    display: inline-block;
+    position: relative;
+    z-index: 1;
+    transform: translate(-7px, 16px);
+    font-size: 18px;
 }
 
 /* Form */
@@ -99,71 +131,96 @@ h3.ui.header {
 
 .ui.form.mini-form {
     margin-bottom: 25px;
+
+    .inline.field {
+        margin-bottom: 0;
+    }
 }
 
-/* Keywords */
-.keyword-menu {
-    padding: 15px 0;
+/* Pages */
+.landing {
+    padding-top: 30px;
 }
 
-.keyword {
-    display: inline;
+.settings .delete-account.ui.button .icon.delete {
+    margin-left: 10px;
+    margin-right: 0;
+}
 
-    &:first-child {
-        margin-left: 0;
+.home {
+
+    /* Keywords */
+    .keyword-menu {
+        padding-bottom: 15px;
     }
 
-    &:last-child {
-        margin-right: 0;
-    }
-
-    &:hover,
-    &:focus,
-    &:active {
-        .ui.label.keyword-label {
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
-        }
-
-        .ui.label.delete {
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
-            transform: translateX(0);
-            margin-right: 3px;
-        }
-    }
-
-    .ui.label {
+    .keyword.ui.label {
         cursor: pointer;
         transition: all 0.3s;
-    }
 
-    .ui.label.keyword-label {
-        margin-left: 3px;
-        margin-right: 0;
-        position: relative;
-        z-index: 1;
+        &:hover,
+        &:focus,
+        &:active {
+            background-color: $red !important;
 
-        &.grey:hover,
-        &.grey:focus,
-        &.grey:active {
-            background-color: $blue !important;
+            .icon.delete {
+                margin-left: 5px;
+                font-size: 1em;
+            }
         }
-
-        &.blue:hover,
-        &.blue:focus,
-        &.blue:active {
-            background-color: $grey !important;
-        }
-    }
-
-    .ui.label.delete {
-        margin-left: 0;
-        margin-right: -27px;
-        transform: translateX(-100%);
 
         .icon.delete {
-            margin: 0;
+            margin-left: 0;
+            font-size: 0;
+            transition: all 0.3s;
+            opacity: 1;
         }
+    }
+
+    /* Tweets */
+    .icon.twitter {
+        display: inline-block;
+    }
+
+    .ui.list.relaxed .item.tweet {
+        padding: 10px 0;
+        position: relative;
+
+        &:first-child {
+            padding-top: 0;
+        }
+
+        &:last-child {
+            padding-bottom: 0;
+        }
+
+        .header {
+            padding-bottom: 5px;
+        }
+
+        a.description:hover,
+        a.description:focus,
+        a.description:active {
+            color: $blue;
+        }
+
+        a.description::before {
+            content: '';
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+    }
+}
+
+/* Graph */
+#graph-keyword-usation {
+
+    tspan,
+    text {
+        font-family: $ui-font;
     }
 }

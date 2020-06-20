@@ -2,9 +2,8 @@
 import React, { useEffect } from "react";
 import Highcharts from "highcharts";
 
-const GraphLines = ({ id, series, title }) => {
+const GraphLines = ({ id, series, title, xLabel, yLabel }) => {
     useEffect(() => {
-        console.log("graph rerendered");
         Highcharts.chart(id, {
             chart: {
                 type: "line",
@@ -12,17 +11,24 @@ const GraphLines = ({ id, series, title }) => {
             title: { text: title },
             series: series,
             xAxis: {
-                title: { text: null },
-                // categories: x ? x : null,
+                title: { text: xLabel },
+                type: "category",
             },
             yAxis: {
-                title: { text: null },
+                title: { text: yLabel },
+            },
+            plotOptions: {
+                series: {
+                    marker: {
+                        enabled: true,
+                    },
+                },
             },
             credits: {
                 enabled: false,
             },
         });
-    }, [series]);
+    }, [series, id, title, xLabel, yLabel]);
 
     return <div id={id} className="graph"></div>;
 };
