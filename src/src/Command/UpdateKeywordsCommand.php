@@ -64,20 +64,14 @@ class UpdateKeywordsCommand extends Command
         //     // ...
         // }
         $users = $this->u_repo->findAll(); // TODO: handle error
-        $io->success($users[0]->getUsername());
-
+//        $io->success($users[0]->getUsername());
+        dump($users);
 //        $url = "statuses/user_timeline";
 //        $connection = new TwitterOAuth(getenv("CONSUMER_KEY"), getenv("CONSUMER_SECRET"), getenv("TWITTER_API_ACCESS_TOKEN"), getenv("TWITTER_API_ACCESS_TOKEN_SECRET"));
-
         foreach ($users as $user) {
+            dump($user->getUsername());
             $this->tweet_helper->setScoreForKeywords($user, $this->k_repo, $this->s_repo);
-
-            $tweets = $this->tweet_helper->getUserTweets($user);
-            if(gettype($tweets) == "array"){ // if $tweets is an object it represents the error coming back from the twitter api.
-                $this->addNewTweets($tweets, $user); //add new tweets in case they're not already stored
-                $this->deleteOldTweets($tweets, $user); //delete from the database tweets deleted from twitter
-                $io->success("Managing tweets of" . $user->getId());
-            }
+            $this->tweet_helper->setUserTweets($user, $this->t_repo);
         }
 
         $io->success("Command Completed !");
@@ -104,30 +98,30 @@ class UpdateKeywordsCommand extends Command
         }
     }
 
+//
+//    private function addNewTweets(array $tweets, User $user)
+//    {
+//        foreach ($tweets as $tweet) {
+//            $tweet_result = $this->t_repo->findOneBy(["twitter_id"=> $tweet->id]);
+//            if (is_null($tweet_result)) {
+//                $this->t_repo->insert($tweet->id, $tweet->text, $tweet->created_at, $user->getTwitterName(), $user);
+//            }
+//        }
+//
+//    }
 
-    private function addNewTweets(array $tweets, User $user)
-    {
-        foreach ($tweets as $tweet) {
-            $tweet_result = $this->t_repo->findOneBy(["twitter_id"=> $tweet->id]);
-            if (is_null($tweet_result)) {
-                $this->t_repo->insert($tweet->id, $tweet->text, $tweet->created_at, $user->getTwitterName(), $user);
-            }
-        }
-
-    }
-
-    private function deleteOldTweets(array $tweets, User $user)
-    {
-        $user_tweets = $this->t_repo->findBy(["user" => $user->getId()]);
-        $tweets_ids = array_map(function ($tweet) {
-            return $tweet->id;
-        }, $tweets);
-
-        for ($i = 0; $i < count($user_tweets); $i++) {
-            $user_tweet_id = $user_tweets[$i]->getTwitterId();
-            if (!in_array($user_tweet_id, $tweets_ids)) {
-                $this->t_repo->delete($user_tweets[$i]);
-            }
-        }
-    }
+//    private function deleteOldTweets(array $tweets, User $user)
+//    {
+//        $user_tweets = $this->t_repo->findBy(["user" => $user->getId()]);
+//        $tweets_ids = array_map(function ($tweet) {
+//            return $tweet->id;
+//        }, $tweets);
+//
+//        for ($i = 0; $i < count($user_tweets); $i++) {
+//            $user_tweet_id = $user_tweets[$i]->getTwitterId();
+//            if (!in_array($user_tweet_id, $tweets_ids)) {
+//                $this->t_repo->delete($user_tweets[$i]);
+//            }
+//        }
+//    }
 }
