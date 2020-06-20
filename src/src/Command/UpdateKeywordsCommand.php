@@ -5,6 +5,7 @@ namespace App\Command;
 use App\Entity\Score;
 use App\Entity\Tweet;
 use App\Entity\User;
+use App\Helper\TweetHelper;
 use App\Repository\UserRepository;
 use App\Repository\TweetRepository;
 use App\Repository\KeywordRepository;
@@ -28,12 +29,16 @@ class UpdateKeywordsCommand extends Command
     private $k_repo;
     private $s_repo;
 
-    public function __construct(UserRepository $u_repo, TweetRepository $t_repo, KeywordRepository $k_repo, ScoreRepository $s_repo)
+    private TweetHelper $tweet_helper;
+
+    public function __construct(UserRepository $u_repo, TweetRepository $t_repo, KeywordRepository $k_repo, ScoreRepository $s_repo, TweetHelper $tweet_helper)
     {
         $this->u_repo = $u_repo;
         $this->t_repo = $t_repo;
         $this->k_repo = $k_repo;
         $this->s_repo = $s_repo;
+
+        $this->tweet_helper = $tweet_helper;
         parent::__construct();
     }
 
@@ -61,16 +66,13 @@ class UpdateKeywordsCommand extends Command
         $users = $this->u_repo->findAll(); // TODO: handle error
         $io->success($users[0]->getUsername());
 
-        $url = "statuses/user_timeline"; 
-        $connection = new TwitterOAuth(getenv("CONSUMER_KEY"), getenv("CONSUMER_SECRET"), getenv("TWITTER_API_ACCESS_TOKEN"), getenv("TWITTER_API_ACCESS_TOKEN_SECRET"));
+//        $url = "statuses/user_timeline";
+//        $connection = new TwitterOAuth(getenv("CONSUMER_KEY"), getenv("CONSUMER_SECRET"), getenv("TWITTER_API_ACCESS_TOKEN"), getenv("TWITTER_API_ACCESS_TOKEN_SECRET"));
 
         foreach ($users as $user) {
-            $keywords = $this->k_repo->findBy(["user"=> $user->getId()]);
+            $this->tweet_helper->setScoreForKeywords($user, $this->k_repo, $this->s_repo);
 
-            $this->getCountTweetsWithKeyword($keywords, $connection);
-
-            $tweets = $connection->get($url, ["screen_name" => $user->getTwitterName()]);
-
+            $tweets = $this->tweet_helper->getUserTweets($user);
             if(gettype($tweets) == "array"){ // if $tweets is an object it represents the error coming back from the twitter api.
                 $this->addNewTweets($tweets, $user); //add new tweets in case they're not already stored
                 $this->deleteOldTweets($tweets, $user); //delete from the database tweets deleted from twitter
