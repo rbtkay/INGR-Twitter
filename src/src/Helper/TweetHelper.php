@@ -20,11 +20,6 @@ class TweetHelper
         $this->connection = $connection;
     }
 
-    public function getUserTweets(User $user){
-        $url = "statuses/user_timeline";
-        return $this->connection->get($url, ["screen_name" => $user->getTwitterName()]);
-    }
-
     public function setScoreForKeywords(User $user, KeywordRepository $k_repo, ScoreRepository $s_repo){
         $keywords = $k_repo->findBy(["user"=> $user->getId()]);
         dump("user keyword");
@@ -64,7 +59,7 @@ class TweetHelper
     private function addNewTweets(array $tweets, User $user, TweetRepository $t_repo)
     {
         foreach ($tweets as $tweet) {
-            $tweet_result = $t_repo->findOneBy(["twitter_id"=> $tweet->id]);
+            $tweet_result = $t_repo->findOneBy(["twitter_id"=> $tweet->id, "user" => $user->getId()]);
             if (is_null($tweet_result)) {
                 $t_repo->insert($tweet->id, $tweet->text, $tweet->created_at, $user->getTwitterName(), $user);
             }
