@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Repository\KeywordRepository;
 use App\Repository\ScoreRepository;
 use JsonException;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
