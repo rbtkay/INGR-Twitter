@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Repository\KeywordRepository;
 use App\Repository\ScoreRepository;
 use JsonException;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,7 +49,16 @@ class KeywordController extends AbstractController
 				);
 			}
 			$keyword_result = $k_repo->insert($this->getUser(), $keyword['name']);
-			$return         = [
+
+//            $kernel = $this->get('kernel');
+//            $application = new Application($kernel);
+//            $application->setAutoExit(false);
+//
+//            $input = new ArrayInput(array(
+//                'command' => 'update:keywords',
+//            ));
+
+            $return         = [
 				'id'      => $keyword_result->getId(),
 				'name'    => $keyword_result->getName(),
 				'user_id' => $keyword_result->getUser()->getId()

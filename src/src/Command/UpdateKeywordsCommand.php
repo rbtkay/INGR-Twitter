@@ -63,6 +63,7 @@ class UpdateKeywordsCommand extends Command
 
         $url = "statuses/user_timeline"; 
         $connection = new TwitterOAuth(getenv("CONSUMER_KEY"), getenv("CONSUMER_SECRET"), getenv("TWITTER_API_ACCESS_TOKEN"), getenv("TWITTER_API_ACCESS_TOKEN_SECRET"));
+
         foreach ($users as $user) {
             $keywords = $this->k_repo->findBy(["user"=> $user->getId()]);
 
@@ -70,10 +71,11 @@ class UpdateKeywordsCommand extends Command
 
             $tweets = $connection->get($url, ["screen_name" => $user->getTwitterName()]);
 
-            $this->addNewTweets($tweets, $user); //add new tweets in case they're not already stored
-            $this->deleteOldTweets($tweets, $user); //delete from the database tweets deleted from tweeter
-
-            $io->success("Managing tweets of" . $user->getId());
+            if(gettype($tweets) == "array"){ // if $tweets is an object it represents the error coming back from the twitter api.
+                $this->addNewTweets($tweets, $user); //add new tweets in case they're not already stored
+                $this->deleteOldTweets($tweets, $user); //delete from the database tweets deleted from twitter
+                $io->success("Managing tweets of" . $user->getId());
+            }
         }
 
         $io->success("Command Completed !");
@@ -83,11 +85,17 @@ class UpdateKeywordsCommand extends Command
     private function getCountTweetsWithKeyword(array $keywords, TwitterOAuth $connection){
         foreach ($keywords as $keyword){
             $keyword_in_tweets = $connection->get("search/tweets", ["q" => $keyword->getName(), "count" => "100"]);
-            $tweet_count = count($keyword_in_tweets->statuses);
 
+            $tweet_count = 0;
+            if(gettype($keyword_in_tweets) == "array"){
+                $tweet_count = count($keyword_in_tweets->statuses);
+            }
+
+            date_default_timezone_set('Europe/Paris');
+            $date_now = date("Y-m-d H:i:s");
             $data = [
                 "number" => $tweet_count,
-                "date"=> date("Y-m-d H:i:s")
+                "date"=> $date_now
             ];
 
             $this->s_repo->insertScore($keyword, $data);
