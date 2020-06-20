@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Helper\TweetHelper;
+use App\Repository\TweetRepository;
 use App\Repository\UserRepository;
 use JsonException;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
@@ -27,7 +29,7 @@ class UserController extends AbstractController
 	/**
 	 * @Route("/users", name="register", methods={"POST"})
 	 */
-	public function register(Request $request, UserRepository $u_repo, JWTTokenManagerInterface $JWTManager)
+	public function register(Request $request, UserRepository $u_repo, JWTTokenManagerInterface $JWTManager, TweetRepository $t_repo)
 	{
 		try {
 			$user = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
@@ -79,6 +81,17 @@ class UserController extends AbstractController
 			'token'        => $JWTManager->create($user_result)
 
 		];
+//
+//		$tweet_helper = new TweetHelper();
+//		$new_user = $u_repo->findOneBy(["id"=>$user_result->getId()]);
+//		$tweet_helper->setUserTweets($new_user, $t_repo);
+
+//		dd($tweet_helper);
+        $new_user = $u_repo->findOneBy(["username"=> $user_result->getUsername()]);
+        $tweet_helper = new TweetHelper();
+        $tweet_helper->setUserTweets($new_user, $t_repo);
+
+
 		return new JsonResponse(['message' => "User registered", "user" => $return], Response::HTTP_CREATED);
 	}
 
@@ -274,7 +287,7 @@ class UserController extends AbstractController
 	/**
 	 * @Route("/twitter_name", name="update_twitter_name", methods={"PUT"})
 	 */
-	public function updateTwitterName(Request $request, UserRepository $u_repo)
+	public function updateTwitterName(Request $request, UserRepository $u_repo, TweetRepository $t_repo)
 	{
 		try {
 			$data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
@@ -291,8 +304,14 @@ class UserController extends AbstractController
 
 		$user = $this->getUser();
 		$u_repo->update($user, $data);
+
+        $new_user = $u_repo->findOneBy(["username"=> $user->getUsername()]);
+		$tweet_helper = new TweetHelper();
+		$tweet_helper->setUserTweets($new_user, $t_repo);
+
 		return new JsonResponse(
-			['message' => "Twitter name updated"],
+			['message' => "Twitter name updated",
+                "user" => $new_user->getId()],
 			Response::HTTP_OK
 		);
 	}

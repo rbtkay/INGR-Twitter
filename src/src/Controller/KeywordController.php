@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Helper\TweetHelper;
 use App\Repository\KeywordRepository;
 use App\Repository\ScoreRepository;
+use App\Repository\UserRepository;
 use JsonException;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,11 +23,12 @@ class KeywordController extends AbstractController
      * @param Request $request
      * @param KeywordRepository $k_repo
      * @param ScoreRepository $s_repo
+     * @param UserRepository $u_repo
      * @return JsonResponse
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-	public function addKeyword(Request $request, KeywordRepository $k_repo, ScoreRepository $s_repo)
+	public function addKeyword(Request $request, KeywordRepository $k_repo, ScoreRepository $s_repo, UserRepository $u_repo)
 	{
 		try {
 			$keyword = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
@@ -71,7 +73,8 @@ class KeywordController extends AbstractController
 			];
 
             $tweet_helper = new TweetHelper();
-            $tweet_helper->setScoreForKeywords($this->getUser(), $k_repo, $s_repo);
+            $user = $u_repo->findOneBy(["username" => $this->getUser()->getUsername()]);
+            $tweet_helper->setScoreForKeywords($user, $k_repo, $s_repo);
 
 			return new JsonResponse(
 				['message' => 'Keyword registered', "keyword" => $return],
