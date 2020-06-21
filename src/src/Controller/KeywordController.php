@@ -2,10 +2,15 @@
 
 namespace App\Controller;
 
+use App\Helper\TweetHelper;
 use App\Repository\KeywordRepository;
 use App\Repository\ScoreRepository;
+use App\Repository\UserRepository;
 use JsonException;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,12 +22,18 @@ class KeywordController extends AbstractController
 	 * @Route("/keywords", name="create_keyword", methods={"POST"})
 	 * @param Request $request
 	 * @param KeywordRepository $k_repo
+	 * @param ScoreRepository $s_repo
+	 * @param UserRepository $u_repo
 	 * @return JsonResponse
 	 * @throws \Doctrine\ORM\ORMException
 	 * @throws \Doctrine\ORM\OptimisticLockException
 	 */
-	public function addKeyword(Request $request, KeywordRepository $k_repo)
-	{
+	public function addKeyword(
+		Request $request,
+		KeywordRepository $k_repo,
+		ScoreRepository $s_repo,
+		UserRepository $u_repo
+	) {
 		try {
 			$keyword = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
 		} catch (JsonException $e) {
@@ -64,6 +75,10 @@ class KeywordController extends AbstractController
 				'user_id' => $keyword_result->getUser()->getId(),
 				'scores'  => $scores
 			];
+
+			$tweet_helper = new TweetHelper();
+			$user         = $u_repo->findOneBy(["username" => $this->getUser()->getUsername()]);
+			$tweet_helper->setScoreForKeywords($user, $k_repo, $s_repo);
 
 			return new JsonResponse(
 				['message' => 'Keyword registered', "keyword" => $return],

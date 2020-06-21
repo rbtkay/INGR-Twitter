@@ -15,7 +15,7 @@ const TweetPanel = () => {
         if (!mounted.current) {
             // Component will mount
             load(user.token);
-            // Automaticaly refresh tweets every hours, f5 make it instantly
+            // Automaticaly refresh tweets every hour, f5 makes it instantly
             setInterval(() => load(user.token), 3600000);
             mounted.current = true;
         }
