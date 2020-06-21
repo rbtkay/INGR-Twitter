@@ -1,3 +1,4 @@
+/* global BigInt */
 import React from "react";
 import { List, ListItem, ListHeader, ListDescription } from "semantic-ui-react";
 
@@ -9,7 +10,7 @@ const Tweets = ({ tweets }) => {
                     <ListHeader>{tweet.tweet_date}</ListHeader>
                     <ListDescription
                         as="a"
-                        href={`https://twitter.com/${tweet.twitter_name}/status/${tweet.twitter_id}`}
+                        href={`https://twitter.com/${tweet.twitter_name}/status/${tweet.twitter_id.split("_")[0]}`}
                     >
                         {tweet.tweet_content}
                     </ListDescription>

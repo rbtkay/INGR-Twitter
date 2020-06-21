@@ -22,8 +22,6 @@ class TweetHelper
 
     public function setScoreForKeywords(User $user, KeywordRepository $k_repo, ScoreRepository $s_repo){
         $keywords = $k_repo->findBy(["user"=> $user->getId()]);
-        dump("user keyword");
-        dump($keywords);
         foreach ($keywords as $keyword){
             $keyword_in_tweets = $this->connection->get("search/tweets", ["q" => $keyword->getName(), "count" => "100"]);
 
@@ -36,18 +34,14 @@ class TweetHelper
                 "date"=> $date_now
             ];
 
-            dump($tweet_count);
-
             $s_repo->insertScore($keyword, $data);
         }
     }
 
     public function setUserTweets(User $user, TweetRepository $t_repo){
-        dump("setting user tweets");
         $url = "statuses/user_timeline";
         $user_tweets = $this->connection->get($url, ["screen_name" => $user->getTwitterName()]);
-        dump($user);
-        dump($user_tweets);
+        dd($user_tweets[0]->id);
         if(gettype($user_tweets) == "array"){ // if $tweets is an object it represents the error coming back from the twitter api.
             $this->addNewTweets($user_tweets, $user, $t_repo); //add new tweets in case they're not already stored
             $this->deleteOldTweets($user_tweets, $user, $t_repo); //delete from the database tweets deleted from twitter
