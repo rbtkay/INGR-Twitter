@@ -34,6 +34,6 @@ class TweetController extends AbstractController
 			];
 		}
 
-		return new JsonResponse(["tweets" => $return, "user_id" => $user->getId(), "twitterid"=> $tweets[0]->getTwitterId()], Response::HTTP_OK);
+		return new JsonResponse(["tweets" => $return, "user_id" => $user->getId()], Response::HTTP_OK);
 	}
 }

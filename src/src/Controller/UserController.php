@@ -29,8 +29,12 @@ class UserController extends AbstractController
 	/**
 	 * @Route("/users", name="register", methods={"POST"})
 	 */
-	public function register(Request $request, UserRepository $u_repo, JWTTokenManagerInterface $JWTManager, TweetRepository $t_repo)
-	{
+	public function register(
+		Request $request,
+		UserRepository $u_repo,
+		JWTTokenManagerInterface $JWTManager,
+		TweetRepository $t_repo
+	) {
 		try {
 			$user = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
 		} catch (JsonException $e) {
@@ -81,16 +85,10 @@ class UserController extends AbstractController
 			'token'        => $JWTManager->create($user_result)
 
 		];
-//
-//		$tweet_helper = new TweetHelper();
-//		$new_user = $u_repo->findOneBy(["id"=>$user_result->getId()]);
-//		$tweet_helper->setUserTweets($new_user, $t_repo);
 
-//		dd($tweet_helper);
-        $new_user = $u_repo->findOneBy(["username"=> $user_result->getUsername()]);
-        $tweet_helper = new TweetHelper();
-        $tweet_helper->setUserTweets($new_user, $t_repo);
-
+		$new_user     = $u_repo->findOneBy(["username" => $user_result->getUsername()]);
+		$tweet_helper = new TweetHelper();
+		$tweet_helper->setUserTweets($new_user, $t_repo);
 
 		return new JsonResponse(['message' => "User registered", "user" => $return], Response::HTTP_CREATED);
 	}
@@ -305,13 +303,15 @@ class UserController extends AbstractController
 		$user = $this->getUser();
 		$u_repo->update($user, $data);
 
-        $new_user = $u_repo->findOneBy(["username"=> $user->getUsername()]);
+		$new_user     = $u_repo->findOneBy(["username" => $user->getUsername()]);
 		$tweet_helper = new TweetHelper();
 		$tweet_helper->setUserTweets($new_user, $t_repo);
 
 		return new JsonResponse(
-			['message' => "Twitter name updated",
-                "user" => $new_user->getId()],
+			[
+				'message' => "Twitter name updated",
+				"user"    => $new_user->getId()
+			],
 			Response::HTTP_OK
 		);
 	}
