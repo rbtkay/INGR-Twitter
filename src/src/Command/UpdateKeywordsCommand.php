@@ -5,6 +5,7 @@ namespace App\Command;
 use App\Entity\Score;
 use App\Entity\Tweet;
 use App\Entity\User;
+use App\Helper\TweetHelper;
 use App\Repository\UserRepository;
 use App\Repository\TweetRepository;
 use App\Repository\KeywordRepository;
@@ -28,12 +29,16 @@ class UpdateKeywordsCommand extends Command
     private $k_repo;
     private $s_repo;
 
-    public function __construct(UserRepository $u_repo, TweetRepository $t_repo, KeywordRepository $k_repo, ScoreRepository $s_repo)
+    private TweetHelper $tweet_helper;
+
+    public function __construct(UserRepository $u_repo, TweetRepository $t_repo, KeywordRepository $k_repo, ScoreRepository $s_repo, TweetHelper $tweet_helper)
     {
         $this->u_repo = $u_repo;
         $this->t_repo = $t_repo;
         $this->k_repo = $k_repo;
         $this->s_repo = $s_repo;
+
+        $this->tweet_helper = $tweet_helper;
         parent::__construct();
     }
 
@@ -47,7 +52,6 @@ class UpdateKeywordsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        // echo "from the command --> " $(date)  >> /var/www/test-result/result.txt
         $io = new SymfonyStyle($input, $output);
         // $arg1 = $input->getArgument('arg1');
 
@@ -58,74 +62,13 @@ class UpdateKeywordsCommand extends Command
         // if ($input->getOption('option1')) {
         //     // ...
         // }
-        $users = $this->u_repo->findAll(); // TODO: handle error
-        $io->success($users[0]->getUsername());
-
-        $url = "statuses/user_timeline"; 
-        $connection = new TwitterOAuth(getenv("CONSUMER_KEY"), getenv("CONSUMER_SECRET"), getenv("TWITTER_API_ACCESS_TOKEN"), getenv("TWITTER_API_ACCESS_TOKEN_SECRET"));
-
+        $users = $this->u_repo->findAll();
         foreach ($users as $user) {
-            $keywords = $this->k_repo->findBy(["user"=> $user->getId()]);
-
-            $this->getCountTweetsWithKeyword($keywords, $connection);
-
-            $tweets = $connection->get($url, ["screen_name" => $user->getTwitterName()]);
-
-            if(gettype($tweets) == "array"){ // if $tweets is an object it represents the error coming back from the twitter api.
-                $this->addNewTweets($tweets, $user); //add new tweets in case they're not already stored
-                $this->deleteOldTweets($tweets, $user); //delete from the database tweets deleted from twitter
-                $io->success("Managing tweets of" . $user->getId());
-            }
+            $this->tweet_helper->setScoreForKeywords($user, $this->k_repo, $this->s_repo);
+            $this->tweet_helper->setUserTweets($user, $this->t_repo);
         }
 
-        $io->success("Command Completed !");
+        $io->success("Command Completed Successfully!");
         return 0;
-    }
-
-    private function getCountTweetsWithKeyword(array $keywords, TwitterOAuth $connection){
-        foreach ($keywords as $keyword){
-            $keyword_in_tweets = $connection->get("search/tweets", ["q" => $keyword->getName(), "count" => "100"]);
-
-            $tweet_count = 0;
-            if(gettype($keyword_in_tweets) == "array"){
-                $tweet_count = count($keyword_in_tweets->statuses);
-            }
-
-            date_default_timezone_set('Europe/Paris');
-            $date_now = date("Y-m-d H:i:s");
-            $data = [
-                "number" => $tweet_count,
-                "date"=> $date_now
-            ];
-
-            $this->s_repo->insertScore($keyword, $data);
-        }
-    }
-
-
-    private function addNewTweets(array $tweets, User $user)
-    {
-        foreach ($tweets as $tweet) {
-            $tweet_result = $this->t_repo->findOneBy(["twitter_id"=> $tweet->id]);
-            if (is_null($tweet_result)) {
-                $this->t_repo->insert($tweet->id, $tweet->text, $tweet->created_at, $user->getTwitterName(), $user);
-            }
-        }
-
-    }
-
-    private function deleteOldTweets(array $tweets, User $user)
-    {
-        $user_tweets = $this->t_repo->findBy(["user" => $user->getId()]);
-        $tweets_ids = array_map(function ($tweet) {
-            return $tweet->id;
-        }, $tweets);
-
-        for ($i = 0; $i < count($user_tweets); $i++) {
-            $user_tweet_id = $user_tweets[$i]->getTwitterId();
-            if (!in_array($user_tweet_id, $tweets_ids)) {
-                $this->t_repo->delete($user_tweets[$i]);
-            }
-        }
     }
 }

@@ -25,14 +25,15 @@ class KeywordRepository extends ServiceEntityRepository
 		parent::__construct($registry, Keyword::class);
 	}
 
-	public function selectByUserOrderByScore(User $user){
+	public function selectByUserOrderByScore(User $user)
+	{
 		return $this->createQueryBuilder('k')
-		->innerJoin('k.scores', 's')
-		->where('k.user = :user')
-		->setParameter('user', $user)
-		->orderBy('s.date', 'ASC')
-		->getQuery()
-		->getResult();
+			->innerJoin('k.scores', 's')
+			->where('k.user = :user')
+			->setParameter('user', $user)
+			->orderBy('s.date', 'ASC')
+			->getQuery()
+			->getResult();
 	}
 
 	/**
@@ -48,10 +49,10 @@ class KeywordRepository extends ServiceEntityRepository
 		$keyword->setUser($user);
 
 		// TODO : request twitter API for getting scores
-//		$score = new Score();
-//		$score->setNumber();
-//		$score->setDate(new \DateTime());
-//		$keyword->addScore($score);
+		//		$score = new Score();
+		//		$score->setNumber();
+		//		$score->setDate(new \DateTime());
+		//		$keyword->addScore($score);
 
 		$this->_em->persist($keyword);
 		$this->_em->flush();

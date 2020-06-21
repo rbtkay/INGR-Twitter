@@ -49,7 +49,7 @@ class ScoreRepository extends ServiceEntityRepository
 
 		while (count($scores) > 10) {
 			$this->delete($scores[0]);
-			array_shift($scores[0]);
+			array_shift($scores);
 		}
 	}
 
