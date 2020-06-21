@@ -27,13 +27,13 @@ class TweetController extends AbstractController
 		foreach ($tweets as $tweet) {
 			$return[] = [
 				'id'            => $tweet->getId(),
-				'twitter_id'    => $tweet->getTwitterId(),
+				'twitter_id'    => $tweet->getTwitterId() . "_id",
 				'twitter_name'  => $tweet->getTwitterName(),
 				'tweet_content' => $tweet->getTweetContent(),
 				'tweet_date'    => $tweet->getTweetDate()->format('d/m/Y H:i')
 			];
 		}
 
-		return new JsonResponse(["tweets" => $return, "user_id" => $user->getId()], Response::HTTP_OK);
+		return new JsonResponse(["tweets" => $return, "user_id" => $user->getId(), "twitterid"=> $tweets[0]->getTwitterId()], Response::HTTP_OK);
 	}
 }

@@ -41,7 +41,6 @@ class TweetHelper
     public function setUserTweets(User $user, TweetRepository $t_repo){
         $url = "statuses/user_timeline";
         $user_tweets = $this->connection->get($url, ["screen_name" => $user->getTwitterName()]);
-        dd($user_tweets[0]->id);
         if(gettype($user_tweets) == "array"){ // if $tweets is an object it represents the error coming back from the twitter api.
             $this->addNewTweets($user_tweets, $user, $t_repo); //add new tweets in case they're not already stored
             $this->deleteOldTweets($user_tweets, $user, $t_repo); //delete from the database tweets deleted from twitter

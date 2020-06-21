@@ -52,7 +52,6 @@ class UpdateKeywordsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        // echo "from the command --> " $(date)  >> /var/www/test-result/result.txt
         $io = new SymfonyStyle($input, $output);
         // $arg1 = $input->getArgument('arg1');
 
@@ -63,65 +62,13 @@ class UpdateKeywordsCommand extends Command
         // if ($input->getOption('option1')) {
         //     // ...
         // }
-        $users = $this->u_repo->findAll(); // TODO: handle error
-//        $io->success($users[0]->getUsername());
-        dump($users);
-//        $url = "statuses/user_timeline";
-//        $connection = new TwitterOAuth(getenv("CONSUMER_KEY"), getenv("CONSUMER_SECRET"), getenv("TWITTER_API_ACCESS_TOKEN"), getenv("TWITTER_API_ACCESS_TOKEN_SECRET"));
+        $users = $this->u_repo->findAll();
         foreach ($users as $user) {
-            dump($user->getUsername());
             $this->tweet_helper->setScoreForKeywords($user, $this->k_repo, $this->s_repo);
             $this->tweet_helper->setUserTweets($user, $this->t_repo);
         }
 
-        $io->success("Command Completed !");
+        $io->success("Command Completed Successfully!");
         return 0;
     }
-
-    private function getCountTweetsWithKeyword(array $keywords, TwitterOAuth $connection){
-        foreach ($keywords as $keyword){
-            $keyword_in_tweets = $connection->get("search/tweets", ["q" => $keyword->getName(), "count" => "100"]);
-
-            $tweet_count = 0;
-            if(gettype($keyword_in_tweets) == "array"){
-                $tweet_count = count($keyword_in_tweets->statuses);
-            }
-
-            date_default_timezone_set('Europe/Paris');
-            $date_now = date("Y-m-d H:i:s");
-            $data = [
-                "number" => $tweet_count,
-                "date"=> $date_now
-            ];
-
-            $this->s_repo->insertScore($keyword, $data);
-        }
-    }
-
-//
-//    private function addNewTweets(array $tweets, User $user)
-//    {
-//        foreach ($tweets as $tweet) {
-//            $tweet_result = $this->t_repo->findOneBy(["twitter_id"=> $tweet->id]);
-//            if (is_null($tweet_result)) {
-//                $this->t_repo->insert($tweet->id, $tweet->text, $tweet->created_at, $user->getTwitterName(), $user);
-//            }
-//        }
-//
-//    }
-
-//    private function deleteOldTweets(array $tweets, User $user)
-//    {
-//        $user_tweets = $this->t_repo->findBy(["user" => $user->getId()]);
-//        $tweets_ids = array_map(function ($tweet) {
-//            return $tweet->id;
-//        }, $tweets);
-//
-//        for ($i = 0; $i < count($user_tweets); $i++) {
-//            $user_tweet_id = $user_tweets[$i]->getTwitterId();
-//            if (!in_array($user_tweet_id, $tweets_ids)) {
-//                $this->t_repo->delete($user_tweets[$i]);
-//            }
-//        }
-//    }
 }
