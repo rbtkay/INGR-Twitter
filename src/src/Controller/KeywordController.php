@@ -44,7 +44,9 @@ class KeywordController extends AbstractController
 		}
 
 		if (!empty($keyword['name'])) {
-			if (substr($keyword['name'], 0, 1) !== "#") $keyword['name'] = "#" . $keyword['name'];
+			if (substr($keyword['name'], 0, 1) !== "#") {
+				$keyword['name'] = "#" . $keyword['name'];
+			}
 
 			$exists = $k_repo->findOneBy(
 				[
