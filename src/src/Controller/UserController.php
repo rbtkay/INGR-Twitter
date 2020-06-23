@@ -71,6 +71,8 @@ class UserController extends AbstractController
 			return new JsonResponse(['message' => 'Wrong confirmation password'], Response::HTTP_BAD_REQUEST);
 		}
 
+		if (substr($user['twitter_name'], 0, 1) === "@") $user['twitter_name'] = ltrim($user['twitter_name'], '@');
+
 		$user_result = $u_repo->insert(
 			$user['username'],
 			$user['password'],
