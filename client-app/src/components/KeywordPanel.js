@@ -23,9 +23,12 @@ const KeywordPanel = () => {
     });
 
     const addKeyword = result => {
-        const cp_keywords = keywords.slice();
-        cp_keywords.push(result.keyword);
-        setKeywords(cp_keywords);
+        if (result.success) {
+            getKeywords(token);
+            // const cp_keywords = keywords.slice();
+            // cp_keywords.push(result.keyword);
+            // setKeywords(cp_keywords);
+        }
     };
 
     const deleteKeyword = id => {
