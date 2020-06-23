@@ -1,23 +1,23 @@
-import React, { useState, useCallback, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { Form, Button, Message } from "semantic-ui-react";
-import { setUser } from "../../actions";
-import useFetch from "../../hooks/fetch";
-import Input from "./Input";
+import React, { useState, useCallback, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { Form, Button, Message, Label } from 'semantic-ui-react';
+import { setUser } from '../../actions';
+import useFetch from '../../hooks/fetch';
+import Input from './Input';
 
 const FormSignUp = () => {
     const dispatch = useDispatch();
-    const { result, load } = useFetch("users", "POST");
+    const { result, load } = useFetch('users', 'POST');
     const [loading, setLoading] = useState(false);
-    const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
-    const [twitter_name, setTwitterName] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmation, setConfirmation] = useState("");
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [twitter_name, setTwitterName] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmation, setConfirmation] = useState('');
     const [message, setMessage] = useState({
         display: false,
-        type: "",
-        value: "",
+        type: '',
+        value: '',
     });
 
     useEffect(() => {
@@ -25,7 +25,7 @@ const FormSignUp = () => {
             if (result.success) {
                 setMessage({
                     display: result.success,
-                    type: "success",
+                    type: 'success',
                     value: result.message,
                 });
                 dispatch(setUser(result.user));
@@ -33,7 +33,7 @@ const FormSignUp = () => {
                 setLoading(false);
                 setMessage({
                     display: !result.success,
-                    type: "error",
+                    type: 'error',
                     value: result.message,
                 });
             }
@@ -48,23 +48,23 @@ const FormSignUp = () => {
         if (!username || !email || !password || !confirmation) {
             setMessage({
                 display: true,
-                type: "error",
-                value: "All fields are required",
+                type: 'error',
+                value: 'All fields are required',
             });
             return false;
         }
         if (!emailRegex.test(email)) {
             setMessage({
                 display: true,
-                type: "error",
-                value: "Invalid Email",
+                type: 'error',
+                value: 'Invalid Email',
             });
             return false;
         }
         if (password !== confirmation) {
             setMessage({
                 display: true,
-                type: "error",
+                type: 'error',
                 value: "Passwords don't match",
             });
             return false;
@@ -73,7 +73,7 @@ const FormSignUp = () => {
     };
 
     const onSubmit = useCallback(
-        (e) => {
+        e => {
             e.preventDefault();
             if (checkValues() && !loading) {
                 load(null, {
@@ -90,45 +90,52 @@ const FormSignUp = () => {
 
     return (
         <Form
-            error={message.type === "error" && message.display}
-            success={message.type === "success" && message.display}
+            error={message.type === 'error' && message.display}
+            success={message.type === 'success' && message.display}
             onSubmit={onSubmit}
             loading={loading}
         >
             <Input
-                name={"username"}
+                name={'username'}
                 label="Username"
                 placeholder="Enter username"
-                setValue={(value) => setUsername(value)}
+                setValue={value => setUsername(value)}
                 required={true}
             />
-            <Input
-                name={"twitterName"}
+            <Form.Input
+                name="twitterName"
+                labelPosition="left"
                 label="Login Twitter"
                 placeholder="Enter your login Twitter"
-                setValue={(value) => setTwitterName(value)}
-            />
+                placeholder="Enter your email"
+                onChange={e => setTwitterName(e.target.value)}
+            >
+                <Label color="blue" className="label-stack">
+                    @
+                </Label>
+                <input />
+            </Form.Input>
             <Input
-                name={"email"}
+                name={'email'}
                 label="Email"
                 placeholder="Enter your email"
-                setValue={(value) => setEmail(value)}
+                setValue={value => setEmail(value)}
                 required={true}
             />
             <Input
-                name={"password"}
-                type={"password"}
+                name={'password'}
+                type={'password'}
                 label="Password"
                 placeholder="Enter password"
-                setValue={(value) => setPassword(value)}
+                setValue={value => setPassword(value)}
                 required={true}
             />
             <Input
-                name={"confirmation"}
-                type={"password"}
+                name={'confirmation'}
+                type={'password'}
                 label="Confirm password"
                 placeholder="Confirm password"
-                setValue={(value) => setConfirmation(value)}
+                setValue={value => setConfirmation(value)}
                 required={true}
             />
             <Message error content={message.value} />

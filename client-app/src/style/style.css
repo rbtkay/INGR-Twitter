@@ -116,6 +116,12 @@ h3.ui.header {
   }
 }
 
+.ui.label.label-stack {
+  padding: 15px;
+  line-height: 1;
+  vertical-align: middle;
+}
+
 .ui.form.mini-form {
   margin-bottom: 25px;
 }
