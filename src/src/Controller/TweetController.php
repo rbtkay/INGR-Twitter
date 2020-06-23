@@ -21,7 +21,7 @@ class TweetController extends AbstractController
 	public function getTweets(Request $request, TweetRepository $t_repo)
 	{
 		$user   = $this->getUser();
-		$tweets = $t_repo->findBy(["user" => $user]);
+		$tweets = $t_repo->findBy(["user" => $user], ["tweet_date"=> 'desc']);
 
 		$return = [];
 		foreach ($tweets as $tweet) {
