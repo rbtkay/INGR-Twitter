@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
     Header,
     Segment,
@@ -9,40 +9,40 @@ import {
     Divider,
     Icon,
     Message,
-} from "semantic-ui-react";
-import { Link } from "react-router-dom";
-import { setToken, setUserName, setEmail, setTwitterName } from "../actions";
-import useFetch from "../hooks/fetch";
-import FormPassword from "../components/forms/FormPassword";
-import MiniForm from "../components/forms/MiniForm";
-import useLogout from "../hooks/logout";
+} from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+import { setToken, setUserName, setEmail, setTwitterName } from '../actions';
+import useFetch from '../hooks/fetch';
+import FormPassword from '../components/forms/FormPassword';
+import MiniForm from '../components/forms/MiniForm';
+import useLogout from '../hooks/logout';
 
 const SettingsPage = () => {
     const dispatch = useDispatch();
-    const user = useSelector((state) => state);
+    const user = useSelector(state => state);
     const [loading, setLoading] = useState(false);
-    const { result: resultDelete, load: deleteUser } = useFetch("user", "DELETE");
+    const { result: resultDelete, load: deleteUser } = useFetch('user', 'DELETE');
     const { logout } = useLogout();
     const [message, setMessage] = useState({
         display: false,
-        type: "",
-        value: "",
+        type: '',
+        value: '',
     });
 
     useEffect(() => {
         if (resultDelete) {
-            setLoading(false);
             if (resultDelete.success) {
                 setMessage({
                     display: true,
-                    type: "success",
+                    type: 'success',
                     value: resultDelete.message,
                 });
-                setTimeout(logout, 3000);
+                setTimeout(logout, 1500);
             } else {
+                setLoading(false);
                 setMessage({
                     display: true,
-                    type: "error",
+                    type: 'error',
                     value: resultDelete.message,
                 });
             }
@@ -57,7 +57,7 @@ const SettingsPage = () => {
                 </Link>
                 <Segment>
                     <Grid columns={2} relaxed="very">
-                        <Grid.Column textAlign={"center"}>
+                        <Grid.Column textAlign={'center'}>
                             <Header as="h3">Modify your profil</Header>
                             <MiniForm
                                 url="username"
@@ -65,7 +65,7 @@ const SettingsPage = () => {
                                 label="Change Username"
                                 placeholder={user.username}
                                 method="PUT"
-                                callback={(result) => {
+                                callback={result => {
                                     dispatch(setToken(result.response.token));
                                     dispatch(setUserName(result.value));
                                 }}
@@ -76,7 +76,7 @@ const SettingsPage = () => {
                                 label="Change Email Address"
                                 placeholder={user.email}
                                 method="PUT"
-                                callback={(result) => dispatch(setEmail(result.value))}
+                                callback={result => dispatch(setEmail(result.value))}
                             />
                             <MiniForm
                                 url="twitter_name"
@@ -84,13 +84,13 @@ const SettingsPage = () => {
                                 label="Change registered Twitter login"
                                 placeholder={user.twitter_name}
                                 method="PUT"
-                                callback={(result) =>
+                                callback={result =>
                                     dispatch(setTwitterName(result.value))
                                 }
                             />
                         </Grid.Column>
                         <Grid.Column>
-                            <Header textAlign={"center"} as="h3">
+                            <Header textAlign={'center'} as="h3">
                                 Modify password
                             </Header>
                             <FormPassword />
@@ -101,15 +101,18 @@ const SettingsPage = () => {
                 <Button
                     color="red"
                     className="delete-account"
-                    onClick={(evt) => deleteUser(user.token)}
+                    onClick={evt => {
+                        deleteUser(user.token);
+                        setLoading(true);
+                    }}
                     loading={loading}
                 >
                     Delete your account <Icon name="trash alternate" className="delete" />
                 </Button>
                 {message.display && (
                     <Message
-                        error={message.type === "error"}
-                        success={message.type === "success"}
+                        error={message.type === 'error'}
+                        success={message.type === 'success'}
                         content={message.value}
                     />
                 )}

@@ -1,20 +1,30 @@
-import React, { useState, useCallback, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { Form, Button, Message } from "semantic-ui-react";
-import useFetch from "../../hooks/fetch";
-import Input from "./Input";
+import React, { useState, useCallback, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { Form, Button, Message, Label } from 'semantic-ui-react';
+import useFetch from '../../hooks/fetch';
+import Input from './Input';
 
-const FormPassword = (props) => {
-    const token = useSelector((state) => state.token);
-    const { result, load } = useFetch(props.url, props.method || "POST");
+const MiniForm = ({
+    url,
+    method = 'POST',
+    callback,
+    name,
+    type = 'text',
+    label,
+    placeholder,
+    submitLabel = 'Ok',
+    labelStack,
+}) => {
+    const token = useSelector(state => state.token);
+    const { result, load } = useFetch(url, method);
 
-    const [value, setValue] = useState("");
+    const [value, setValue] = useState('');
     const [loading, setLoading] = useState(false);
 
     const [message, setMessage] = useState({
         display: false,
-        type: "",
-        value: "",
+        type: '',
+        value: '',
     });
 
     useEffect(() => {
@@ -23,16 +33,16 @@ const FormPassword = (props) => {
             if (result.success) {
                 setMessage({
                     display: result.success,
-                    type: "success",
+                    type: 'success',
                     value: result.message,
                 });
-                if (props.callback) {
-                    props.callback({ value, response: result });
+                if (callback) {
+                    callback({ value, response: result });
                 }
             } else {
                 setMessage({
                     display: !result.success,
-                    type: "error",
+                    type: 'error',
                     value: result.message,
                 });
             }
@@ -43,8 +53,8 @@ const FormPassword = (props) => {
         if (!value) {
             setMessage({
                 display: true,
-                type: "error",
-                value: "Field is required",
+                type: 'error',
+                value: 'Field is required',
             });
             return false;
         }
@@ -52,12 +62,12 @@ const FormPassword = (props) => {
     };
 
     const onSubmit = useCallback(
-        (e) => {
+        e => {
             e.preventDefault();
             if (!loading && checkValue()) {
                 setLoading(true);
                 const tp_value = {};
-                tp_value[props.name] = value;
+                tp_value[name] = value;
                 load(token, tp_value);
             }
         },
@@ -66,29 +76,36 @@ const FormPassword = (props) => {
 
     return (
         <Form
-            error={message.type === "error" && message.display}
-            success={message.type === "success" && message.display}
+            error={message.type === 'error' && message.display}
+            success={message.type === 'success' && message.display}
             onSubmit={onSubmit}
             loading={loading}
             className="mini-form"
         >
-            <Form.Field inline>
-                <Input
-                    name={props.name}
-                    label={props.label}
-                    placeholder={props.placeholder || ""}
-                    setValue={(value) => setValue(value)}
-                    required={true}
-                    inline={true}
-                />
+            <Form.Input
+                name={name}
+                labelPosition="left"
+                label={label}
+                type={type}
+                placeholder={placeholder}
+                onChange={e => setValue(e.target.value)}
+                required
+                inline
+            >
+                {!!labelStack && (
+                    <Label color="blue" className="label-stack">
+                        {labelStack}
+                    </Label>
+                )}
+                <input />
                 <Button color="blue" type="submit" disabled={loading}>
-                    {props.submitLabel || "Ok"}
+                    {submitLabel}
                 </Button>
-            </Form.Field>
+            </Form.Input>
             <Message error content={message.value} />
             <Message success content={message.value} />
         </Form>
     );
 };
 
-export default FormPassword;
+export default MiniForm;

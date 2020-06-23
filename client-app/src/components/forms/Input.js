@@ -1,25 +1,18 @@
-import React, { Fragment } from "react";
-import { FormField } from "semantic-ui-react";
+import React from 'react';
+import { FormField } from 'semantic-ui-react';
 
-const Input = (props) => {
-    const input = (
-        <Fragment>
-            <label htmlFor={props.name}>{props.label}</label>
-            <input
-                id={props.name}
-                name={props.name}
-                placeholder={props.placeholder || ""}
-                type={props.type || "text"}
-                onChange={(e) => props.setValue(e.target.value)}
-                required={!!props.required}
-            />
-        </Fragment>
-    );
-
-    if (props.inline) {
-        return input;
-    }
-    return <FormField>{input}</FormField>;
-};
+const Input = ({ name, type, label, placeholder = '', required = false, setValue }) => (
+    <FormField>
+        <label htmlFor={name}>{label}</label>
+        <input
+            id={name}
+            name={name}
+            placeholder={placeholder}
+            type={type}
+            onChange={e => setValue(e.target.value)}
+            required={required}
+        />
+    </FormField>
+);
 
 export default Input;
