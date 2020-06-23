@@ -61,24 +61,22 @@ class KeywordController extends AbstractController
 
 			$keyword_result = $k_repo->insert($this->getUser(), $keyword['name']);
 
-			$scores = [];
-			foreach ($keyword_result->getScores() as $score) {
-				$scores[] = [
-					'id'     => $score->getId(),
-					'number' => $score->getNumber(),
-					'date'   => $score->getDate()->format('d/m/Y H:i'),
-				];
-			}
+			$tweet_helper = new TweetHelper();
+			$user         = $u_repo->findOneBy(["username" => $this->getUser()->getUsername()]);
+			$tweet_helper->setScoreForKeywords($user, $k_repo, $s_repo);
+
+			$lastScore = $s_repo->findOneBy(["keyword"=> $keyword_result]);
+
 			$return = [
 				'id'      => $keyword_result->getId(),
 				'name'    => $keyword_result->getName(),
 				'user_id' => $keyword_result->getUser()->getId(),
-				'scores'  => $scores
+				'scores'  => [
+					"id"=> $lastScore->getId(),
+					"number"=> $lastScore->getNumber(),
+					"date"=> $lastScore->getDate(),
+				]
 			];
-
-			$tweet_helper = new TweetHelper();
-			$user         = $u_repo->findOneBy(["username" => $this->getUser()->getUsername()]);
-			$tweet_helper->setScoreForKeywords($user, $k_repo, $s_repo);
 
 			return new JsonResponse(
 				['message' => 'Keyword registered', "keyword" => $return],
