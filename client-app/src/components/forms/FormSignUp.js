@@ -107,7 +107,6 @@ const FormSignUp = () => {
                 labelPosition="left"
                 label="Login Twitter"
                 placeholder="Enter your login Twitter"
-                placeholder="Enter your email"
                 onChange={e => setTwitterName(e.target.value)}
             >
                 <Label color="blue" className="label-stack">
