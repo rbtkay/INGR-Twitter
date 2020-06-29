@@ -6,11 +6,11 @@ This project is licensed under the terms of the MIT license. <br/>
 It uses Twitter API, Javascript library called ReactJS, Highcharts JS API and Symfony framework.
 
 ## Topic :
-It's analytic platform.
-* Everybody can register and login to the site,
-* Setup its Twitter account
-* Then view all of its posted tweets
-* And using keywords in the form of dashboard.
+It's a analytic platform using the twitter api:
+* Everybody can register and login to the site.
+* Provide a twitter name to get the appropriate user's tweets.
+* Add a keyword that will be followed over time.
+* The chosen keywords will be displayed in a dashboard that shows the evolution of each keyword over time.
 
 ## User journey:
 1. Connect to the Internet address : http://localhost:3000/ <br/>
