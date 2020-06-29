@@ -63,15 +63,6 @@ docker-compose up
 
 This last command will be faster since the database is already built
 
-#### 4. Test Project
-
-Click on signup and register with your twitter name.<br/>
-Add a new keyword wich don't have a lot of tweets.<br/>
-We are limited to 100 tweets recording by the API. You can try : `cute`,`truc`. You will see the number of tweets under your keywords on the graph. It will be update every ten minutes.<br/>
-You can delete keywords by clicking on them in over the graph. Clicking on them in the graph will just make them appeared and disappeared on the graph.<br/>
-On the left, you can see the tweets of the account you used in registering. In clicking on them, you can see them on twitter.<br/>
-You can modify your profile in clicking on `Signed as ...` and `Settings`.
-
 ## User journey:
 
 1. Connect to the Internet address : http://localhost:3000/ <br/>
@@ -85,7 +76,7 @@ You can modify your profile in clicking on `Signed as ...` and `Settings`.
    You can toggle the display of a line by clicking on keywords from the graph. <br/>
    Hover the mouse cursor over the curve and read number of tweets using this keyword at a given date.
 6. You can delete a keyword by clicking on it form the menu over the graph.
-7. At the top right, you can access the settings or disconnect. <br/>
+7. At the top right, you can click on `Signed as ...` and access to settings and disconnection. <br/>
    Click on settings. You can modify your username, email address, Twitter login and password. <br/>
 8. Log out and login with your new username and password.
 9. You can return to the settings page and delete your account.
